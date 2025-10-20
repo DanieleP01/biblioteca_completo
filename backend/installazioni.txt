@@ -1,0 +1,6 @@
+INSTALLAZIONE DIPENDENZE: npm install express cors dotenv sqlite3 sqlite typescript
+INSTALLAZIONE: npm install --save-dev @types/sqlite3 @types/dotenv
+               l'unico differente è per typescript: npm install --save-dev ts-node @types/node @types/express @types/cors
+
+COMPILAZIONE/ESECUZIONE: npm run build
+                         npm start
