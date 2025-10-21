@@ -1,0 +1,76 @@
+<ion-header [translucent]="true" [class.hide-header]="isHeaderHidden">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-title class="app-logo">WebSite of Biblioteche</ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button id="profile-popover">
+        <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-popover trigger="profile-popover" triggerAction="click" size="auto">
+  <ng-template>
+    <ion-content>
+      <ion-list lines="none">
+        <ion-item [button]="true" [detail]="false" >
+          <ion-icon  name="log-in-outline"></ion-icon>
+          <ion-label>Login</ion-label>
+        </ion-item>
+        <ion-item [button]="true" [detail]="false" >
+          <ion-icon  name="person-add-outline"></ion-icon>
+          <ion-label>Registrazione</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
+
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
+
+  <!--BENVENUTO-->
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 class="hero-title">Benvenuto nel Mondo delle Biblioteche</h1>
+      <p class="hero-subtitle">Scopri nuove biblioteche e esplora la nostra collezione</p>
+    </div>
+  </div>
+
+  <!--Libri-->
+  <!--<div class="first-content">-->
+    <ion-card class="content-section-card first-content">
+      <div class="divider">
+        <ion-label class="section-title">Lista libri</ion-label>
+      </div>
+      <ion-item lines="none" class="section-item">
+        <div class="horizontal-scroll-container">
+          <ion-card *ngFor="let book of books" class="small-item-card" name="card">
+            <img [src]="book.cover_url" alt="Copertina del libro"/> 
+            <ion-card-header>
+              <ion-card-title>{{ book.title }}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-item>
+    </ion-card>
+
+    <ion-card class="content-section-card">
+      <div class="divider">
+        <ion-label class="section-title">Lista Biblioteche</ion-label>
+      </div>
+      <ion-item lines="none" class="section-item">
+        <div class="horizontal-scroll-container">
+          <ion-card *ngFor="let library of libraries" class="small-item-card" name="card">
+            <img [src]="library.cover_url" alt="Copertina del libro"/>
+            <ion-card-header>
+              <ion-card-title>{{ library.name }}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-item>
+    </ion-card>
+    
+</ion-content>
+
