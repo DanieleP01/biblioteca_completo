@@ -1,23 +1,23 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 
-export async function getAllBooks() {
+export async function getAllLibraries() {
   const db = await open({
     filename: './database/biblioteca.db',
     driver: sqlite3.Database
   });
   
-  const books = await db.all('SELECT * FROM books');
+  const libraries = await db.all('SELECT * FROM libraries');
   await db.close();
-  return books;
+  return libraries;
 }
 
-export async function getBookById(id: number) {
+export async function getLibraryById(id: number) {
     const db = await open({
         filename: './database/biblioteca.db',
         driver: sqlite3.Database
     });
-    const book = await db.get('SELECT * FROM books WHERE id = ?', id);
+    const library = await db.get('SELECT * FROM libraries WHERE id = ?', id);
     await db.close();
-    return book;
+    return library;
 }

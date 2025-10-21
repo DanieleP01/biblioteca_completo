@@ -1,0 +1,8 @@
+# Node modules
+**/node_modules/
+
+# Output delle build TypeScript
+**/dist/
+
+# Variabili ambiente
+**/.env
