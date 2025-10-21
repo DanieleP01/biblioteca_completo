@@ -1,1 +1,0 @@
-{"version":3,"file":"corsConfig.js","sourceRoot":"","sources":["../../src/middlewares/corsConfig.ts"],"names":[],"mappings":"AAAA,OAAO,IAAI,MAAM,MAAM,CAAC;AAExB,MAAM,WAAW,GAAG;IAClB,MAAM,EAAE,GAAG,EAAE,+CAA+C;IAC5D,oBAAoB,EAAE,GAAG;CAC1B,CAAC;AAEF,MAAM,CAAC,MAAM,cAAc,GAAG,IAAI,CAAC,WAAW,CAAC,CAAC"}
