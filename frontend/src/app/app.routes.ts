@@ -17,5 +17,9 @@ export const routes: Routes = [
   {
     path: 'library-detail/:id',
     loadComponent: () => import('./library-detail/library-detail.page').then( m => m.LibraryDetailPage)
+  },  {
+    path: 'registration',
+    loadComponent: () => import('./registration/registration.page').then( m => m.RegistrationPage)
   },
+
 ];

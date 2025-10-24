@@ -1,0 +1,38 @@
+.registration-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(23,59,108, .15); // blu scuro trasparente, in stile
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(10,23,50,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.7rem;
+    text-align: center;
+    color: #173b6c;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .actions {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  ion-text {
+    margin-top: 1rem;
+    font-size: 1.08rem;
+  }
+}

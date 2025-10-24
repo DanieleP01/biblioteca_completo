@@ -50,4 +50,8 @@ export class HomePage implements OnInit{
   goToLibraryDetail(libraryId: number) {
     this.router.navigate(['/library-detail', libraryId]);
   }
+
+  goToRegister() {
+    this.router.navigate(['/registration']);
+  }
 }
