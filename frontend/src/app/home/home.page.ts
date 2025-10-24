@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule  } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { Book } from '../models/book.model.js';
+import { Library } from '../models/library.model.js';
 
 @Component({
   selector: 'app-home',
@@ -12,19 +15,19 @@ import { IonicModule  } from '@ionic/angular';
 })
 
 export class HomePage implements OnInit{
-  books: any[] = [];
-  libraries: any[] = [];
+  books: Book[] = [];
+  libraries: Library[] = [];
 
   isHeaderHidden = false;
   lastScrollTop = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
-    this.http.get<any[]>('http://localhost:3000/api/libri')
+    this.http.get<Book[]>('http://localhost:3000/api/libri')
       .subscribe(libri => this.books = libri);
 
-    this.http.get<any[]>('http://localhost:3000/api/librerie')
+    this.http.get<Library[]>('http://localhost:3000/api/librerie')
       .subscribe(librerie => this.libraries = librerie);
   }
 
@@ -40,4 +43,11 @@ export class HomePage implements OnInit{
     this.lastScrollTop = scrollTop;
   }
 
+  goToBookDetail(bookId: number) {
+    this.router.navigate(['/book-detail', bookId]);
+  }
+
+  goToLibraryDetail(libraryId: number) {
+    this.router.navigate(['/library-detail', libraryId]);
+  }
 }

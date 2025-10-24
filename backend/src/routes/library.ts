@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { getLibraries } from '../controllers/libraryController.js';
+import { getLibrariesController, getLibraryByIdController } from '../controllers/libraryController.js';
 
 const router = Router();
 
-router.get('/', getLibraries);
+router.get('/', getLibrariesController);
+router.get('/:id', getLibraryByIdController);
 
 export default router;

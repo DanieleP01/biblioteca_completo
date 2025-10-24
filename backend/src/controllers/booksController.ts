@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getAllBooks, getBookById } from '../models/books.js';
 
-export async function getBooks(req: Request, res: Response) {
+export async function getBooksController(req: Request, res: Response) {
   try {
     const books = await getAllBooks();
     res.json(books);
@@ -10,10 +10,11 @@ export async function getBooks(req: Request, res: Response) {
   }
 }
 
-export async function getLibroById(req: Request, res: Response) {
+export async function getBookByIdController(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
     const book = await getBookById(id);
+
     if (book) {
       res.json(book);
     } else {

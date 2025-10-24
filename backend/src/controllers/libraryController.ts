@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getAllLibraries, getLibraryById } from '../models/library.js';
 
-export async function getLibraries(req: Request, res: Response) {
+export async function getLibrariesController(req: Request, res: Response) {
   try {
     const libraries = await getAllLibraries();
     res.json(libraries);
@@ -10,7 +10,7 @@ export async function getLibraries(req: Request, res: Response) {
   }
 }
 
-export async function getLibreriaById(req: Request, res: Response) {
+export async function getLibraryByIdController(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
     const library = await getLibraryById(id);

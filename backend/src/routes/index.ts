@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { getBooks } from '../controllers/booksController.js';
-import { getLibraries } from '../controllers/libraryController.js';
+import { getBooksController, getBookByIdController } from '../controllers/booksController.js';
+import { getLibrariesController, getLibraryByIdController } from '../controllers/libraryController.js';
 const router = Router();
 
-router.get('/libri', getBooks);
-router.get('/librerie', getLibraries);
+router.get('/libri', getBooksController);
+router.get('/librerie', getLibrariesController);
+router.get('/libri/:id', getBookByIdController);
+router.get('/librerie/:id', getLibraryByIdController);
 
 export { router };

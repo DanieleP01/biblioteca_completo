@@ -38,15 +38,14 @@
     </div>
   </div>
 
-  <!--Libri-->
-  <!--<div class="first-content">-->
+  <!--CARD LIBRI-->
     <ion-card class="content-section-card first-content">
       <div class="divider">
         <ion-label class="section-title">Lista libri</ion-label>
       </div>
       <ion-item lines="none" class="section-item">
         <div class="horizontal-scroll-container">
-          <ion-card *ngFor="let book of books" class="small-item-card" name="card">
+          <ion-card *ngFor="let book of books" class="small-item-card" name="card" (click)="goToBookDetail(book.id)"tappable>
             <img [src]="book.cover_url" alt="Copertina del libro"/> 
             <ion-card-header>
               <ion-card-title>{{ book.title }}</ion-card-title>
@@ -56,13 +55,14 @@
       </ion-item>
     </ion-card>
 
+    <!-- CARD BIBLIOTECHE-->
     <ion-card class="content-section-card">
       <div class="divider">
         <ion-label class="section-title">Lista Biblioteche</ion-label>
       </div>
       <ion-item lines="none" class="section-item">
         <div class="horizontal-scroll-container">
-          <ion-card *ngFor="let library of libraries" class="small-item-card" name="card">
+          <ion-card *ngFor="let library of libraries" class="small-item-card" name="card" (click)="goToLibraryDetail(library.id)" tappable>
             <img [src]="library.cover_url" alt="Copertina del libro"/>
             <ion-card-header>
               <ion-card-title>{{ library.name }}</ion-card-title>

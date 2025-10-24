@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Dettaglio Biblioteca</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="library-hero">
+    <img [src]="library?.cover_url" [alt]="library?.name"/>
+  </div>
+
+  <!-- DETTAGLI BIBLIOTECA -->
+  <div *ngIf="!isLoading && library" class="library-detail-container">
+    <div class="library-info-block">
+      <h1 class="library-name">{{ library.name }}</h1>
+      <div class="library-chips"> 
+        <ion-chip color="primary">{{ library.city }}</ion-chip>
+        <ion-chip color="secondary">{{ library.province }}</ion-chip>
+      </div>
+      <div class="library-adress">
+        <ion-chip color="secondary">{{ library.address }}</ion-chip>
+      </div>  
+    </div>
+
+    <!-- Altro contenuto: descrizione, informazioni, ecc. -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Indirizzo completo</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ library.address }}</p>
+        <p>{{ library.city }} ({{ library.province }})</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Prompt login se L'utente non è loggato -->
+    <ion-card *ngIf="!isLoggedIn">
+      <ion-card-content>
+        <div class="login-prompt-content">
+          <ion-icon name="lock-closed" size="large"></ion-icon>
+          <h3>Accedi per visualizzare la lista libri</h3>
+          <ion-button expand="block" (click)="redirectToLogin()">Accedi / Registrati</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Placeholder per la lista libri visibile solo se loggato -->
+    <div *ngIf="isLoggedIn" class="library-books-section">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Libri presenti in questa biblioteca</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-note color="medium">
+            (Visualizzazione libreria disponibile prossimamente)
+          </ion-note>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

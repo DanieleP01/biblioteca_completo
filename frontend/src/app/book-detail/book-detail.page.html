@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Dettaglio Libro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <!-- Book Details -->
+  <div *ngIf="!isLoading && book" class="book-detail-container">
+    <div class="book-header">
+      <div class="book-cover">
+        <img [src]="book?.cover_url" [alt]="book?.title" />
+      </div>
+      <div class="book-info">
+        <h1>{{ book.title }}</h1>
+        <p class="author">di {{ book.author }}</p>
+        <ion-chip color="primary">{{ book.category }}</ion-chip>
+        <ion-chip color="secondary">{{ book.year }}</ion-chip>
+      </div>
+    </div>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Dettagli</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <p>ISBN: {{ book.isbn }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Descrizione</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ book.description }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- BUTTON DI PRENOTAZIONE -->
+    <div *ngIf="isLoggedIn" class="action-buttons">
+      <ion-button expand="block" color="primary" (click)="onReserve()">Prenota Libro</ion-button>
+      <!-- <ion-button expand="block" fill="outline" color="danger" (click)="onFavorite()">Aggiungi ai Preferiti</ion-button> -->
+    </div>
+
+    <!-- Prompt login se L'utente non è loggato -->
+    <ion-card *ngIf="!isLoggedIn">
+      <ion-card-content>
+        <div class="login-prompt-content">
+          <ion-icon name="lock-closed" size="large"></ion-icon>
+          <h3>Accedi per prenotare</h3>
+          <ion-button expand="block" (click)="redirectToLogin()">Accedi / Registrati</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
