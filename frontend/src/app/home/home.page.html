@@ -3,35 +3,83 @@
     <ion-buttons slot="start">
       <ion-title class="app-logo">WebSite of Biblioteche</ion-title>
     </ion-buttons>
+    <!-- BARRA DI RICERCA -->
+    <ion-searchbar 
+      slot="primary"
+      placeholder="Cerca libri o librerie..."
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchInput($event)"
+      (ionClear)="onClearSearch()"
+      debounce="500"
+      animated 
+      class="custom-searchbar desktop-only"
+    ></ion-searchbar>
+    <!-- ICONE -->
     <ion-buttons slot="end">
-      <ion-button id="profile-popover">
-        <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+      <!-- ICONA RICERCA MOBILE -->
+      <ion-button class="mobile-search-icon" (click)="toggleMobileSearch()">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+      <!-- ICONA AUTENTICAZIONE O MENU'-->
+      <ion-button id="profile-popover" (click)="presentPopover($event)">
+        <ion-icon  slot="icon-only" [name]="isLoggedIn ? 'menu': 'person-outline'"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-  
-<ion-popover trigger="profile-popover" triggerAction="click" size="auto">
-  <ng-template>
-    <ion-content>
-      <ion-list lines="none">
-        <ion-item [button]="true" [detail]="false" >
-          <ion-icon  name="log-in-outline"></ion-icon>
-          <ion-label>Login</ion-label>
-        </ion-item>
-        <ion-item [button]="true" [detail]="false" (click)="goToRegister()">
-          <ion-icon  name="person-add-outline"></ion-icon>
-          <ion-label>Registrazione</ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  </ng-template>
-</ion-popover>
 
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
+ 
+  <ion-modal [isOpen]="isSearchModalOpen" (didDismiss)="closeSearchModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-searchbar
+          [(ngModel)]="searchQuery"
+          placeholder="Cerca libri o librerie..."
+          (ionInput)="onSearchInput($event)"
+          (ionClear)="onClearSearch()"
+          debounce="500"
+          animated
+          class="custom-searchbar">
+        </ion-searchbar>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeSearchModal()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+      
+      <ion-content>
+        <!-- Nessun risultato -->
+        <div *ngIf="!isLoading && searchBooks.length === 0 && searchLibraries.length === 0" class="no-results">
+          <ion-icon name="search-outline"></ion-icon>
+          <p>Nessun risultato trovato</p>
+        </div>
+        <!-- Lista libri -->
+        <ion-list *ngIf="searchBooks.length > 0" class="search-list">
+          <ion-list-header>Libri trovati</ion-list-header>
+          <ion-item *ngFor="let book of searchBooks" button (click)="onSelectBook(book)">
+            <ion-avatar slot="start"><img [src]="book.cover_url"></ion-avatar>
+            <ion-label>{{ book.title }}</ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- Lista biblioteche -->
+        <ion-list *ngIf="searchLibraries.length > 0" class="search-list">
+          <ion-list-header>Biblioteche trovate</ion-list-header>
+          <ion-item *ngFor="let library of searchLibraries" button (click)="onSelectLibrary(library)">
+            <ion-avatar slot="start"><img [src]="library.cover_url"></ion-avatar>
+            <ion-label>{{ library.name }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
   <!--BENVENUTO-->
   <div class="hero-content">
+    <div class="hero-gradient"></div>
     <div class="hero-text">
       <h1 class="hero-title">Benvenuto nel Mondo delle Biblioteche</h1>
       <p class="hero-subtitle">Scopri nuove biblioteche e esplora la nostra collezione</p>

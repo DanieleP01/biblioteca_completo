@@ -6,6 +6,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Library } from '../models/library.model.js';
+import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-library-detail',
@@ -22,7 +23,8 @@ export class LibraryDetailPage implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class LibraryDetailPage implements OnInit {
   }
 
   checkLoginStatus(){
-    this.isLoggedIn = !!localStorage.getItem('authToken');
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 
   goBack() {
@@ -59,7 +61,7 @@ export class LibraryDetailPage implements OnInit {
   }
 
   redirectToLogin() {
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
   }
 
 }

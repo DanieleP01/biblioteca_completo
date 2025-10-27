@@ -14,7 +14,17 @@ import { UserRegistration, AuthResponse } from '../models/user.model.js';
   imports: [IonicModule, CommonModule, FormsModule, HttpClientModule],
 })
 export class RegistrationPage {
-  user: UserRegistration = { username: '', email: '', password: '' };
+  user: UserRegistration = { 
+    firstName: '',
+    lastName: '',
+    username: '', 
+    email: '', 
+    password: '',
+    confirmPassword: '',
+    city: '',
+    province: '' 
+  };
+
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -25,29 +35,39 @@ export class RegistrationPage {
   }
 
   submitRegistration() {
+
+    //validazione password
+    if (this.user.password !== this.user.confirmPassword) {
+      this.errorMessage = 'Le password non coincidono';
+      return;
+    }
+    
     this.errorMessage = '';
     this.successMessage = '';
     this.isLoading = true;
 
     this.http.post<AuthResponse>(
-      'http://localhost:3000/api/registrazione', this.user).subscribe({
+      'http://localhost:3000/api/registrazione', {
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        username: this.user.username,
+        email: this.user.email,
+        password: this.user.password,
+        city: this.user.city || null,
+        province: this.user.province || null
+      }).subscribe({
       next: (response: AuthResponse) => {
         this.successMessage = response.message;
         this.isLoading = false;
-        setTimeout(() => this.router.navigate(['/home']), 2000);
+
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (err) => {
+        console.log('errore');
         this.errorMessage = err.error.error;
         this.isLoading = false;
       }
     });
   }
-
-
-
-  goTOLogin() {
-    this.router.navigate(['/login']);
-  }
-  
 
 }

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+  <div class="background-image"></div>
+
+  <!-- COLONNA DESTRA -->
+  <div class="login-container">
+    <h2>Inserisci le credenziali</h2>
+    <form (ngSubmit)="submitLogin()" #regForm="ngForm">
+      <ion-item>
+        <ion-label position="floating">Username/E-mail</ion-label>
+        <ion-input [(ngModel)]="loginData.identifier" name="identifier" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input [(ngModel)]="loginData.password" name="password" required type="password">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
+      </ion-item>
+      <div class="actions">
+        <ion-button type="submit" expand="block" color="primary" [disabled]="isLoading || !regForm.form.valid">
+          Accedi
+        </ion-button>
+        <ion-spinner *ngIf="isLoading" name="crescent" color="primary"></ion-spinner>
+      </div>
+      <div class="LoginLink">
+        <span>Non hai un account?</span>
+        <a href="/registration">Registrati</a>
+      </div>
+      <ion-text color="danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ion-text>
+      <ion-text color="success" *ngIf="successMessage">
+        {{ successMessage }}
+      </ion-text>
+    </form>
+  </div>
+</ion-content>

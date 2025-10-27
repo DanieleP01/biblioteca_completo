@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import './models/initDB.js'; 
-import { router as mainRouter } from './routes/index.js';
+import { router as mainRouter } from './index.js';
 
 dotenv.config();
 

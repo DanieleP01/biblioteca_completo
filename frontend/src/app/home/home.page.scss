@@ -1,21 +1,15 @@
 ion-header {
   transition: transform 0.3s ease;
-  background: rgba(25,28,38,0.82);
   z-index: 10;
-  position:relative;
-
-  //effetto blur
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-
-  border-bottom: 1px solid rgba(44,51,63,0.13);
-  height: 54px;
+  position: fixed;
+  height: 80px;
 }
 
 ion-toolbar {
-  --background: transparent;
-  --color: var(--ion-color-dark);
-  padding: 0 10px;
+  --background: rgba(25, 40, 54, 0.874);
+  //effetto blur
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 
   min-height: 54px;
   height: 100%;
@@ -37,7 +31,7 @@ ion-button {
 //Responsive per mobile
 @media (max-width: 600px) {
   ion-header {
-    height: 44px;
+    height: 70px;
   }
   ion-toolbar {
     min-height: 44px;
@@ -52,39 +46,127 @@ ion-button {
   transition: transform 0.3s ease;
 }
 
+.custom-searchbar {
+  --background: rgb(255, 255, 255) !important;
+  --border-radius: 24px !important;
+  --box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  --padding-start: 12px !important;
+  --padding-end: 12px !important;
+  --icon-color: #666 !important;
+  --placeholder-color: #4c4c4c !important;
+  --color: #333 !important;
+  margin: 8px 8px !important;
+  text-align: left !important;
+
+  @media (max-width: 768px) {
+    max-width: 90%;
+  }
+}
+
+// Su desktop: searchbar nella toolbar
+.desktop-only {
+  max-width: 400px !important;
+
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+// Icona ricerca mobile
+.mobile-search-icon {
+  display: none !important;
+
+  @media (max-width: 768px) {
+    display: block !important;
+  }
+}
+
+// Toolbar ricerca mobile
+.mobile-search-toolbar {
+  --background: rgba(123, 132, 145, 0.16);
+  backdrop-filter: blur(10px);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: sticky !important;  
+  top: 0 !important;            
+  z-index: 100 !important;
+
+  ion-searchbar {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;   
+  text-align: center;
+  color: #999;
+
+  ion-icon {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+  }
+}
+
+.search-list {
+  padding-top: 40px;
+}
+
+ion-modal{
+  --background: transparent;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
 .hero-content {
   position: relative;
-  min-height: 450px; 
-   background: url('/assets/benvenuto.png') center/cover no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  //background-color: #2976e4;
+  min-height: 500px; 
+  //overflow: hidden;
   z-index: 1;
 }
 
 .hero-content::before {
   content: '';
+  background: url('/assets/benvenuto.png') center/cover no-repeat;
   position: absolute;
   left: 0; top: 0;
-  width: 100vw; height: 100%;
-  background: rgba(30,30,60,0.27); // overlay solo leggero per deep glass 
-  z-index: 2;
+  width: 100%; height: 100%;
+  z-index: 1;
 }
 
 .hero-content::after {
   content: "";
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 90px; 
+  left: 0; top: 0; 
+  width: 100%; 
+  background: rgba(10, 25, 41, 0.35);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-gradient {
+   position: absolute;
+  left: 0; right: 0;
+  bottom: 0; height: 120px;
   background: linear-gradient(
-    to bottom, 
-    rgba(0,0,0,0) 5%,
-    rgba(41,118,228,0.8) 65%,
-    var(--ion-color-primary) 100%
+    to bottom,
+    rgba(10, 25, 41, 0) 0%,        // Trasparente in alto
+    rgba(10, 25, 41, 0.5) 40%,     // Inizia gradualmente
+    rgba(10, 25, 41, 0.85) 70%,    // Più opaco
+    #0a1929 100%                   // Completamente opaco in fondo
   );
   pointer-events: none;
-  z-index: 10;
+  z-index: 3;
 }
 
 .hero-text {
@@ -99,6 +181,11 @@ ion-button {
   text-shadow: 0px 1px 12px rgba(0,0,0,0.5);
   text-align: center;
   padding-bottom: 30px; 
+
+  @media (max-width: 768px) {
+    max-height: 50%; 
+    font-size: 80%;
+  }
 }
 
 .hero-title{
@@ -136,7 +223,7 @@ ion-button {
 }
 
 ion-content {
-  --background: var(--ion-color-primary);
+  --background: #0a1929;
   position: relative;
 
     .section-title { 
@@ -224,37 +311,3 @@ ion-label {
     font-size: 1.1em;
     padding: 10px;
   }
-
-/*ion-popover {
-  // Imposta un background chiaro e un testo scuro per visibilità
-  --background: var(--ion-color-light, #f8f8f8); 
-  --color: var(--ion-color-dark, #000); 
-
-  --widht: fit-content; //larghezza sufficiente per gli item
-
-  ion-item {
-    width: auto !important;
-    min-width: 220px !important;
-    max-width: 100% !important;
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
-    --background: transparent; // Gli item siano trasparenti per vedere il background del popover
-    --color: var(--ion-color-dark, #000); // Colore del testo degli item
-    --padding-start: 15px;
-    --padding-end:  15px;
-  }
-
-  ion-label {
-    // Forza la visibilità del testo
-    opacity: 1 !important;
-    width: auto !important;
-    font-size: 1.1em;
-  }
-
-  ion-icon {
-    // Forza la visibilità dell'icona
-    //color: var(--ion-color-dark, #000) !important; 
-    font-size: 1.5em !important; 
-  }
-}*/

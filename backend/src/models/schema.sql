@@ -1,9 +1,13 @@
 -- CREAZIONE TABELLE 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
+    city TEXT NOT NULL,
+    province TEXT NOT NULL,
     role TEXT DEFAULT 'user'  -- 'user', 'librarian', 'admin'
 );
 

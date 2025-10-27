@@ -6,6 +6,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from '../models/book.model.js';
+import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-book-detail',
@@ -23,11 +24,12 @@ export class BookDetailPage implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id'); //prende l'id dalla route
+    const id = this.route.snapshot.paramMap.get('id'); 
     if(id) {
       this.loadBookDetails(id);
     } else {
@@ -52,7 +54,7 @@ export class BookDetailPage implements OnInit {
   }
 
   checkLoginStatus(){
-    this.isLoggedIn = !!localStorage.getItem('authToken');
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 
   goBack() {

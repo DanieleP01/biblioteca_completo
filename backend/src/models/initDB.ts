@@ -1,5 +1,4 @@
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import { openDb } from './db.js';
 import fs from 'fs';
 
 async function initDB() {
@@ -10,10 +9,7 @@ async function initDB() {
   const schema = fs.readFileSync(schemaFile, 'utf-8');
 
   // Apri/crea il database
-  const db = await open({
-    filename: dbFile,
-    driver: sqlite3.Database
-  });
+  const db = await openDb();
 
   // Esegui lo script SQL
   await db.exec(schema);

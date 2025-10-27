@@ -5,13 +5,19 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { addIcons } from 'ionicons';
-import { personOutline, logInOutline, personAddOutline, lockClosed } from 'ionicons/icons';
+import { personOutline, logInOutline, personAddOutline, lockClosed, menu, libraryOutline, logOutOutline, searchOutline, arrowBack, close } from 'ionicons/icons';
 
 addIcons({
   'person-outline': personOutline,
   'log-in-outline': logInOutline,
   'personAddOutline': personAddOutline,
   'lock-closed': lockClosed,
+  'menu': menu,
+  'library-outline': libraryOutline,
+  'log-out-outline': logOutOutline,
+  'search-outline': searchOutline,
+  'arrow-back': arrowBack,
+  'close': close
 });
 
 bootstrapApplication(AppComponent, {
