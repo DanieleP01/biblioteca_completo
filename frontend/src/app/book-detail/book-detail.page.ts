@@ -61,11 +61,7 @@ export class BookDetailPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  onReserve() {
-    if(this.book) {
-      alert(`Prenotazione di "${this.book.title}" completata!`);
-    }
-  }
+  onReserve() {}
 
   redirectToLogin() {
     this.router.navigate(['login']);

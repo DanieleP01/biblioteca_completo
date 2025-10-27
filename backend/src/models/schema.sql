@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS loans (
     loan_date TEXT NOT NULL,
     due_date TEXT NOT NULL,
     return_date TEXT,
-    status TEXT DEFAULT 'pending',
+    status TEXT DEFAULT 'pending', -- 'pending', 'active', 'overdue', 'returned', 'rejected'
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (library_id) REFERENCES libraries(id),
     FOREIGN KEY (book_id) REFERENCES books(id)
@@ -102,3 +102,34 @@ INSERT OR IGNORE INTO libraries
 ('Biblioteca Officina Studi Medievali', 'Via del Parlamento, 32', 'Palermo', 'PA', NULL, 'https://www.balarm.it/cache/7/5/0/3/9/75039b73bf188384a0c640180e8a656ea3e123f0-officina-studi-medievali-palermo-jpg-477-1481115794.jpeg'),
 ('Biblioteca della Fondazione Sicilia', 'Via Bara all’Olivella, 2', 'Palermo', 'PA', NULL, 'https://www.fondazionesicilia.it/wp-content/uploads/2022/04/biblioteca02-1000x661-1.jpg'),
 ('Biblioteca del Conservatorio Alessandro Scarlatti', 'Via Squarcialupo, 45', 'Palermo', 'PA', NULL, 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/26/7b/2e/interno-della-biblioteca.jpg?w=1200&h=1200&s=1');
+
+
+INSERT OR IGNORE INTO library_books
+(library_id, book_id, copies) VALUES
+(1, 1, 5),
+(1, 2, 3),
+(1, 3, 4),
+(2, 4, 2),
+(2, 5, 6),
+(3, 6, 1),
+(3, 7, 2),
+(4, 8, 3),
+(4, 9, 4),
+(5, 10, 5),
+(5, 11, 2),
+(6, 12, 3),
+(6, 13, 4),
+(7, 14, 1),
+(7, 1, 2),
+(8, 2, 3),
+(8, 3, 4),
+(9, 4, 5),
+(9, 5, 2),
+(10, 6, 3),
+(10, 7, 4),
+(11, 8, 1),
+(11, 9, 2),
+(12, 10, 3),
+(12, 11, 4),
+(13, 12, 5),
+(13, 13, 2);

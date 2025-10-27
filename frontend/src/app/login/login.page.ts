@@ -4,19 +4,22 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, IonicModule]
+  imports: [CommonModule, FormsModule, HttpClientModule, IonicModule, AuthService]
 })
 export class LoginPage implements OnInit {
   loginData = {
     identifier: '', //username o email
     password: ''
   };
+
+  authService: AuthService = new AuthService();
 
   isLoading = false;
   errorMessage = '';
@@ -50,6 +53,7 @@ export class LoginPage implements OnInit {
 
         //Salva l'username
         localStorage.setItem('username', response.user.username);
+        this.authService.saveUser(response.user);
         
         // Attendi mezzo secondo poi reindirizza
         setTimeout(() => {

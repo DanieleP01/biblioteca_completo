@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { IonicModule, PopoverController  } from '@ionic/angular';
+import { IonicModule, PopoverController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Book } from '../models/book.model.js';
@@ -9,6 +9,7 @@ import { Library } from '../models/library.model.js';
 import { AuthService } from '../services/auth.service.js';
 import { UserPopoverComponent } from '../components/user-popover/user-popover.component.js';
 import { LoginPopoverComponent } from '../components/login-popover/login-popover.component.js';
+
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,7 @@ export class HomePage implements OnInit{
     private http: HttpClient, 
     private router: Router, 
     private authService: AuthService,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
   ) {}
 
   ngOnInit() {
