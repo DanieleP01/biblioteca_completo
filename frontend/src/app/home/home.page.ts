@@ -162,12 +162,19 @@ export class HomePage implements OnInit{
     this.popoverController.dismiss();
   }
 
+  //Dettagli Libro
   goToBookDetail(bookId: number) {
     this.router.navigate(['/book-detail', bookId]);
   }
 
+  //dettagli Biblioteca
   goToLibraryDetail(libraryId: number) {
     this.router.navigate(['/library-detail', libraryId]);
+  }
+
+  //richiesta prestito
+  openLoanRequest(){
+    this.router.navigate(['/loan-request']);
   }
 
 }

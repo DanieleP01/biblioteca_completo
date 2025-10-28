@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service.js';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, IonicModule, AuthService]
+  imports: [CommonModule, FormsModule, HttpClientModule, IonicModule]
 })
 export class LoginPage implements OnInit {
   loginData = {
@@ -49,10 +49,13 @@ export class LoginPage implements OnInit {
         this.successMessage = 'Login effettuato!';
         
         // Salva il token
-        localStorage.setItem('token', response.token);
+        //localStorage.setItem('token', response.token);
+        this.authService.saveToken(response.token);
 
         //Salva l'username
-        localStorage.setItem('username', response.user.username);
+        //localStorage.setItem('username', response.user.username);
+
+        //salva l'utente
         this.authService.saveUser(response.user);
         
         // Attendi mezzo secondo poi reindirizza

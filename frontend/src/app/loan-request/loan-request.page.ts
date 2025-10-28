@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { Book } from '../models/book.model';
 import { Library } from '../models/library.model';
 import { AuthService } from '../services/auth.service.js';
-import { LoanService } from '../services/loan.service.js';
 
 @Component({
   selector: 'app-loan-request',
@@ -17,67 +16,67 @@ import { LoanService } from '../services/loan.service.js';
   styleUrls: ['./loan-request.page.scss']
 })
 export class LoanRequestPage implements OnInit {
-  // Dati form
   selectedBook: Book | null = null;
   selectedAuthor: string = '';
-  selectedLibrary: Library | null = null;
+  selectedLibrary: any | null = null;
 
-  // Suggerimenti
   bookSuggestions: Book[] = [];
   authorSuggestions: string[] = [];
-  librarySuggestions: Library[] = [];
+  librarySuggestions: any[] = [];
 
-  // Stati UI
   showBookSuggestions = false;
   showAuthorSuggestions = false;
   showLibrarySuggestions = false;
   isLoading = false;
 
-  // Campi di ricerca
   bookSearchQuery = '';
   librarySearchQuery = '';
 
-  // Utente
+  private preselectedBook: Book | null = null; //per tenere traccia del libro passato da book-detail
+
   currentUser: any;
+  private apiUrl = 'http://localhost:3000/api';
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService,
-    private loanService: LoanService
-  ) {}
+    private authService: AuthService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    
+    const state = navigation?.extras.state as { book: Book }; //utilizzo di una variabile intermedia per effettuare il cast di book
+
+    if (state && state.book) { 
+    this.preselectedBook = state.book; 
+    }
+  }
 
   ngOnInit() {
     this.currentUser = this.authService.getUser();
-    
-    // Se non loggato, torna alla home
     if (!this.currentUser) {
       this.router.navigate(['/home']);
       return;
     }
-
-    this.loadAllAuthors();
+    //this.loadAllAuthors();
   }
 
-  // Carica tutti gli autori disponibili
-  loadAllAuthors() {
-    this.http.get<Book[]>('http://localhost:3000/api/libri').subscribe({
-      next: (books: any) => {
-        const authorsSet = new Set(books.map((book: any) => book.author));
-        this.authorSuggestions = Array.from(authorsSet).sort() as string[];
-      },
-      error: (error) => {
-        console.error('Errore caricamento autori:', error);
-      }
-    });
+  // utilizza il libro pre-selezionato proveniente da book-detail
+  ionViewWillEnter() { //evento della pagina
+    if (this.preselectedBook) {
+      this.selectBook(this.preselectedBook);
+      
+      // Reset per sicurezza
+      this.preselectedBook = null; 
+    } else {
+      console.log("libro non passato alla pagina sucessiva");
+    }
   }
 
-  // === GESTIONE TITOLO LIBRO ===
-
+  //suggerisci i libri disponibili in base a ciò che si scrive
   onBookInput(event: any) {
     const query = event.target.value;
     this.bookSearchQuery = query;
-    
+
     if (query.length > 2) {
       this.searchBooks(query);
     } else {
@@ -87,7 +86,7 @@ export class LoanRequestPage implements OnInit {
   }
 
   searchBooks(query: string) {
-    this.http.get<Book[]>('http://localhost:3000/api/libri').subscribe({
+    this.http.get<Book[]>(`${this.apiUrl}/libri`).subscribe({
       next: (books: any) => {
         this.bookSuggestions = books.filter((book: any) =>
           book.title.toLowerCase().includes(query.toLowerCase())
@@ -100,15 +99,18 @@ export class LoanRequestPage implements OnInit {
     });
   }
 
-  selectBook(book: Book) {
-    this.selectedBook = book;
-    this.bookSearchQuery = book.title;
-    this.selectedAuthor = book.author;
-    this.showBookSuggestions = false;
-    this.loadLibrariesForBook(book.id);
+  //seleziona automaticamente l'autore del libro "selezionato"
+  loadAllAuthors() {
+    this.http.get<Book[]>(`${this.apiUrl}/libri`).subscribe({
+      next: (books: any) => {
+        const authorsSet = new Set(books.map((book: any) => book.author));
+        this.authorSuggestions = Array.from(authorsSet).sort() as string[];
+      },
+      error: (error) => {
+        console.error('Errore caricamento autori:', error);
+      }
+    });
   }
-
-  // === GESTIONE AUTORE ===
 
   onAuthorFocus() {
     this.showAuthorSuggestions = true;
@@ -119,10 +121,19 @@ export class LoanRequestPage implements OnInit {
     this.showAuthorSuggestions = false;
   }
 
-  // === GESTIONE BIBLIOTECA ===
 
+  //libro selezionato da detail-books
+  selectBook(book: Book) {
+    this.selectedBook = book;
+    this.bookSearchQuery = book.title;
+    this.selectedAuthor = book.author;
+    this.showBookSuggestions = false;
+    this.loadLibrariesForBook(book.id);
+  }
+
+  //lista librerie per libro selezionato
   loadLibrariesForBook(bookId: number) {
-    this.loanService.getLibrariesByBook(bookId).subscribe({
+    this.http.get<Library[]>(`${this.apiUrl}/library-books/books/${bookId}/libraries`).subscribe({
       next: (libraries: any) => {
         this.librarySuggestions = libraries.filter((lib: any) => lib.copies > 0);
 
@@ -155,7 +166,6 @@ export class LoanRequestPage implements OnInit {
     if (!this.librarySearchQuery) {
       return this.librarySuggestions;
     }
-
     return this.librarySuggestions.filter((lib: any) =>
       lib.name.toLowerCase().includes(this.librarySearchQuery.toLowerCase())
     );
@@ -167,8 +177,6 @@ export class LoanRequestPage implements OnInit {
     this.showLibrarySuggestions = false;
   }
 
-  // === GESTIONE SUGGERIMENTI ===
-
   hideSuggestions() {
     setTimeout(() => {
       this.showBookSuggestions = false;
@@ -177,23 +185,16 @@ export class LoanRequestPage implements OnInit {
     }, 200);
   }
 
-  // === VALIDAZIONE E INVIO ===
-
   isFormValid(): boolean {
     return !!(this.selectedBook && this.selectedAuthor && this.selectedLibrary);
   }
 
-  async submitLoanRequest() {
+  //invio richiesta prestito
+  submitLoanRequest() {
     if (!this.isFormValid()) {
       alert('Compila tutti i campi richiesti');
       return;
     }
-
-    if (!this.currentUser) {
-      alert('Devi essere loggato per richiedere un prestito');
-      return;
-    }
-
     this.isLoading = true;
 
     const loanRequest = {
@@ -202,21 +203,48 @@ export class LoanRequestPage implements OnInit {
       library_id: this.selectedLibrary!.id
     };
 
-    this.loanService.requestLoan(loanRequest).subscribe({
+    this.http.post(`${this.apiUrl}/loans/loans/request`, loanRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
         alert('Richiesta di prestito inviata con successo!');
+        this.resetForm();
         this.router.navigate(['/home']);
       },
       error: (error) => {
         this.isLoading = false;
         const errorMsg = error.error?.error || 'Errore durante l\'invio della richiesta';
+        this.resetForm();
         alert('Errore: ' + errorMsg);
       }
     });
   }
 
+  private resetForm() {
+    // Resetta i campi di testo
+    this.bookSearchQuery = '';
+    this.librarySearchQuery = '';
+
+    // Resetta i dati principali selezionati
+    this.selectedBook = null;
+    this.selectedAuthor = '';
+    this.selectedLibrary = null;
+
+    // Resetta le liste di suggerimenti
+    this.bookSuggestions = [];
+    this.authorSuggestions = [];
+    this.librarySuggestions = [];
+
+    // Nasconde tutti i popup di suggerimenti
+    this.showBookSuggestions = false;
+    this.showAuthorSuggestions = false;
+    this.showLibrarySuggestions = false;
+
+    // Resetta lo stato di caricamento
+    this.isLoading = false;
+  }
+
   goBack() {
+    this.resetForm();
     this.router.navigate(['/home']);
   }
 }

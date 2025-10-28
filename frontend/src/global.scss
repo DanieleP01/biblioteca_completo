@@ -36,14 +36,6 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
-ion-content::part(scroll)::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-}
-ion-content::part(scroll) {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
 
 @supports (backdrop-filter: blur(10px)) {
   .registration-container {

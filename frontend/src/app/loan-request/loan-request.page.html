@@ -1,13 +1,170 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>loan-request</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Richiesta Prestito</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">loan-request</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  
+  <!-- TITOLO LIBRO -->
+   <div class="container-request">
+    
+    <div class="form-field">
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          Titolo Libro <span class="required">*</span>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="bookSearchQuery"
+          (ionInput)="onBookInput($event)"
+          (ionBlur)="hideSuggestions()"
+          placeholder="Inizia a digitare il titolo...">
+        </ion-input>
+      </ion-item>
+
+      <!-- SUGGERIMENTI TITOLO -->
+      <div *ngIf="showBookSuggestions" class="suggestions-box">
+        <ion-list>
+          <ion-item 
+            *ngFor="let book of bookSuggestions" 
+            button 
+            (click)="selectBook(book)"
+            lines="full">
+            <ion-thumbnail slot="start">
+              <img [src]="book.cover_url" [alt]="book.title" class="book-cover">
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{ book.title }}</h3>
+              <p>{{ book.author }}</p>
+              <p class="year">{{ book.year }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+    <!-- AUTORE -->
+    <div class="form-field">
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          Autore <span class="required">*</span>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="selectedAuthor"
+          (ionFocus)="onAuthorFocus()"
+          (ionBlur)="hideSuggestions()"
+          placeholder="Seleziona l'autore"
+          [readonly]="!!selectedBook">
+        </ion-input>
+      </ion-item>
+
+      <!-- SUGGERIMENTI AUTORE -->
+      <div *ngIf="showAuthorSuggestions && !selectedBook" class="suggestions-box">
+        <ion-list>
+          <ion-item 
+            *ngFor="let author of authorSuggestions" 
+            button 
+            (click)="selectAuthor(author)"
+            lines="full">
+            <ion-label>{{ author }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+    <!-- BIBLIOTECA -->
+    <div class="form-field">
+      <ion-item [disabled]="!selectedBook" lines="none">
+        <ion-label position="stacked">
+          Biblioteca <span class="required">*</span>
+        </ion-label>
+        <ion-input
+          [(ngModel)]="librarySearchQuery"
+          (ionInput)="onLibraryInput($event)"
+          (ionFocus)="onLibraryFocus()"
+          (ionBlur)="hideSuggestions()"
+          placeholder="Seleziona biblioteca..."
+          [disabled]="!selectedBook">
+        </ion-input>
+      </ion-item>
+
+      <!-- SUGGERIMENTI BIBLIOTECA -->
+      <div *ngIf="showLibrarySuggestions" class="suggestions-box">
+        <ion-list>
+          <ion-item 
+            *ngFor="let library of getFilteredLibraries()" 
+            button 
+            (click)="selectLibrary(library)"
+            lines="full">
+            <ion-label>
+              <h3>{{ library.name }}</h3>
+              <p>{{ library.city }}, {{ library.province }}</p>
+              <p class="copies">
+                <ion-icon name="book-outline"></ion-icon>
+                Copie disponibili: {{ library.copies }}
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <ion-note *ngIf="!selectedBook" class="help-text">
+        Seleziona prima un libro per vedere le biblioteche disponibili
+      </ion-note>
+    </div>
+
+    <!-- RIEPILOGO SELEZIONE -->
+    <ion-card *ngIf="selectedBook && selectedLibrary" class="summary-card">
+      <ion-card-header>
+        <ion-card-subtitle>Riepilogo Richiesta</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="summary-item">
+          <ion-icon name="book"></ion-icon>
+          <div>
+            <strong>{{ selectedBook.title }}</strong>
+            <p>{{ selectedAuthor }}</p>
+          </div>
+        </div>
+        <div class="summary-item">
+          <ion-icon name="library-outline"></ion-icon>
+          <div>
+            <strong>{{ selectedLibrary.name }}</strong>
+            <p>{{ selectedLibrary.city }}</p>
+          </div>
+        </div>
+        <div class="summary-item">
+          <ion-icon name="copy"></ion-icon>
+          <div>
+            <strong>Copie disponibili: {{ selectedLibrary.copies }}</strong>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- PULSANTI -->
+    <div class="action-buttons">
+      <ion-button 
+        expand="block" 
+        (click)="submitLoanRequest()"
+        [disabled]="!isFormValid() || isLoading"
+        color="primary">
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">Invia Richiesta</span>
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        color="medium"
+        (click)="goBack()"
+        [disabled]="isLoading">
+        Annulla
+      </ion-button>
+    </div>
+  </div>
+
 </ion-content>

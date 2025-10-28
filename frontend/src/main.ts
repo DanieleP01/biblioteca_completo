@@ -5,7 +5,7 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { addIcons } from 'ionicons';
-import { personOutline, logInOutline, personAddOutline, lockClosed, menu, libraryOutline, logOutOutline, searchOutline, arrowBack, close } from 'ionicons/icons';
+import { personOutline, logInOutline, personAddOutline, lockClosed, menu, libraryOutline, logOutOutline, searchOutline, arrowBack, close, bookOutline, copyOutline, addOutline } from 'ionicons/icons';
 
 addIcons({
   'person-outline': personOutline,
@@ -17,7 +17,10 @@ addIcons({
   'log-out-outline': logOutOutline,
   'search-outline': searchOutline,
   'arrow-back': arrowBack,
-  'close': close
+  'close': close,
+  'book': bookOutline,
+  'copy': copyOutline,
+  'add-outline': addOutline
 });
 
 bootstrapApplication(AppComponent, {

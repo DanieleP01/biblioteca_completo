@@ -61,7 +61,19 @@ export class BookDetailPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  onReserve() {}
+  //richiesta prestito
+  loanRequestDetail() {
+    if (this.book) {
+      // 4. Naviga alla pagina di prestito passando l'oggetto 'book' nello state
+      this.router.navigate(['/loan-request'], { // 
+        state: {
+          book: this.book 
+        }
+      });
+    } else {
+      console.error('Dati del libro non ancora caricati.');
+    }
+  }
 
   redirectToLogin() {
     this.router.navigate(['login']);

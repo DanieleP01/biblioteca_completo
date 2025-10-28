@@ -118,8 +118,14 @@ ion-button {
   }
 }
 
-.search-list {
-  padding-top: 40px;
+.search-list-first {
+  padding-top: 14%;
+}
+
+.title-search {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--ion-color-primary);
 }
 
 ion-modal{
@@ -174,13 +180,21 @@ ion-modal{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
+  
+  //per impilare i figli (button, sottotitolo, bottone)
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  width: 90%;
+  max-width: 800px;
   z-index: 5;
   color: #fff;
   font-weight: bold;
   text-shadow: 0px 1px 12px rgba(0,0,0,0.5);
   text-align: center;
-  padding-bottom: 30px; 
+  //padding: 0 20px;
 
   @media (max-width: 768px) {
     max-height: 50%; 
@@ -201,6 +215,20 @@ ion-modal{
   color: #fff;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.loan-request-button-section{
+  display: block ;
+  visibility: visible ;
+  opacity: 1 ;
+  position: relative;
+  z-index: 10 ;
+
+  width: 100%;
+  max-width: 300px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .content-section-card {

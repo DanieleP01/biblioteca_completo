@@ -31,28 +31,26 @@
 <ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onScroll($event)">
  
   <ion-modal [isOpen]="isSearchModalOpen" (didDismiss)="closeSearchModal()">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-searchbar
-          [(ngModel)]="searchQuery"
-          placeholder="Cerca libri o librerie..."
-          (ionInput)="onSearchInput($event)"
-          (ionClear)="onClearSearch()"
-          debounce="500"
-          animated
-          class="custom-searchbar">
-        </ion-searchbar>
-        <ion-buttons slot="end">
-          <ion-button (click)="closeSearchModal()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-searchbar
+            [(ngModel)]="searchQuery"
+            placeholder="Cerca libri o librerie..."
+            (ionInput)="onSearchInput($event)"
+            (ionClear)="onClearSearch()"
+            debounce="500"
+            animated
+            class="custom-searchbar">
+          </ion-searchbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeSearchModal()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
       
-
-
       <ion-content>
         <!-- Nessun risultato -->
         <div *ngIf="!isLoading && searchBooks.length === 0 && searchLibraries.length === 0" class="no-results">
@@ -60,22 +58,23 @@
           <p>Nessun risultato trovato</p>
         </div>
         <!-- Lista libri -->
-        <ion-list *ngIf="searchBooks.length > 0" class="search-list">
-          <ion-list-header>Libri trovati</ion-list-header>
+        <ion-list *ngIf="searchBooks.length > 0" class="search-list-first">
+          <ion-list-header class="title-search">Libri trovati</ion-list-header>
           <ion-item *ngFor="let book of searchBooks" button (click)="onSelectBook(book)">
             <ion-avatar slot="start"><img [src]="book.cover_url"></ion-avatar>
             <ion-label>{{ book.title }}</ion-label>
           </ion-item>
         </ion-list>
         <!-- Lista biblioteche -->
-        <ion-list *ngIf="searchLibraries.length > 0" class="search-list">
-          <ion-list-header>Biblioteche trovate</ion-list-header>
+        <ion-list *ngIf="searchLibraries.length > 0">
+          <ion-list-header class="title-search">Biblioteche trovate</ion-list-header>
           <ion-item *ngFor="let library of searchLibraries" button (click)="onSelectLibrary(library)">
             <ion-avatar slot="start"><img [src]="library.cover_url"></ion-avatar>
             <ion-label>{{ library.name }}</ion-label>
           </ion-item>
         </ion-list>
       </ion-content>
+
     </ng-template>
   </ion-modal>
 
@@ -85,8 +84,21 @@
     <div class="hero-text">
       <h1 class="hero-title">Benvenuto nel Mondo delle Biblioteche</h1>
       <p class="hero-subtitle">Scopri nuove biblioteche e esplora la nostra collezione</p>
+      
+      <!-- BOTTONE RICHIESTA PRESTITO -->
+      <div *ngIf="isLoggedIn" class="loan-request-button-section">
+        <ion-button 
+          expand="block" 
+          color="primary" 
+          (click)="openLoanRequest()">
+          <ion-icon name="add-outline" slot="start"></ion-icon>
+          Richiedi un Prestito
+        </ion-button>
+      </div>
+
     </div>
   </div>
+
   
   <!--CARD LIBRI-->
     <ion-card class="content-section-card first-content">

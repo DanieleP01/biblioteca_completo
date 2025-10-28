@@ -4,3 +4,6 @@ INSTALLAZIONE: npm install --save-dev @types/sqlite3 @types/dotenv
 
 COMPILAZIONE/ESECUZIONE: npm run build
                          npm start
+
+
+ok, adesso voglio passare all'implementazione della homePage dedicata esclusivamente al bibliotecario, che ha un suo account di default con ruolo "librarian". Il librarian ha il compito di visualizzare le richieste di prestito ricevute, poichè ogni biblioteca ha un suo bibliotecario. una volta accettato o rifiutato il prestito, l'utente che ha richiesto quel determinato prestito, visualizzerà il libro nella propria libreria.
