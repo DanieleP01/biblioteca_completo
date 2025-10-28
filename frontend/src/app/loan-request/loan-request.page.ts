@@ -128,12 +128,13 @@ export class LoanRequestPage implements OnInit {
     this.bookSearchQuery = book.title;
     this.selectedAuthor = book.author;
     this.showBookSuggestions = false;
+    console.log("Libro selezionato:", book);
     this.loadLibrariesForBook(book.id);
   }
 
-  //lista librerie per libro selezionato
+  //lista biblioteche per libro selezionato
   loadLibrariesForBook(bookId: number) {
-    this.http.get<Library[]>(`${this.apiUrl}/library-books/books/${bookId}/libraries`).subscribe({
+    this.http.get<Library[]>(`${this.apiUrl}/books/${bookId}/libraries`).subscribe({
       next: (libraries: any) => {
         this.librarySuggestions = libraries.filter((lib: any) => lib.copies > 0);
 
@@ -203,7 +204,7 @@ export class LoanRequestPage implements OnInit {
       library_id: this.selectedLibrary!.id
     };
 
-    this.http.post(`${this.apiUrl}/loans/loans/request`, loanRequest).subscribe({
+    this.http.post(`${this.apiUrl}/request`, loanRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
         alert('Richiesta di prestito inviata con successo!');

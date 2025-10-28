@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Controllo Prestiti</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- SPINNER CARICAMENTO -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Caricamento richieste...</p>
+  </div>
+
+  <!-- LISTA RICHIESTE -->
+  <div *ngIf="!isLoading">
+    
+    <!-- NESSUNA RICHIESTA -->
+    <ion-card *ngIf="pendingLoans.length === 0" class="empty-card">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="checkmark-circle-outline" size="large" color="success"></ion-icon>
+        <h2>Nessuna richiesta in attesa</h2>
+        <p>Tutte le richieste sono state gestite.</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- LISTA RICHIESTE -->
+    <ion-list *ngIf="pendingLoans.length > 0">
+      <ion-card *ngFor="let loan of pendingLoans" class="loan-card">
+        <ion-card-header>
+          <ion-card-subtitle>
+            Richiesta del {{ loan.request_date | date:'dd/MM/yyyy HH:mm' }}
+          </ion-card-subtitle>
+          <ion-card-title>{{ loan.title }}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="loan-info">
+            <div class="info-row">
+              <ion-icon name="person-outline"></ion-icon>
+              <span><strong>Utente:</strong> {{ loan.firstName }} {{ loan.lastName }}</span>
+            </div>
+            <div class="info-row">
+              <ion-icon name="mail-outline"></ion-icon>
+              <span><strong>Email:</strong> {{ loan.email }}</span>
+            </div>
+            <div class="info-row">
+              <ion-icon name="book-outline"></ion-icon>
+              <span><strong>Autore:</strong> {{ loan.author }}</span>
+            </div>
+            <div class="info-row">
+              <ion-icon name="barcode-outline"></ion-icon>
+              <span><strong>ISBN:</strong> {{ loan.isbn }}</span>
+            </div>
+          </div>
+
+          <!-- PULSANTI AZIONE -->
+          <div class="action-buttons">
+            <ion-button 
+              expand="block" 
+              color="success" 
+              (click)="approveLoan(loan.loan_id)"
+              [disabled]="isLoading">
+              <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+              Approva
+            </ion-button>
+            
+            <ion-button 
+              expand="block" 
+              color="danger" 
+              fill="outline"
+              (click)="rejectLoan(loan.loan_id)"
+              [disabled]="isLoading">
+              <ion-icon name="close-circle" slot="start"></ion-icon>
+              Rifiuta
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+  </div>
+
+</ion-content>

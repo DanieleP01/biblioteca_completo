@@ -36,6 +36,12 @@ export class HomePage implements OnInit{
   searchQuery = ''; 
   isSearchModalOpen = false; //gestisce l'apertura della modale
 
+  currentUser: any = null;
+  isLibrarian = false;
+
+  isUser = false;
+  isAdmin = false;
+
   constructor(
     private http: HttpClient, 
     private router: Router, 
@@ -49,7 +55,12 @@ export class HomePage implements OnInit{
     this.loadData();
 
     //verifica se l'utente è loggato
-    this.isLoggedIn = this.authService.isLoggedIn(); 
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.currentUser = this.authService.getUser();
+    this.isUser = this.currentUser?.role === 'user';
+    console.log(this.currentUser);
+    this.isLibrarian = this.currentUser?.role === 'librarian';
+    this.isAdmin = this.currentUser?.role === 'admin';
   }
 
   loadData(){
@@ -176,5 +187,9 @@ export class HomePage implements OnInit{
   openLoanRequest(){
     this.router.navigate(['/loan-request']);
   }
+  //controllo prestiti bibliotecario
+  goToLoanControl() {
+  this.router.navigate(['/loan-control']);
+}
 
 }

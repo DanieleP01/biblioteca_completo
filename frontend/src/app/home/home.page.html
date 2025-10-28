@@ -86,13 +86,23 @@
       <p class="hero-subtitle">Scopri nuove biblioteche e esplora la nostra collezione</p>
       
       <!-- BOTTONE RICHIESTA PRESTITO -->
-      <div *ngIf="isLoggedIn" class="loan-request-button-section">
-        <ion-button 
+      <div *ngIf="isUser" class="loan-request-button-section">
+        <ion-button
           expand="block" 
           color="primary" 
           (click)="openLoanRequest()">
           <ion-icon name="add-outline" slot="start"></ion-icon>
           Richiedi un Prestito
+        </ion-button>
+      </div>
+
+      <div *ngIf="isLibrarian" class="librarian-buttons">
+        <ion-button
+          expand="block"
+          color="primary"
+          (click)="goToLoanControl()">
+          <ion-icon name="list-outline" slot="start"></ion-icon>
+          Controllo Prestiti
         </ion-button>
       </div>
 
