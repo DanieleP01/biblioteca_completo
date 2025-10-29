@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --es-module-specifier-resolution=node dist/server.js",
-    "build": "tsc"
+    "build": "tsc",
+    "postman:generate": "express-to-postman -i ./dist/app.js -o ./collections/api.postman.json"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,7 @@
     "@types/node": "^24.7.2",
     "@types/sqlite3": "^3.1.11",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "express-to-postman": "^1.2.0"
   }
 }

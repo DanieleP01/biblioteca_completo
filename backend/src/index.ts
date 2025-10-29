@@ -12,8 +12,8 @@ router.use('/libri', booksRouter);
 router.use('/librerie', libraryRouter);
 router.use('/', userRouter);
 router.use('/search', searchRouter);
-router.use('/library-books', libraryBooksRoutes);
-router.use('/loans', loanRoutes);
+router.use('/', libraryBooksRoutes);
+router.use('/', loanRoutes);
 
 export { router };
 

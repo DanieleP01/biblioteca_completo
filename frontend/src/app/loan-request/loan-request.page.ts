@@ -204,7 +204,7 @@ export class LoanRequestPage implements OnInit {
       library_id: this.selectedLibrary!.id
     };
 
-    this.http.post(`${this.apiUrl}/request`, loanRequest).subscribe({
+    this.http.post(`${this.apiUrl}/loans/request`, loanRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
         alert('Richiesta di prestito inviata con successo!');

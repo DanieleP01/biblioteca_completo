@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAllLibraries, getLibraryById } from '../models/library.js';
+import { getAllLibraries, getLibraryById, getLibraryByManagerId } from '../models/library.js';
 
 export async function getLibrariesController(req: Request, res: Response) {
   try {
@@ -23,3 +23,27 @@ export async function getLibraryByIdController(req: Request, res: Response) {
     res.status(500).json({ error: 'Errore nel recupero del libro' });
   }
 }
+
+ export async function getLibraryByManagerIdController(req: Request, res: Response) {
+    try {
+      const managerId = req.params.managerId;
+      console.log("Richiesta GET biblioteca per manager:", managerId);
+
+      if (!managerId) {
+        return res.status(400).json({ error: 'Manager ID è obbligatorio' });
+      }
+
+      const library = await getLibraryByManagerId(parseInt(managerId));
+      console.log("Risultato Query:", library);
+
+      if (!library) {
+        return res.status(404).json({ 
+          error: 'Nessuna biblioteca gestita da questo bibliotecario' 
+        });
+      }
+
+      res.json(library);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }

@@ -32,7 +32,7 @@ export const loginController = async (req: Request, res: Response): Promise<void
 
     // Genera JWT token
     const token = jwt.sign(
-      { id: user.id, email: user.email, username: user.username },
+      { id: user.id, username: user.username, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -43,7 +43,8 @@ export const loginController = async (req: Request, res: Response): Promise<void
       user: {
         id: user.id,
         email: user.email,
-        username: user.username
+        username: user.username,
+        role: user.role
       }
     });
 

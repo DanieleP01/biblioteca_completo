@@ -41,9 +41,10 @@ export class LoanControlPage implements OnInit {
     console.log("ID Bibliotecario:", managerId);
     console.log("Utente corrente:", this.currentUser); 
 
-    this.http.get<any[]>(`${this.apiUrl}/librerie/${managerId}`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
       next: (library) => {
         this.libraryManager = library;
+        console.log("Biblioteca del bibliotecario:", this.libraryManager);
         this.loadPendingLoans();
       },
       error: (error) => {
@@ -52,14 +53,13 @@ export class LoanControlPage implements OnInit {
         alert('Errore nel caricamento delle richieste');
       }
     });
-    console.log("ID Biblioteca:", this.libraryManager);
     
   }
 
   // Carica richieste in attesa per la biblioteca del bibliotecario
   loadPendingLoans() {
 
-    this.http.get<any[]>(`${this.apiUrl}/libraries/${this.libraryManager.Id}/pending-loans`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/libraries/${this.libraryManager.id}/pending-loans`).subscribe({
       next: (loans) => {
         this.pendingLoans = loans;
         this.isLoading = false;

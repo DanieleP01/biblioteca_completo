@@ -15,3 +15,15 @@ export async function getLibraryById(id: number) {
     await db.close();
     return library;
 }
+
+export async function getLibraryByManagerId(managerId: number) {
+  const db = await openDb();
+  
+  const library = await db.get(
+    'SELECT * FROM libraries WHERE manager_id = ?',
+    managerId
+  );
+  
+  await db.close();
+  return library;
+}

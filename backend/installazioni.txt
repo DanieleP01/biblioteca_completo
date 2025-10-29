@@ -6,4 +6,4 @@ COMPILAZIONE/ESECUZIONE: npm run build
                          npm start
 
 
-ok, adesso voglio passare all'implementazione della homePage dedicata esclusivamente al bibliotecario, che ha un suo account di default con ruolo "librarian". Il librarian ha il compito di visualizzare le richieste di prestito ricevute, poichè ogni biblioteca ha un suo bibliotecario. una volta accettato o rifiutato il prestito, l'utente che ha richiesto quel determinato prestito, visualizzerà il libro nella propria libreria.
+voglio aggiungere la possibilità di mandare notifiche sia all'utente che al bibliotecario per eventi che avvengono nell'app, ad esmpio notificare all'utente quando manca poco alla scadenza di un suo libro, oppure quando una sua richiesta per un prestito sia stata accettata o meno, sia per il bibliotecario per notificargli quando un utente ha richiesto un prestito o per quando un prestito già accettato è terminato.
