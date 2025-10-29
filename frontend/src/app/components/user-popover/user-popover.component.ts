@@ -29,8 +29,8 @@ export class UserPopoverComponent {
     this.popoverController.dismiss();
   }
 
-  goToMyLibraries() {
-    this.router.navigate(['/my-libraries']);
+  goToMyBooks() {
+    this.router.navigate(['/mybooks']);
     this.popoverController.dismiss();
   }
 

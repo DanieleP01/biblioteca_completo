@@ -184,7 +184,7 @@ export class HomePage implements OnInit{
   }
 
   //richiesta prestito
-  openLoanRequest(){
+  goToLoanRequest(){
     this.router.navigate(['/loan-request']);
   }
   //controllo prestiti bibliotecario

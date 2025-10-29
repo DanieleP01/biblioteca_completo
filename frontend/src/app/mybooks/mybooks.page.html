@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>I miei Libri</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- SPINNER CARICAMENTO -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Caricamento libri...</p>
+  </div>
+
+  <!-- NESSUN LIBRO -->
+  <ion-card *ngIf="!isLoading && activeLoans.length === 0" class="empty-card">
+    <ion-card-content class="ion-text-center">
+      <ion-icon name="book-outline" size="large" color="medium"></ion-icon>
+      <h2>Nessun libro in prestito</h2>
+      <p>Non hai ancora ricevuto l'accettazione di nessun prestito.</p>
+      <ion-button 
+        color="primary" 
+        (click)="goToRequestLoan()">
+        <ion-icon name="add-circle" slot="start"></ion-icon>
+        Richiedi un Prestito
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- GRIGLIA LIBRI -->
+  <div *ngIf="!isLoading && activeLoans.length > 0" class="books-grid">
+    
+    <!-- CARD LIBRO -->
+    <div *ngFor="let loan of activeLoans" class="book-card-container">
+      <ion-card class="book-card">
+        
+        <!-- COPERTINA LIBRO -->
+        <div class="book-cover-wrapper">
+          <img 
+            [src]="loan.cover_url" 
+            [alt]="loan.title"
+            class="book-cover">
+          
+          <!-- BADGE GIORNI RIMASTI -->
+          <div 
+            class="days-remaining-badge"
+            [ngClass]="getDaysRemainingClass(loan.due_date)">
+            {{ getDaysRemaining(loan.due_date) }} giorni
+          </div>
+        </div>
+
+        <!-- INFO LIBRO -->
+        <ion-card-content class="book-info">
+          
+          <h3 class="book-title">{{ loan.title }}</h3>
+          
+          <p class="book-author">{{ loan.author }}</p>
+
+          <div class="loan-details">
+            <div class="detail-row">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <span>
+                <strong>Dal:</strong> {{ loan.loan_date | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+
+            <div class="detail-row">
+              <ion-icon name="alarm-outline"></ion-icon>
+              <span>
+                <strong>Fino al:</strong> {{ loan.due_date | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+
+            <div class="detail-row">
+              <ion-icon name="library-outline"></ion-icon>
+              <span>
+                <strong>Biblioteca:</strong> {{ loan.library_name }}
+              </span>
+            </div>
+          </div>
+
+          <!-- PULSANTE DETTAGLI -->
+          <ion-button 
+            expand="block" 
+            size="small"
+            fill="outline"
+            color="primary"
+            (click)="goToBookDetail(loan.book_id)">
+            <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+            Dettagli
+          </ion-button>
+
+        </ion-card-content>
+
+      </ion-card>
+    </div>
+
+  </div>
+
+  <!-- MESSAGGIO IMPORTANTE -->
+  <div *ngIf="!isLoading && activeLoans.length > 0" class="warning-message">
+    <ion-icon name="warning-outline" size="large" color="warning"></ion-icon>
+    <h3>Ricorda di restituire i libri in tempo!</h3>
+    <p>
+      Assicurati di restituire i libri prima della data di scadenza del prestito. 
+      Dopo la scadenza, i libri verranno automaticamente rimossi dalla tua sezione.
+    </p>
+  </div>
+
+</ion-content>

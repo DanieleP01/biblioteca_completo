@@ -17,6 +17,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Server Biblioteca attivo!');
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server in ascolto su http://localhost:${PORT}`);
 });

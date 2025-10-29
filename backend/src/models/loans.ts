@@ -162,6 +162,45 @@ export async function getLoansByUser(userId: number, status?: string) {
     return loans;
 }
 
+// Ottieni prestiti attivi per un utente
+export async function getActiveLoansByUser(userId: number) {
+    const db = await openDb();
+    
+    const loans = await db.all(`
+        SELECT 
+            l.*,
+            b.title,
+            b.author,
+            b.isbn,
+            b.cover_url,
+            lib.name as library_name
+        FROM loans l
+        JOIN books b ON l.book_id = b.id
+        JOIN libraries lib ON l.library_id = lib.id
+        WHERE l.user_id = ? AND l.status = 'active'
+        ORDER BY l.due_date ASC`, userId);
+
+    await db.close();
+    return loans;
+}
+
+// Ottieni prestito attivo per utente e libro specifico
+export async function getActiveLoanByUserAndBook(userId: number, bookId: number) {
+  const db = await openDb();
+
+  const loan = await db.get(
+    `SELECT * FROM loans 
+     WHERE user_id = ? 
+     AND book_id = ? 
+     AND status = 'active'`,
+    [userId, bookId]
+  );
+
+  await db.close();
+  return loan;
+}
+
+
 // Ottieni prestiti attivi per una biblioteca
 export async function getActiveLoansByLibrary(libraryId: number) {
     const db = await openDb();
@@ -182,25 +221,6 @@ export async function getActiveLoansByLibrary(libraryId: number) {
         ORDER BY l.due_date ASC
     `, libraryId);
     
-    await db.close();
-    return loans;
-}
-
-// Ottieni prestiti attivi per un utente
-export async function getActiveLoansByUser(userId: number) {
-    const db = await openDb();
-    
-    const loans = await db.all(`
-        SELECT 
-            l.*,
-            b.title,
-            b.author,
-            b.isbn
-        FROM loans l
-        JOIN books b ON l.book_id = b.id
-        WHERE l.user_id = ? AND l.status = 'active'
-        ORDER BY l.due_date ASC`, userId);
-
     await db.close();
     return loans;
 }

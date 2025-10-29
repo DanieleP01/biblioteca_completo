@@ -36,4 +36,7 @@ router.get('/users/:userId/loans', LoanController.getUserLoans);
 // Prestiti attivi utente
 router.get('/users/:userId/active-loans', LoanController.getActiveLoansUsers);
 
+// Controllo prestito attivo utente per libro specifico
+router.get('/users/:userId/active-loan/:bookId', LoanController.checkActiveLoan);
+
 export default router;

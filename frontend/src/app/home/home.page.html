@@ -90,12 +90,13 @@
         <ion-button
           expand="block" 
           color="primary" 
-          (click)="openLoanRequest()">
+          (click)="goToLoanRequest()">
           <ion-icon name="add-outline" slot="start"></ion-icon>
           Richiedi un Prestito
         </ion-button>
       </div>
-
+      
+      <!-- BOTTONE CONTROLLO PRESTITI BIBLIOTECARIO -->
       <div *ngIf="isLibrarian" class="librarian-buttons">
         <ion-button
           expand="block"

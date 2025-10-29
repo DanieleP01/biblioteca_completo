@@ -52,9 +52,13 @@
     </ion-card>
 
     <!-- BUTTON DI PRENOTAZIONE -->
-    <div *ngIf="isLoggedIn" class="action-buttons">
+    <div *ngIf="isUser && !hasActiveLoan" class="action-buttons">
       <ion-button expand="block" color="primary" (click)="loanRequestDetail()">Richiedi Prestito</ion-button>
-      <!-- <ion-button expand="block" fill="outline" color="danger" (click)="onFavorite()">Aggiungi ai Preferiti</ion-button> -->
+    </div>
+
+    <!-- BUTTON DI RESTITUZIONE LIBRO -->
+    <div *ngIf="isUser && hasActiveLoan" class="action-buttons">
+      <ion-button expand="block" color="primary" (click)="returnBook()">Restituisci Libro</ion-button>
     </div>
 
     <!-- Prompt login se L'utente non è loggato -->

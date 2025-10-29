@@ -253,6 +253,31 @@ export async function getActiveLoansUsers(req: Request, res: Response) {
     }
 }
 
+export async function checkActiveLoan(req: Request, res: Response) {
+  try {
+    const { userId, bookId } = req.params;
+
+    if (!userId || !bookId) {
+      return res.status(400).json({ error: 'userId e bookId sono obbligatori' });
+    }
+
+    const activeLoan = await LoanModel.getActiveLoanByUserAndBook(
+      parseInt(userId),
+      parseInt(bookId)
+    );
+
+    // Ritorna se esiste un prestito attivo
+    res.json({
+      hasActiveLoan: !!activeLoan,
+      loan: activeLoan || null
+    });
+
+  } catch (error: any) {
+    console.error('Errore verifica prestito attivo:', error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Ottieni prestiti in scadenza
 export async function getExpiringLoans(req: Request, res: Response) {
     try {

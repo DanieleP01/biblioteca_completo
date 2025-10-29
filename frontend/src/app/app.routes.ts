@@ -29,9 +29,14 @@ export const routes: Routes = [
   {
     path: 'loan-request',
     loadComponent: () => import('./loan-request/loan-request.page').then( m => m.LoanRequestPage)
-  },  {
+  },
+  {
     path: 'loan-control',
     loadComponent: () => import('./loan-control/loan-control.page').then( m => m.LoanControlPage)
+  },
+  {
+    path: 'mybooks',
+    loadComponent: () => import('./mybooks/mybooks.page').then( m => m.MyBooksPage)
   },
 
 ];

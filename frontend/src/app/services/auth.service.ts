@@ -6,6 +6,7 @@ import { User } from '../models/user.model.js';
 })
 export class AuthService {
   user: User | null = null;
+  activeLoans: string[] = [];
   
   // Salva il token dopo il login
   saveToken(token: string): void {
@@ -69,4 +70,9 @@ export class AuthService {
     const user = this.getUser();
     return user?.role || null;
   }
-}
+
+  getActiveLoans(): string[] {
+
+    return this.activeLoans;
+  }
+  }
