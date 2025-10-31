@@ -25,6 +25,18 @@ export async function getUserByUsernameOrEmail(identifier: string){
   return user;
 }
 
+//get Utente per id
+export async function getUserById(identifier: number){
+  const db = await openDb();
+  
+  const user = await db.get(
+    'SELECT * FROM users WHERE id = ?',
+    [identifier]
+  );
+  await db.close();
+  return user;
+}
+
 //hash della password
 export async function hashPassword(password: string): Promise<string>{
   return bcrypt.hash(password, 10);

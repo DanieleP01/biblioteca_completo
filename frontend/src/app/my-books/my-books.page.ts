@@ -7,12 +7,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-mybooks',
+  selector: 'app-my-books',
+  templateUrl: './my-books.page.html',
+  styleUrls: ['./my-books.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
-  templateUrl: './mybooks.page.html',
-  styleUrls: ['./mybooks.page.scss']
+  imports: [CommonModule, FormsModule, IonicModule, HttpClientModule]
 })
+
 export class MyBooksPage implements OnInit {
   currentUser: any;
   activeLoans: any[] = [];
@@ -26,13 +27,11 @@ export class MyBooksPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('=== MY BOOKS PAGE INIT ===');
     
     this.currentUser = this.authService.getUser();
     console.log('Utente corrente:', this.currentUser);
 
     if (!this.currentUser) {
-      console.error('❌ Utente non loggato');
       this.router.navigate(['/home']);
       return;
     }
@@ -40,14 +39,10 @@ export class MyBooksPage implements OnInit {
     this.loadActiveLoans();
   }
 
-  /**
-   * Carica i prestiti attivi dell'utente
-   */
+  // Carica i prestiti attivi dell'utente
   loadActiveLoans() {
     this.isLoading = true;
     const userId = this.currentUser.id;
-
-    console.log('Caricamento prestiti attivi per utente ID:', userId);
 
     this.http.get<any[]>(`${this.apiUrl}/users/${userId}/active-loans`).subscribe({
       next: (loans) => {

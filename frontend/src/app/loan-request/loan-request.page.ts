@@ -15,6 +15,7 @@ import { AuthService } from '../services/auth.service.js';
   templateUrl: './loan-request.page.html',
   styleUrls: ['./loan-request.page.scss']
 })
+
 export class LoanRequestPage implements OnInit {
   selectedBook: Book | null = null;
   selectedAuthor: string = '';

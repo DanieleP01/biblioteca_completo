@@ -15,13 +15,23 @@ export class UserPopoverComponent {
   @Input() onLogout: () => void = () => {};
   username: string = '';
 
+  isLibrarian = false;
+  isUser = false;
+
   constructor(
     private router: Router,
     private popoverController: PopoverController,
     private authService: AuthService,
     private alertController: AlertController
   ) {
-    this.username = this.authService.getUsername() || '';
+
+    this.username = this.authService.getUser()?.username || '';
+    console.log(this.username);
+  }
+
+  ngOnInit() {
+    this.isLibrarian = this.authService.getUserRole() == 'librarian';
+    this.isUser = this.authService.getUserRole() == 'user';
   }
 
   goToProfile() {
@@ -30,7 +40,22 @@ export class UserPopoverComponent {
   }
 
   goToMyBooks() {
-    this.router.navigate(['/mybooks']);
+    this.router.navigate(['/my-books']);
+    this.popoverController.dismiss();
+  }
+
+  goToMyLoansHistory(){
+    this.router.navigate(['/loans-history']);
+    this.popoverController.dismiss();
+  }
+
+  goToLoansLibrary(){
+    this.router.navigate(['/loans-library']);
+    this.popoverController.dismiss();
+  }
+
+  goToMyInventory(){
+    this.router.navigate(['/myinventory']);
     this.popoverController.dismiss();
   }
 

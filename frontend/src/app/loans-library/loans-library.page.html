@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Prestiti</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- SPINNER CARICAMENTO -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Caricamento prestiti...</p>
+  </div>
+
+  <!-- NESSUN PRESTITO -->
+  <div *ngIf="!isLoading && activeLoans.length === 0" class="empty-card ion-text-center">
+    <ion-icon name="checkmark-outline" size="large"></ion-icon>
+    <h2>Nessuna cronologia o prestiti ettivo</h2>
+  </div>
+
+  <div class="section-title">
+    <ion-title> Prestiti attivi </ion-title>
+  </div>
+
+  <!-- GRIGLIA PRESTITI ATTIVI -->
+  <div *ngIf="!isLoading && activeLoans.length > 0" class="loans-grid">
+    
+    <!-- CARD PRESTITO -->
+    <div *ngFor="let active_loan of activeLoans" class="loan-card-container">
+      <ion-card class="loan-card">
+        
+        <!-- COPERTINA LIBRO -->
+        <div class="loan-cover-wrapper">
+          <img 
+            [src]="active_loan.cover_url" 
+            [alt]="active_loan.title"
+            class="loan-cover">
+          
+          <!-- BADGE GIORNI RIMASTI -->
+          <div 
+            class="days-remaining-badge"
+            [ngClass]="getDaysRemainingClass(active_loan.due_date)">
+            {{ getDaysRemaining(active_loan.due_date) }} giorni
+          </div>
+        </div>
+
+        <ion-card-content class="loan-info">
+
+          <ion-card-title class="loan-title">{{ active_loan.title }}</ion-card-title>
+          <ion-card-subtitle class="loan-subtitle">
+            <ion-icon name="barcode-outline"></ion-icon>
+            <span><strong>ISBN:</strong> {{ active_loan.isbn }}</span>
+          </ion-card-subtitle>
+
+          <div class="loan-details">
+            <div class="detail-row">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <span>
+                <strong>Dal:</strong> {{ active_loan.loan_date | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+
+            <div class="detail-row">
+              <ion-icon name="alarm-outline"></ion-icon>
+              <span>
+                <strong>Fino al:</strong> {{ active_loan.due_date | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+
+            <div class="detail-row">
+              <ion-icon name="person-outline"></ion-icon>
+              <span>
+                <span><strong>Utente:</strong> {{ active_loan.firstName }} {{ active_loan.lastName }}</span>
+              </span>
+            </div>
+
+            <div class="detail-row">
+              <ion-icon name="mail-outline"></ion-icon>
+              <span>
+                <span><strong>Email:</strong> {{ active_loan.email }}</span>
+              </span>
+            </div>
+          </div>
+
+        </ion-card-content>
+
+      </ion-card>
+    </div>
+  </div>
+
+    <!-- LISTA PRESTITI SCADUTI 
+    <div *ngIf="!isLoading && overdueLoans.length > 0" class="section-title">
+      <ion-title> Prestiti scaduti </ion-title>
+      <ion-list class="request-container">
+        <ion-card *ngFor="let overdue_loan of overdueLoans" class="loan-card">
+          <ion-card-header>
+            <ion-card-subtitle>
+              Richiesta del {{ overdue_loan.loan_date | date:'dd/MM/yyyy HH:mm' }}
+            </ion-card-subtitle>
+
+            BADGE GIORNI RIMASTI 
+            <div class="days-remaining-badge">OVERDUE</div>
+
+          </ion-card-header>
+
+          <ion-card-content>
+            <div class="loan-info">
+              <div class="info-row">
+                <ion-icon name="person-outline"></ion-icon>
+                <span><strong>Utente:</strong> {{ overdue_loan.firstName }} {{ overdue_loan.lastName }}</span>
+              </div>
+              <div class="info-row">
+                <ion-icon name="mail-outline"></ion-icon>
+                <span><strong>Email:</strong> {{ overdue_loan.email }}</span>
+              </div>
+              <div class="info-row">
+                <ion-icon name="book-outline"></ion-icon>
+                <span><strong>Autore:</strong> {{ overdue_loan.author }}</span>
+              </div>
+              <div class="info-row">
+                <ion-icon name="barcode-outline"></ion-icon>
+                <span><strong>ISBN:</strong> {{ overdue_loan.isbn }}</span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-list>
+    </div> -->
+
+</ion-content>

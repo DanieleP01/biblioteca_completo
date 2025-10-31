@@ -217,7 +217,7 @@ ion-modal{
   margin-bottom: 0;
 }
 
-.loan-request-button-section{
+.Main-button{
   display: block ;
   visibility: visible ;
   opacity: 1 ;
@@ -247,7 +247,7 @@ ion-modal{
 // SOLO la prima card che ha overlap
 .content-section-card.first-content {
   z-index: 10;
-  margin-top: -50px; 
+  margin-top: -60px; 
 }
 
 ion-content {
@@ -339,3 +339,5 @@ ion-label {
     font-size: 1.1em;
     padding: 10px;
   }
+
+

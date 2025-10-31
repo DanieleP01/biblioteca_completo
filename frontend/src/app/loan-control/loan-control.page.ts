@@ -36,7 +36,6 @@ export class LoanControlPage implements OnInit {
   getLibraryManager() {
     this.isLoading = true;
     
-    // Assumendo che il bibliotecario abbia una library_id associata
     const managerId = this.currentUser.id;
     console.log("ID Bibliotecario:", managerId);
     console.log("Utente corrente:", this.currentUser); 

@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>I miei Libri</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="isLoading" class="spinner-container">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && detailsUser" class="container-request">
+
+    <div class="profile-header ion-text-center">
+      <ion-icon name="person-circle-outline" class="profile-avatar"></ion-icon>
+      <h2>{{ detailsUser.firstName }} {{ detailsUser.lastName }}</h2>
+      <p>{{ detailsUser.email }}</p>
+    </div>
+
+    <ion-list class="details-list">
+      <ion-item lines="full">
+        <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>
+          <p>Nome</p>
+          <h3>{{ detailsUser.firstName }}</h3>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item lines="full">
+        <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>
+          <p>Cognome</p>
+          <h3>{{ detailsUser.lastName }}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>
+          <p>Email</p>
+          <h3>{{ detailsUser.email }}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-icon name="id-card-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>
+          <p>Username</p>
+          <h3>{{ detailsUser.username }}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-icon name="business-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>
+          <p>Città</p>
+          <h3>{{ detailsUser.city }}</h3>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item lines="none">
+        <ion-icon name="map-outline" slot="start" color="medium"></ion-icon>
+        <ion-label>
+          <p>Provincia</p>
+          <h3>{{ detailsUser.province }}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+  </div>
+</ion-content>

@@ -2,7 +2,7 @@ import { openDb } from './db.js';
 
 export async function searchBooksAndLibraries(query: string) {
     const db = await openDb();
-    const searchterm = `%${query}%`;
+    const searchterm = `%${query}%`.trim();
 
     try {
         const books = await db.all(

@@ -30,14 +30,6 @@ export class AuthService {
     localStorage.removeItem('username');
   }
 
-  getUsername(): string | null {
-    return localStorage.getItem('username');
-  }
-
-  saveUsername(username: string): void {
-    localStorage.setItem('username', username);
-  }
-
   saveUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -66,6 +58,7 @@ export class AuthService {
     const user = this.getUser();
     return user ? `${user.firstName} ${user.lastName}` : null;
   }
+  
   getUserRole(): string | null {
     const user = this.getUser();
     return user?.role || null;

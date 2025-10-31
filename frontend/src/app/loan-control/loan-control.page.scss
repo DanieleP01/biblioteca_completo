@@ -1,3 +1,18 @@
+ion-header {
+  position: relative;
+  height: 70px;
+}
+
+ion-toolbar {
+  --background: rgba(10, 25, 41, 0.35);
+  
+  min-height: 54px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
 ion-content {
   --background: #f5f5f5;
 }
@@ -19,28 +34,46 @@ ion-content {
 }
 
 .empty-card {
-  margin-top: 20%;
+  display: flex;
+  flex-direction: column; 
+  
+  justify-content: center; 
+  align-items: center; 
+  
+  height: 100%;
   
   ion-icon {
-    font-size: 80px;
-    margin-bottom: 16px;
+    color: #888888; 
+    margin-bottom: 20px;
+    font-size: 64px;
   }
-  
+
   h2 {
-    margin: 16px 0 8px 0;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333333; 
+    margin: 0 0 8px 0;
   }
-  
+
   p {
-    color: var(--ion-color-medium);
+    color: #666666;
+    font-size: 20px;
+    margin-bottom: 24px;
   }
+}
+
+.request-container{
+  border-radius: 15px;
+  border: 1px solid grey;
+  background: white;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 .loan-card {
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
+  background: transparent;
+  box-shadow: none;
+
   ion-card-title {
     font-size: 18px;
     font-weight: 700;
@@ -49,7 +82,7 @@ ion-content {
   
   ion-card-subtitle {
     font-size: 12px;
-    color: var(--ion-color-medium);
+    color: black;
     margin-bottom: 4px;
   }
 }
@@ -64,13 +97,14 @@ ion-content {
     margin-bottom: 12px;
     
     ion-icon {
-      font-size: 20px;
+      font-size: 25px;
       color: var(--ion-color-primary);
       min-width: 20px;
     }
     
     span {
       font-size: 14px;
+      color: black;
       
       strong {
         font-weight: 600;
@@ -85,6 +119,8 @@ ion-content {
   ion-button {
     margin-bottom: 8px;
     font-weight: 600;
+
+    --background-hover-opacity: 0.25;
     
     ion-icon {
       font-size: 20px;

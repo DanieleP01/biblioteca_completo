@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUser, getUserByUsernameOrEmail, verifyPassword } from '../models/user.js';
+import { createUser, getUserById, getUserByUsernameOrEmail, verifyPassword } from '../models/user.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -93,3 +93,21 @@ export const registerController = async (req: Request, res: Response) => {
     }
   }
 };
+
+//DETTAGLI UTENTE
+export async function getDetailsProfile(req: Request, res: Response){
+
+  try {
+      const id = Number(req.params.id);
+      const user = await getUserById(id);
+    
+    if (user) {
+    res.json(user);
+    } else {
+      res.status(404).json({ error: 'Utente non trovato' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Errore nel recupero dell\'utente' });
+  }
+
+}

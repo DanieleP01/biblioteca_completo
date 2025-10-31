@@ -34,6 +34,7 @@ export class BookDetailPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    
     const id = this.route.snapshot.paramMap.get('id');
     this.checkLoginStatus();
     if (this.isUser && this.userid !== null && id) {
@@ -114,6 +115,7 @@ export class BookDetailPage implements OnInit {
       },
       error: (error) => {
         console.error('Errore Restituzione!', error);
+        this.hasActiveLoan = false;
       }
     });
 

@@ -35,8 +35,21 @@ export const routes: Routes = [
     loadComponent: () => import('./loan-control/loan-control.page').then( m => m.LoanControlPage)
   },
   {
-    path: 'mybooks',
-    loadComponent: () => import('./mybooks/mybooks.page').then( m => m.MyBooksPage)
+    path: 'my-books',
+    loadComponent: () => import('./my-books/my-books.page').then( m => m.MyBooksPage)
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./profile/profile.page').then( m => m.ProfilePage)
+  },
+  {
+    path: 'loans-library',
+    loadComponent: () => import('./loans-library/loans-library.page').then( m => m.loanslibrary)
+  },  {
+    path: 'loans-history',
+    loadComponent: () => import('./loans-history/loans-history.page').then( m => m.LoansHistoryPage)
+  },
+
+
 
 ];

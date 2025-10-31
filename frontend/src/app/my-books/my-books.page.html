@@ -16,19 +16,17 @@
   </div>
 
   <!-- NESSUN LIBRO -->
-  <ion-card *ngIf="!isLoading && activeLoans.length === 0" class="empty-card">
-    <ion-card-content class="ion-text-center">
-      <ion-icon name="book-outline" size="large" color="medium"></ion-icon>
-      <h2>Nessun libro in prestito</h2>
-      <p>Non hai ancora ricevuto l'accettazione di nessun prestito.</p>
-      <ion-button 
-        color="primary" 
-        (click)="goToRequestLoan()">
-        <ion-icon name="add-circle" slot="start"></ion-icon>
-        Richiedi un Prestito
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="!isLoading && activeLoans.length === 0" class="empty-card ion-text-center">
+    <ion-icon name="book-outline" size="large"></ion-icon>
+    <h2>Nessun libro in prestito</h2>
+    <p>Non hai ancora ricevuto l'accettazione di nessun prestito.</p>
+    <ion-button 
+      color="primary" 
+      (click)="goToRequestLoan()">
+      <ion-icon name="add-outline" slot="start"></ion-icon>
+      Richiedi un Prestito
+    </ion-button>
+  </div>
 
   <!-- GRIGLIA LIBRI -->
   <div *ngIf="!isLoading && activeLoans.length > 0" class="books-grid">
@@ -88,7 +86,8 @@
             size="small"
             fill="outline"
             color="primary"
-            (click)="goToBookDetail(loan.book_id)">
+            (click)="goToBookDetail(loan.book_id)"
+            class="detail-button">
             <ion-icon name="information-circle-outline" slot="start"></ion-icon>
             Dettagli
           </ion-button>

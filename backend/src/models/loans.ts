@@ -213,7 +213,8 @@ export async function getActiveLoansByLibrary(libraryId: number) {
             u.email,
             b.title,
             b.author,
-            b.isbn
+            b.isbn,
+            b.cover_url
         FROM loans l
         JOIN users u ON l.user_id = u.id
         JOIN books b ON l.book_id = b.id

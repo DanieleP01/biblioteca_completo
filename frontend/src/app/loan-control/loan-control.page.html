@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="secondary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
@@ -16,23 +16,20 @@
   </div>
 
   <!-- LISTA RICHIESTE -->
-  <div *ngIf="!isLoading">
     
     <!-- NESSUNA RICHIESTA -->
-    <ion-card *ngIf="pendingLoans.length === 0" class="empty-card">
-      <ion-card-content class="ion-text-center">
-        <ion-icon name="checkmark-circle-outline" size="large" color="success"></ion-icon>
+    <div *ngIf="!isLoading && pendingLoans.length === 0" class="empty-card ion-text-center">
+        <ion-icon name="checkmark-outline" size="large" color="success"></ion-icon>
         <h2>Nessuna richiesta in attesa</h2>
         <p>Tutte le richieste sono state gestite.</p>
-      </ion-card-content>
-    </ion-card>
+    </div>
 
     <!-- LISTA RICHIESTE -->
-    <ion-list *ngIf="pendingLoans.length > 0">
+    <ion-list *ngIf="!isLoading && pendingLoans.length > 0" class="request-container">
       <ion-card *ngFor="let loan of pendingLoans" class="loan-card">
         <ion-card-header>
           <ion-card-subtitle>
-            Richiesta del {{ loan.request_date | date:'dd/MM/yyyy HH:mm' }}
+            Richiesta del {{ loan.loan_date | date:'dd/MM/yyyy HH:mm' }}
           </ion-card-subtitle>
           <ion-card-title>{{ loan.title }}</ion-card-title>
         </ion-card-header>
@@ -82,6 +79,5 @@
       </ion-card>
     </ion-list>
 
-  </div>
 
 </ion-content>

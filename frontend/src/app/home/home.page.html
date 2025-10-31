@@ -86,7 +86,7 @@
       <p class="hero-subtitle">Scopri nuove biblioteche e esplora la nostra collezione</p>
       
       <!-- BOTTONE RICHIESTA PRESTITO -->
-      <div *ngIf="isUser" class="loan-request-button-section">
+      <div *ngIf="isLoggedIn && isUser" class="Main-button">
         <ion-button
           expand="block" 
           color="primary" 
@@ -97,7 +97,7 @@
       </div>
       
       <!-- BOTTONE CONTROLLO PRESTITI BIBLIOTECARIO -->
-      <div *ngIf="isLibrarian" class="librarian-buttons">
+      <div *ngIf="isLibrarian" class="Main-button">
         <ion-button
           expand="block"
           color="primary"
@@ -110,7 +110,6 @@
     </div>
   </div>
 
-  
   <!--CARD LIBRI-->
     <ion-card class="content-section-card first-content">
       <div class="divider">

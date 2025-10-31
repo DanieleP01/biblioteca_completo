@@ -13,7 +13,7 @@
    <div class="container-request">
     
     <div class="form-field">
-      <ion-item lines="none">
+      <ion-item fill="outline">
         <ion-label position="stacked">
           Titolo Libro <span class="required">*</span>
         </ion-label>
@@ -32,7 +32,7 @@
             *ngFor="let book of bookSuggestions" 
             button 
             (click)="selectBook(book)"
-            lines="full">
+            fill="outline">
             <ion-thumbnail slot="start">
               <img [src]="book.cover_url" [alt]="book.title" class="book-cover">
             </ion-thumbnail>
@@ -123,7 +123,7 @@
       </ion-card-header>
       <ion-card-content>
         <div class="summary-item">
-          <ion-icon name="book"></ion-icon>
+          <ion-icon name="book-outline"></ion-icon>
           <div>
             <strong>{{ selectedBook.title }}</strong>
             <p>{{ selectedAuthor }}</p>

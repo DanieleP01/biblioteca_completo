@@ -26,6 +26,7 @@ export class HomePage implements OnInit{
   //variabili utilizzate solo per la ricerca (così da non andare a svuotare le card della home)
   searchBooks: Book[] = [];
   searchLibraries: Library[] = [];
+  //searchTotal: Number[] = [];
 
   isLoggedIn = false; //boolean per il controllo di login
   isLoading = false;
@@ -41,6 +42,8 @@ export class HomePage implements OnInit{
 
   isUser = false;
   isAdmin = false;
+
+  private apiUrl = 'http://localhost:3000/api';
 
   constructor(
     private http: HttpClient, 
@@ -58,16 +61,17 @@ export class HomePage implements OnInit{
     this.isLoggedIn = this.authService.isLoggedIn();
     this.currentUser = this.authService.getUser();
     this.isUser = this.currentUser?.role === 'user';
+
     console.log(this.currentUser);
     this.isLibrarian = this.currentUser?.role === 'librarian';
     this.isAdmin = this.currentUser?.role === 'admin';
   }
 
   loadData(){
-    this.http.get<Book[]>('http://localhost:3000/api/libri')
+    this.http.get<Book[]>(`${this.apiUrl}/libri`)
       .subscribe(libri => this.books = libri);
 
-    this.http.get<Library[]>('http://localhost:3000/api/librerie')
+    this.http.get<Library[]>(`${this.apiUrl}/librerie`)
       .subscribe(librerie => this.libraries = librerie);
   }
 
@@ -117,12 +121,13 @@ export class HomePage implements OnInit{
   performSearch(query: string) {
     this.isLoading = true;
 
-    this.http.get<any>('http://localhost:3000/api/search', {
+    this.http.get<any>(`${this.apiUrl}/search`, {
       params: { q: query }
     }).subscribe({
       next: (response) => {
         this.searchBooks = response.books;
         this.searchLibraries = response.libraries;
+        //this.searchTotal = response.totals;
         this.isLoading = false;
         this.openSearchModal();
       },
@@ -187,6 +192,7 @@ export class HomePage implements OnInit{
   goToLoanRequest(){
     this.router.navigate(['/loan-request']);
   }
+
   //controllo prestiti bibliotecario
   goToLoanControl() {
   this.router.navigate(['/loan-control']);

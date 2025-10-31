@@ -15,10 +15,13 @@ import { AuthService } from '../services/auth.service.js';
   standalone: true,
   imports: [CommonModule, HttpClientModule, IonicModule]
 })
+
 export class LibraryDetailPage implements OnInit {
   library: Library | null = null;
   isLoading = true;
   isLoggedIn = false; //controller login
+
+  private apiUrl = 'http://localhost:3000/api';
 
   constructor(
     private http: HttpClient,
@@ -39,7 +42,7 @@ export class LibraryDetailPage implements OnInit {
 
   loadLibraryDetails(id: String){
     this.isLoading = true;
-    this.http.get<Library>(`http://localhost:3000/api/librerie/${id}`)
+    this.http.get<Library>(`${this.apiUrl}/librerie/${id}`)
           .subscribe({
             next: (librerie) => {
               this.library = librerie;
