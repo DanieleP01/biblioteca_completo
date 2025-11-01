@@ -18,7 +18,12 @@ import { User } from '../models/user.model.js';
 export class ProfilePage implements OnInit {
   currentUser: any;
   detailsUser: any;
+  libraryManager: any;
   isLoading = false;
+  
+  isUser = false;
+  isLibrarian = false;
+
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(
@@ -30,6 +35,8 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
 
   this.currentUser = this.authService.getUser();
+  this.isUser = this.currentUser.role == 'user';
+  this.isLibrarian = this.currentUser.role == 'librarian';
   console.log('Utente corrente:', this.currentUser);
 
   if (!this.currentUser) {
@@ -42,13 +49,11 @@ export class ProfilePage implements OnInit {
 
   loadProfileDetail(){
     this.isLoading = true;
-    const userId = this.currentUser.id;
-    console.log(userId);
 
-    this.http.get<any[]>(`${this.apiUrl}/details-profile/${userId}`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/details-profile/${this.currentUser.id}`).subscribe({
       next: (user) => {
         this.detailsUser = user;
-        console.log(this.detailsUser);
+        console.log("dettagli: ", this.detailsUser);
         this.isLoading = false;
       },
       error: (error) => {
@@ -57,5 +62,4 @@ export class ProfilePage implements OnInit {
       }
     });
   }
-
 }

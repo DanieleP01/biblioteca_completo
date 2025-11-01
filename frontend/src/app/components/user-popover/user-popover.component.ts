@@ -54,8 +54,8 @@ export class UserPopoverComponent {
     this.popoverController.dismiss();
   }
 
-  goToMyInventory(){
-    this.router.navigate(['/myinventory']);
+  goToInventory(){
+    this.router.navigate(['/inventory']);
     this.popoverController.dismiss();
   }
 

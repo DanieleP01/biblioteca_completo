@@ -35,10 +35,10 @@
         <span>Non hai un account?</span>
         <a href="/registration">Registrati</a>
       </div>
-      <ion-text color="danger" *ngIf="errorMessage">
+      <ion-text color="danger" *ngIf="errorMessage" class="message">
         {{ errorMessage }}
       </ion-text>
-      <ion-text color="success" *ngIf="successMessage">
+      <ion-text color="success" *ngIf="successMessage" class="message">
         {{ successMessage }}
       </ion-text>
     </form>

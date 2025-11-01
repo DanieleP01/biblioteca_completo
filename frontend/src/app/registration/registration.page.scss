@@ -123,13 +123,6 @@ ion-content {
   margin-bottom: 0.50rem;
 }
 
-.registration-container .LoginLink {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  gap: 8px
-}
-
 // Griglia a 2 colonne
 .form-row {
   display: grid;
@@ -173,3 +166,14 @@ ion-button {
   width: 70%;
 }
 
+.LoginLink {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 8px
+
+}
+
+.message{
+  text-align: center;
+}

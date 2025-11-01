@@ -18,7 +18,18 @@ export async function getUserByUsernameOrEmail(identifier: string){
   const db = await openDb();
   
   const user = await db.get(
-    'SELECT * FROM users WHERE username = ? OR email = ?',
+    `SELECT 
+          u.*, 
+          CASE 
+              WHEN u.role = 'librarian' THEN l.id 
+              ELSE NULL 
+          END AS library_id
+      FROM 
+          users u 
+      LEFT JOIN 
+          libraries l ON u.id = l.manager_id 
+      WHERE 
+          u.username = ? OR u.email = ?`,
     [identifier, identifier]
   );
   await db.close();
@@ -30,9 +41,25 @@ export async function getUserById(identifier: number){
   const db = await openDb();
   
   const user = await db.get(
-    'SELECT * FROM users WHERE id = ?',
+    `SELECT 
+          u.*, 
+          CASE 
+              WHEN u.role = 'librarian' THEN l.name 
+              ELSE NULL 
+          END AS library_name,
+          CASE 
+              WHEN u.role = 'librarian' THEN l.address 
+              ELSE NULL 
+          END AS library_address
+    FROM 
+        users u 
+    LEFT JOIN 
+        libraries l ON u.id = l.manager_id 
+    WHERE 
+        u.id = ?`,
     [identifier]
   );
+  console.log("dettagli: ", user);
   await db.close();
   return user;
 }

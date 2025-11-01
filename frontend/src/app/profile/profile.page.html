@@ -17,7 +17,9 @@
     <div class="profile-header ion-text-center">
       <ion-icon name="person-circle-outline" class="profile-avatar"></ion-icon>
       <h2>{{ detailsUser.firstName }} {{ detailsUser.lastName }}</h2>
-      <p>{{ detailsUser.email }}</p>
+      <p *ngIf="isUser">{{ detailsUser.email }}</p>
+      <p *ngIf="isLibrarian">{{ detailsUser.library_name }}</p>
+      <p *ngIf="isLibrarian">{{ detailsUser.library_address }}</p>
     </div>
 
     <ion-list class="details-list">

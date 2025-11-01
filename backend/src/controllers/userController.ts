@@ -44,7 +44,8 @@ export const loginController = async (req: Request, res: Response): Promise<void
         id: user.id,
         email: user.email,
         username: user.username,
-        role: user.role
+        role: user.role,
+        library_id: user.library_id
       }
     });
 

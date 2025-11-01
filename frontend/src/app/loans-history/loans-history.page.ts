@@ -34,10 +34,10 @@ export class LoansHistoryPage implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.authService.getUser();
-
     this.loadLoans();
   }
 
+  //carica i prestiti
   loadLoans(){
     this.isLoading = true;
     
@@ -47,6 +47,7 @@ export class LoansHistoryPage implements OnInit {
         this.overdueLoans = this.loans.filter((loan: any) => loan.status === 'overdue');
         this.returnedLoans = this.loans.filter((loan: any) => loan.status === 'returned');
         this.rejectedLoans = this.loans.filter((loan: any) => loan.status === 'rejected');
+        console.log("prestiti rifiutati: ", this.rejectedLoans);
         this.isLoading = false;
       },
       error: (error) => {

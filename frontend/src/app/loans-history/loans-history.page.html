@@ -15,68 +15,181 @@
     <p>Caricamento prestiti...</p>
   </div>
 
-  <!-- NESSUN PRESTITO -->
-  <div *ngIf="!isLoading && loans.length === 0" class="empty-card ion-text-center">
-    <ion-icon name="checkmark-outline" size="large"></ion-icon>
-    <h2>Nessuna cronologia o prestiti ettivo</h2>
-  </div>
+  <!-- PRESTITI RESTITUITI -->
+    <div class="section-title">
+      <ion-title> Prestiti restituiti </ion-title>
+    </div> 
 
-  
-  <div class="section-title">
-    <ion-title> Prestiti resituiti </ion-title>
-  </div> 
+    <!-- NESSUN PRESTITO -->
+    <div *ngIf="!isLoading && returnedLoans.length === 0" class="empty-card ion-text-center">
+      <ion-icon name="checkmark-outline" size="large"></ion-icon>
+      <h2>Nessun prestito restituito</h2>
+    </div>
 
-  <!-- GRIGLIA PRESTITI -->
-  <div *ngIf="!isLoading && loans.length > 0" class="loans-grid">
-    
-    <!-- CARD PRESTITO -->
-    <div *ngFor="let returned_loan of returnedLoans" class="loan-card-container">
-      <ion-card class="loan-card">
-        
-        <!-- COPERTINA LIBRO -->
-        <div class="loan-cover-wrapper">
-          <img 
-            [src]="returned_loan.cover_url" 
-            [alt]="returned_loan.title"
-            class="loan-cover">
+    <!-- GRIGLIA PRESTITI -->
+    <div *ngIf="!isLoading && returnedLoans.length > 0" class="loans-grid">
+
+      <!-- CARD PRESTITO -->
+      <div *ngFor="let returned_loan of returnedLoans" class="loan-card-container">
+        <ion-card class="loan-card">
           
-        </div>
-
-        <ion-card-content class="loan-info">
-
-          <ion-card-title class="loan-title">{{ returned_loan.title }}</ion-card-title>
-          <ion-card-subtitle class="loan-subtitle">
-            <ion-icon name="barcode-outline"></ion-icon>
-            <span><strong>ISBN:</strong> {{ returned_loan.isbn }}</span>
-          </ion-card-subtitle>
-
-          <div class="loan-details">
-            <div class="detail-row">
-              <ion-icon name="calendar-outline"></ion-icon>
-              <span>
-                <strong>Dal:</strong> {{ returned_loan.loan_date | date:'dd/MM/yyyy' }}
-              </span>
-            </div>
-
-            <div class="detail-row">
-              <ion-icon name="alarm-outline"></ion-icon>
-              <span>
-                <strong>Fino al:</strong> {{ returned_loan.due_date | date:'dd/MM/yyyy' }}
-              </span>
-            </div>
-
-            <div class="detail-row">
-              <ion-icon name="person-outline"></ion-icon>
-              <span>
-                <span><strong>Biblioteca:</strong> {{ returned_loan.library_name }}</span>
-              </span>
-            </div>
+          <!-- COPERTINA LIBRO -->
+          <div class="loan-cover-wrapper">
+            <img 
+              [src]="returned_loan.cover_url" 
+              [alt]="returned_loan.title"
+              class="loan-cover">
           </div>
 
-        </ion-card-content>
+          <ion-card-content class="loan-info">
 
-      </ion-card>
+            <ion-card-title class="loan-title">{{ returned_loan.title }}</ion-card-title>
+            <ion-card-subtitle class="loan-subtitle">
+              <span><strong class="loan-subtitle">Restituito il:</strong> {{ returned_loan.return_date | date:'dd/MM/yyyy HH:MM' }}</span>
+            </ion-card-subtitle>
+
+            <div class="loan-details">
+              <div class="detail-row">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span>
+                  <strong>Dal:</strong> {{ returned_loan.loan_date | date:'dd/MM/yyyy HH:MM' }}
+                </span>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="alarm-outline"></ion-icon>
+                <span>
+                  <strong>Fino al:</strong> {{ returned_loan.due_date | date:'dd/MM/yyyy' }}
+                </span>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="person-outline"></ion-icon>
+                <span>
+                  <span><strong>Biblioteca:</strong> {{ returned_loan.library_name }}</span>
+                </span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
     </div>
-  </div>
+
+  <!-- PRESTITI RIFIUTATI -->
+    <div  class="section-title">
+      <ion-title> Prestiti rifiutati </ion-title>
+    </div> 
+
+    <!-- NESSUN PRESTITO -->
+    <div *ngIf="!isLoading && rejectedLoans.length === 0" class="empty-card ion-text-center">
+      <ion-icon name="checkmark-outline" size="large"></ion-icon>
+      <h2>Nessun prestito rifiutato</h2>
+    </div>
+
+    <!-- GRIGLIA PRESTITI -->
+    <div *ngIf="!isLoading && rejectedLoans.length > 0" class="loans-grid">
+
+
+      <div *ngFor="let rejected_loan of rejectedLoans" class="loan-card-container">
+        <ion-card class="loan-card">
+          
+          <div class="loan-cover-wrapper">
+            <img 
+              [src]="rejected_loan.cover_url" 
+              [alt]="rejected_loan.title"
+              class="loan-cover">
+          </div>
+
+          <ion-card-content class="loan-info">
+
+            <ion-card-title class="loan-title">{{ rejected_loan.title }}</ion-card-title>
+
+            <div class="loan-details">
+              <div class="detail-row">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span>
+                  <strong>Dal:</strong> {{ rejected_loan.loan_date | date:'dd/MM/yyyy HH:MM' }}
+                </span>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="alarm-outline"></ion-icon>
+                <span>
+                  <strong>Fino al:</strong> {{ rejected_loan.due_date | date:'dd/MM/yyyy' }}
+                </span>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="person-outline"></ion-icon>
+                <span>
+                  <span><strong>Biblioteca:</strong> {{ rejected_loan.library_name }}</span>
+                </span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+  <!-- PRESTITI SCADUTI -->
+    <div class="section-title">
+      <ion-title> Prestiti scaduti</ion-title>
+    </div> 
+
+    <!-- NESSUN PRESTITO -->
+    <div *ngIf="!isLoading && overdueLoans.length === 0" class="empty-card ion-text-center">
+      <ion-icon name="checkmark-outline" size="large"></ion-icon>
+      <h2>Nessun prestito scaduto</h2>
+    </div>
+
+    <!-- GRIGLIA PRESTITI -->
+    <div *ngIf="!isLoading && overdueLoans.length > 0" class="loans-grid">
+
+
+      <div *ngFor="let overdue_loan of overdueLoans" class="loan-card-container">
+        <ion-card class="loan-card">
+          
+          <div class="loan-cover-wrapper">
+            <img 
+              [src]="overdue_loan.cover_url" 
+              [alt]="overdue_loan.title"
+              class="loan-cover">
+          </div>
+
+          <ion-card-content class="loan-info">
+
+            <ion-card-title class="loan-title">{{ overdue_loan.title }}</ion-card-title>
+            <ion-card-subtitle class="loan-subtitle">
+              <span><strong class="loan-subtitle">scaduto il:</strong> {{ overdue_loan.due_date | date:'dd/MM/yyyy HH:MM' }}</span>
+            </ion-card-subtitle>
+
+            <div class="loan-details">
+              <div class="detail-row">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span>
+                  <strong>Dal:</strong> {{ overdue_loan.loan_date | date:'dd/MM/yyyy HH:MM' }}
+                </span>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="alarm-outline"></ion-icon>
+                <span>
+                  <strong>Fino al:</strong> {{ overdue_loan.due_date | date:'dd/MM/yyyy' }}
+                </span>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="person-outline"></ion-icon>
+                <span>
+                  <span><strong>Biblioteca:</strong> {{ overdue_loan.library_name }}</span>
+                </span>
+              </div>
+            </div>
+
+          </ion-card-content>
+
+        </ion-card>
+      </div>
+    </div>
 
 </ion-content>

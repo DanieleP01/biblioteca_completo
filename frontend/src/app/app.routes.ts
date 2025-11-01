@@ -49,6 +49,10 @@ export const routes: Routes = [
     path: 'loans-history',
     loadComponent: () => import('./loans-history/loans-history.page').then( m => m.LoansHistoryPage)
   },
+  {
+    path: 'inventory',
+    loadComponent: () => import('./inventory/inventory.page').then( m => m.InventoryPage)
+  },
 
 
 
