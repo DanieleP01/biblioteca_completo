@@ -102,10 +102,31 @@
             <ion-label>
               <h3>{{ library.name }}</h3>
               <p>{{ library.city }}, {{ library.province }}</p>
-              <p class="copies">
-                <ion-icon name="book-outline"></ion-icon>
-                Copie disponibili: {{ library.copies }}
-              </p>
+
+              <!-- BIBLIOTECA DISPONBILIE -->
+              <div *ngIf="library.available_copies > 0; else showReservationBlock">
+                <ion-text color="success">
+                  <p class="copies">
+                    <ion-icon name="book-outline"></ion-icon>
+                    Copie disponibili: {{ library.available_copies }}
+                  </p>
+                </ion-text>
+              </div>
+              <!--BIBLIOTECA NON DISPONIBILE (QUINDI PRENOTABILE)-->
+              <ng-template #showReservationBlock>
+                <div>
+                  <ion-text color="warning">
+                    <p>Non è disponibile. Vuoi prenotarlo?</p>
+                  </ion-text>
+                  <ion-button 
+                    size="small" 
+                    fill="outline"
+                    (click)="createReservation(library, $event)">
+                    Prenota
+                  </ion-button>
+                </div>
+              </ng-template>
+
             </ion-label>
           </ion-item>
         </ion-list>
@@ -139,7 +160,11 @@
         <div class="summary-item">
           <ion-icon name="copy"></ion-icon>
           <div>
-            <strong>Copie disponibili: {{ selectedLibrary.copies }}</strong>
+            <strong>Copie totali: {{ selectedLibrary.total_copies }}</strong>
+            <!-- Mostra lo stato in base a 'available_count' -->
+            <p [ngClass]="selectedLibrary.available_count > 0 ? 'text-success' : 'text-warning'">
+              Disponibili: {{ selectedLibrary.available_copies }}
+            </p>
           </div>
         </div>
       </ion-card-content>

@@ -69,13 +69,6 @@ ion-content{
         line-height: 1;
     }
 
-    p {
-        font-size: 0.7rem;
-        color: var(--ion-color-medium); 
-        margin: 0;
-        margin-top: 2px;
-    }
-
     // Stile speciale per quando le copie sono a zero
     .copies-zero {
         color: var(--ion-color-danger); 
@@ -88,7 +81,7 @@ ion-content{
     --background-hover-opacity: 0.25;
 }
 
-/* Opzionale: assicura che il thumbnail non sia troppo piccolo */
+// Opzionale: assicura che il thumbnail non sia troppo piccolo 
 ion-thumbnail {
     --size: 90px;
     --border-radius: 4px;

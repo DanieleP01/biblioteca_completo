@@ -5,6 +5,7 @@ import libraryRouter from './routes/library.js';
 import searchRouter from './routes/search.js';
 import libraryBooksRoutes from './routes/libraryBooks.js';
 import loanRoutes from './routes/loans.js';
+import reservationRoutes from './routes/reservation.js';
 
 const router = Router();
 
@@ -14,10 +15,6 @@ router.use('/', userRouter);
 router.use('/search', searchRouter);
 router.use('/', libraryBooksRoutes);
 router.use('/', loanRoutes);
+router.use('/', reservationRoutes);
 
 export { router };
-
-/* router.get('/libri', getBooksController);
-router.get('/librerie', getLibrariesController);
-router.get('/libri/:id', getBookByIdController);
-router.get('/librerie/:id', getLibraryByIdController); */

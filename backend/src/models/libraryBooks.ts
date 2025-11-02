@@ -7,7 +7,8 @@ export async function getBooksByLibrary(libraryId: number) {
     const books = await db.all(`
         SELECT 
             b.*,
-            lb.copies,
+            lb.total_copies,
+            lb.available_copies,
             lb.library_id
         FROM books b
         INNER JOIN library_books lb ON b.id = lb.book_id
@@ -26,7 +27,8 @@ export async function getLibrariesByBook(bookId: number) {
     const libraries = await db.all(`
         SELECT 
             l.*,
-            lb.copies,
+            lb.total_copies,
+            lb.available_copies,
             lb.book_id
         FROM libraries l
         INNER JOIN library_books lb ON l.id = lb.library_id
@@ -43,13 +45,13 @@ export async function checkAvailability(libraryId: number, bookId: number) {
     const db = await openDb();
     
     const result = await db.get(`
-        SELECT copies 
+        SELECT available_copies 
         FROM library_books 
         WHERE library_id = ? AND book_id = ?
     `, libraryId, bookId);
-    
+
     await db.close();
-    return result?.copies || 0;
+    return result?.available_copies || 0;
 }
 
 // Aggiungi libro a biblioteca (o incrementa copie se già presente)
@@ -72,7 +74,7 @@ export async function updateCopies(libraryId: number, bookId: number, copies: nu
     
     const result = await db.run(`
         UPDATE library_books 
-        SET copies = ?
+        SET total_copies = ?
         WHERE library_id = ? AND book_id = ?
     `, copies, libraryId, bookId);
     
@@ -86,8 +88,8 @@ export async function decrementCopies(libraryId: number, bookId: number) {
     
     const result = await db.run(`
         UPDATE library_books 
-        SET copies = copies - 1
-        WHERE library_id = ? AND book_id = ? AND copies > 0
+        SET available_copies = available_copies - 1
+        WHERE library_id = ? AND book_id = ? AND total_copies > 0
     `, libraryId, bookId);
     
     await db.close();
@@ -100,7 +102,7 @@ export async function incrementCopies(libraryId: number, bookId: number) {
     
     const result = await db.run(`
         UPDATE library_books 
-        SET copies = copies + 1
+        SET available_copies = available_copies + 1
         WHERE library_id = ? AND book_id = ?
     `, libraryId, bookId);
     

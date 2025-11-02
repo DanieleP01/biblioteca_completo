@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS books (
 CREATE TABLE IF NOT EXISTS library_books (
     library_id INTEGER,
     book_id INTEGER,
-    copies INTEGER,
+    total_copies INTEGER,
+    available_copies INTEGER,
     PRIMARY KEY(library_id, book_id),
     FOREIGN KEY (library_id) REFERENCES libraries(id),
     FOREIGN KEY (book_id) REFERENCES books(id)
@@ -66,6 +67,24 @@ CREATE TABLE IF NOT EXISTS reservations (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (library_id) REFERENCES libraries(id),
     FOREIGN KEY (book_id) REFERENCES books(id)
+);
+
+CREATE TABLE IF NOT EXISTS CopyRequests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_id INTEGER NOT NULL,
+    library_id INTEGER NOT NULL,
+    librarian_id INTEGER NOT NULL, 
+    requested_copies INTEGER NOT NULL CHECK(requested_copies > 0),
+    reason TEXT, -- "Alta richiesta", "Copie danneggiate", ecc.
+    status TEXT NOT NULL DEFAULT 'Pending', -- Valori possibili: Pending, Approved, Rejected
+    admin_id INTEGER, 
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME,
+
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    FOREIGN KEY (library_id) REFERENCES libraries(id),
+    FOREIGN KEY (librarian_id) REFERENCES users(id),
+    FOREIGN KEY (admin_id) REFERENCES users(id)
 );
 
 -- POPOLAMENTO
@@ -105,31 +124,31 @@ INSERT OR IGNORE INTO libraries
 
 
 INSERT OR IGNORE INTO library_books
-(library_id, book_id, copies) VALUES
-(1, 1, 5),
-(1, 2, 3),
-(1, 3, 4),
-(2, 4, 2),
-(2, 5, 6),
-(3, 6, 1),
-(3, 7, 2),
-(4, 8, 3),
-(4, 9, 4),
-(5, 10, 5),
-(5, 11, 2),
-(6, 12, 3),
-(6, 13, 4),
-(7, 14, 1),
-(7, 1, 2),
-(8, 2, 3),
-(8, 3, 4),
-(9, 4, 5),
-(9, 5, 2),
-(10, 6, 3),
-(10, 7, 4),
-(11, 8, 1),
-(11, 9, 2),
-(12, 10, 3),
-(12, 11, 4),
-(13, 12, 5),
-(13, 13, 2);
+(library_id, book_id, total_copies, available_copies) VALUES
+(1, 1, 5, 5),
+(1, 2, 3, 3),
+(1, 3, 4, 4),
+(2, 4, 2, 2),
+(2, 5, 6, 6),
+(3, 6, 1, 1),
+(3, 7, 2, 2),
+(4, 8, 3, 3),
+(4, 9, 4, 4),
+(5, 10, 5, 5),
+(5, 11, 2, 2),
+(6, 12, 3, 3),
+(6, 13, 4, 4),
+(7, 14, 1, 1),
+(7, 1, 2, 2),
+(8, 2, 3, 3),
+(8, 3, 4, 4),
+(9, 4, 5, 5),
+(9, 5, 2, 2),
+(10, 6, 3, 3),
+(10, 7, 4, 4),
+(11, 8, 1, 1),
+(11, 9, 2, 2),
+(12, 10, 3, 3),
+(12, 11, 4, 4),
+(13, 12, 5, 5),
+(13, 13, 2, 6);

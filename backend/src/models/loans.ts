@@ -122,7 +122,7 @@ export async function updateOverdueLoans() {
         UPDATE loans 
         SET status = 'overdue'
         WHERE status = 'active' 
-        AND date(due_date) < date('now')
+        AND date(due_date) < datetime('now')
     `);
     
     await db.close();

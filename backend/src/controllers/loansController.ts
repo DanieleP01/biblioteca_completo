@@ -14,16 +14,16 @@ export async function requestLoan(req: Request, res: Response) {
             });
         }
         
-        // 1. Verifica disponibilità copie
+        //Verifica disponibilità copie
         const availableCopies = await LibraryBooksModel.checkAvailability(library_id, book_id);
-        
+        console.log(availableCopies);
         if (availableCopies < 1) {
             return res.status(400).json({
                 error: 'Nessuna copia disponibile in questa biblioteca'
             });
         }
         
-        // 2. Verifica prestito duplicato
+        // Verifica prestito duplicato
         const hasDuplicate = await LoanModel.checkDuplicateLoan(user_id, book_id);
         
         if (hasDuplicate) {
@@ -32,7 +32,7 @@ export async function requestLoan(req: Request, res: Response) {
             });
         }
         
-        // 3. Crea richiesta
+        //Crea richiesta
         const loanId = await LoanModel.createLoanRequest(user_id, book_id, library_id);
         
         res.status(201).json({

@@ -45,7 +45,8 @@ export const routes: Routes = [
   {
     path: 'loans-library',
     loadComponent: () => import('./loans-library/loans-library.page').then( m => m.loanslibrary)
-  },  {
+  },
+  {
     path: 'loans-history',
     loadComponent: () => import('./loans-history/loans-history.page').then( m => m.LoansHistoryPage)
   },

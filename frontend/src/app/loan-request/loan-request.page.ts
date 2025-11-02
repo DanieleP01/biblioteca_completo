@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Book } from '../models/book.model';
 import { Library } from '../models/library.model';
@@ -41,7 +41,8 @@ export class LoanRequestPage implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertCtrl: AlertController
   ) {
     const navigation = this.router.getCurrentNavigation();
     
@@ -122,25 +123,24 @@ export class LoanRequestPage implements OnInit {
     this.showAuthorSuggestions = false;
   }
 
-
   //libro selezionato da detail-books
   selectBook(book: Book) {
     this.selectedBook = book;
     this.bookSearchQuery = book.title;
     this.selectedAuthor = book.author;
     this.showBookSuggestions = false;
-    console.log("Libro selezionato:", book);
     this.loadLibrariesForBook(book.id);
   }
 
   //lista biblioteche per libro selezionato
   loadLibrariesForBook(bookId: number) {
+    console.log("libro selezionato: ", bookId);
     this.http.get<Library[]>(`${this.apiUrl}/books/${bookId}/libraries`).subscribe({
       next: (libraries: any) => {
-        this.librarySuggestions = libraries.filter((lib: any) => lib.copies > 0);
+        this.librarySuggestions = libraries.filter((lib: any) => lib.total_copies > 0);
 
         if (this.librarySuggestions.length === 0) {
-          alert('Spiacenti, questo libro non è disponibile in nessuna biblioteca');
+          this.presentAlert('Nessuna biblioteca', 'Spiacenti, questo libro non è disponibile in nessuna biblioteca');
         }
       },
       error: (error) => {
@@ -174,9 +174,16 @@ export class LoanRequestPage implements OnInit {
   }
 
   selectLibrary(library: any) {
-    this.selectedLibrary = library;
-    this.librarySearchQuery = library.name;
-    this.showLibrarySuggestions = false;
+
+    if (library.available_count > 0) {
+      this.selectedLibrary = library;
+      this.librarySearchQuery = library.name;
+      this.showLibrarySuggestions = false;
+    } else {
+      this.librarySearchQuery = library.name;
+      this.selectedLibrary = library; 
+      this.showLibrarySuggestions = false;
+    }
   }
 
   hideSuggestions() {
@@ -188,13 +195,18 @@ export class LoanRequestPage implements OnInit {
   }
 
   isFormValid(): boolean {
-    return !!(this.selectedBook && this.selectedAuthor && this.selectedLibrary);
+    return !!(
+      this.selectedBook && 
+      this.selectedAuthor && 
+      this.selectedLibrary &&
+      this.selectedLibrary.available_copies > 0
+    );
   }
 
   //invio richiesta prestito
   submitLoanRequest() {
     if (!this.isFormValid()) {
-      alert('Compila tutti i campi richiesti');
+      this.presentAlert('Errore','Compila tutti i campi richiesti');
       return;
     }
     this.isLoading = true;
@@ -208,7 +220,7 @@ export class LoanRequestPage implements OnInit {
     this.http.post(`${this.apiUrl}/loans/request`, loanRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        alert('Richiesta di prestito inviata con successo!');
+        this.presentAlert('Successo!','Richiesta di prestito inviata con successo!');
         this.resetForm();
         this.router.navigate(['/home']);
       },
@@ -216,9 +228,50 @@ export class LoanRequestPage implements OnInit {
         this.isLoading = false;
         const errorMsg = error.error?.error || 'Errore durante l\'invio della richiesta';
         this.resetForm();
-        alert('Errore: ' + errorMsg);
+        this.presentAlert('Errore',errorMsg);
       }
     });
+  }
+
+  //
+   createReservation(library: any, event: MouseEvent) {
+    event.stopPropagation(); // Impedisce al click di propagarsi all'ion-item
+
+    if (!this.selectedBook || !library || !this.currentUser) {
+      this.presentAlert('Errore', 'Dati mancanti per la prenotazione.');
+      return;
+    }
+    
+    this.isLoading = true;
+
+    const reservationRequest = {
+      user_id: this.currentUser.id,
+      book_id: this.selectedBook.id,
+      library_id: library.id // Usa l'ID della libreria passata
+    };
+
+    this.http.post(`${this.apiUrl}/create-reservation`, reservationRequest).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.presentAlert('Successo!', 'Libro prenotato con successo! Verrai notificato quando sarà disponibile.');
+        this.resetForm(); // Resetta il form e chiudi la pagina
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        const errorMsg = error.error?.error || 'Errore durante la prenotazione';
+        this.presentAlert('Errore', errorMsg);
+      }
+    });
+  }
+
+  private async presentAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   private resetForm() {
