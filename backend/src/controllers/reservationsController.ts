@@ -13,6 +13,7 @@ import { checkDuplicateLoan } from '../models/loans.js';
 
     try {
       const existingLoan = await checkDuplicateLoan(user_id, book_id);
+      
       if (existingLoan) {
         return res.status(409).json({ error: 'Hai già un prestito attivo per questo libro.' });
       }

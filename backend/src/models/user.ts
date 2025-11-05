@@ -59,7 +59,6 @@ export async function getUserById(identifier: number){
         u.id = ?`,
     [identifier]
   );
-  console.log("dettagli: ", user);
   await db.close();
   return user;
 }

@@ -51,7 +51,7 @@ export async function findPendingReservation(userId: number, bookId: number, lib
   const db = await openDb(); // Apre la connessione
 
   try {
-    // Esegue db.get come nel tuo pattern
+    
     const reservation = await db.get(
         `SELECT * FROM reservations
         WHERE user_id = ? AND book_id = ? AND library_id = ? AND status = 'pending'`

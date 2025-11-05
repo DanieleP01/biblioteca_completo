@@ -9,3 +9,6 @@ COMPILAZIONE/ESECUZIONE: npm run build
 aggiungere controllo prestito attivo home con badge notifica di prestito già in corso
 
 voglio aggiungere la possibilità di mandare notifiche sia all'utente che al bibliotecario per eventi che avvengono nell'app, ad esmpio notificare all'utente quando manca poco alla scadenza di un suo libro, oppure quando una sua richiesta per un prestito sia stata accettata o meno, sia per il bibliotecario per notificargli quando un utente ha richiesto un prestito o per quando un prestito già accettato è terminato.
+
+l'amministratore accetta la richiesta copie da parte del bibliotecario e va effettuato un controllo backend in cui le prenotazioni diventano prestiti.
+sistemare la logica di loan_date e due_date di loans.

@@ -16,7 +16,7 @@ export async function requestLoan(req: Request, res: Response) {
         
         //Verifica disponibilità copie
         const availableCopies = await LibraryBooksModel.checkAvailability(library_id, book_id);
-        console.log(availableCopies);
+        
         if (availableCopies < 1) {
             return res.status(400).json({
                 error: 'Nessuna copia disponibile in questa biblioteca'

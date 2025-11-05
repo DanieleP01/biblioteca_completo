@@ -1,5 +1,20 @@
+ion-header {
+  position: relative;
+  height: 70px;
+}
+
+ion-toolbar {
+  --background: rgba(10, 25, 41, 0.35);
+  
+  min-height: 54px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
 ion-content {
-  --background: var(--ion-background-color, #f4f5f8);
+  --background: black;
 }
 
 .library-hero {
