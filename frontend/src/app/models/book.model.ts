@@ -6,5 +6,5 @@ export interface Book {
     category: string,
     cover_url: string,
     description: string,
-    year: number;
+    year: number,
 }

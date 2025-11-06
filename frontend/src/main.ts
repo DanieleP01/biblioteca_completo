@@ -32,6 +32,8 @@ import {
   barcodeOutline,
   archiveOutline,
   timeOutline,
+  chevronUp,
+  chevronDown
 } from 'ionicons/icons';
 
 addIcons({
@@ -60,7 +62,9 @@ addIcons({
   'map-outline': mapOutline,
   'barcode-outline': barcodeOutline,
   'archive-outline': archiveOutline,
-  'time-outline': timeOutline
+  'time-outline': timeOutline,
+  'chevron-up': chevronUp,
+  'chevron-down': chevronDown
 });
 
 bootstrapApplication(AppComponent, {

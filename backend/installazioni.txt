@@ -12,3 +12,7 @@ voglio aggiungere la possibilità di mandare notifiche sia all'utente che al bib
 
 l'amministratore accetta la richiesta copie da parte del bibliotecario e va effettuato un controllo backend in cui le prenotazioni diventano prestiti.
 sistemare la logica di loan_date e due_date di loans.
+
+controllare tutti i file per usare correttamente le interfacce nelle funzioni in ts delle pagine, TOGLIERE <any[]>  !!!
+
+commentare rotte in book e libraries

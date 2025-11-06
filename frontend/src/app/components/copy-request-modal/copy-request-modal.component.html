@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Richiedi Copie</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" color="medium">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="modal-content">
+    
+    <!-- Informazioni libro -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ book.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          <strong>Autore:</strong> {{ book.author }}
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Form richiesta -->
+    <ion-list>
+      
+      <!-- Campo numero copie -->
+      <ion-item>
+        <ion-label position="stacked">Numero di copie da richiedere</ion-label>
+        <ion-input 
+          type="number" 
+          placeholder="Inserisci il numero"
+          [(ngModel)]="requestedCopies"
+          min="1">
+        </ion-input>
+      </ion-item>
+
+      <!-- Campo motivo -->
+      <ion-item>
+        <ion-label position="stacked">Motivo della richiesta</ion-label>
+        <ion-textarea 
+          placeholder="Es: Alta richiesta di prenotazioni"
+          [(ngModel)]="reason"
+          rows="4">
+        </ion-textarea>
+      </ion-item>
+
+    </ion-list>
+
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button fill="outline" color="medium" (click)="dismiss()" expand="block">
+      Annulla
+    </ion-button>
+    <ion-button 
+      fill="solid" 
+      color="success" 
+      (click)="submitRequest()" 
+      expand="block"
+      [disabled]="isLoading">
+      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      {{ isLoading ? 'Invio in corso...' : 'Invia Richiesta' }}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

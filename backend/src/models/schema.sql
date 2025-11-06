@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS CopyRequests (
     requested_copies INTEGER NOT NULL CHECK(requested_copies > 0),
     reason TEXT, -- "Alta richiesta", "Copie danneggiate", ecc.
     status TEXT NOT NULL DEFAULT 'Pending', -- Valori possibili: Pending, Approved, Rejected
-    admin_id INTEGER, 
+    admin_id INTEGER, -- L'amministratore che ha approvato o rifiutato la richiesta
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME,
 

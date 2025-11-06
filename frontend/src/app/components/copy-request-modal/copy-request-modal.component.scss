@@ -1,0 +1,64 @@
+.modal-content {
+  padding: 16px;
+  background: #fff; // Sfondo bianco
+
+  ion-card {
+    margin: 16px 0;
+    background: #f8f8f8;
+    color: #111;
+
+    ion-card-header {
+      padding-bottom: 8px;
+
+      ion-card-title {
+        font-size: 1.1rem;
+        color: #1982fc; // Blu acceso per evidenziare il titolo
+      }
+    }
+
+    ion-card-content {
+      padding-top: 8px;
+
+      p {
+        margin: 8px 0;
+        font-size: 0.97rem;
+        color: #222; // Testo quasi nero
+        font-weight: 500;
+      }
+    }
+  }
+
+  ion-list {
+    padding: 0;
+
+    ion-item {
+      --background: #fff;
+      --padding-start: 0;
+      --padding-end: 0;
+      --inner-padding-end: 0;
+      border-bottom: 1px solid #ececec;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      ion-label {
+        font-weight: 600;
+        color: #161616; // Testo molto scuro
+        margin-bottom: 8px;
+      }
+
+      ion-input,
+      ion-textarea {
+        --background: #f8f8f8;
+        --color: #1a1a1a;
+        --padding-start: 8px;
+        --padding-end: 8px;
+        border-radius: 5px;
+        color: #1a1a1a;
+      }
+
+      // Placeholder chiaro con buona
+    }
+  }
+}

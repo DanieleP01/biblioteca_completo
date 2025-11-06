@@ -86,3 +86,62 @@ ion-thumbnail {
     --size: 90px;
     --border-radius: 4px;
 }
+
+// Wrapper per ogni libro (include card + dettagli)
+.book-item-wrapper {
+  margin-bottom: 12px;
+}
+
+// Stile per i dettagli prenotazioni
+.reservations-details {
+  --background: #f0f0f0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+// Header della sezione prenotazioni
+.reservations-header {
+  padding: 12px 16px 8px 16px;
+  color: var(--ion-color-primary);
+  font-size: 0.95rem;
+}
+
+// Stile per ogni riga di prenotazione
+.reservation-row {
+  padding: 8px 16px;
+  border-bottom: 1px solid #e0e0e0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// Testo delle informazioni prenotazione
+.reservation-info {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+// Messaggio quando non ci sono prenotazioni
+.no-reservations {
+  padding: 12px 16px;
+  color: var(--ion-color-medium);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+// Item del bottone richiedi copie
+.request-copies-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  padding: 12px 0;
+
+  ion-button {
+    margin: 0;
+  }
+}

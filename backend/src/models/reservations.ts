@@ -41,12 +41,8 @@ export async function createReservation(userId: number, bookId: number, libraryI
   }
 }
 
-// Cerca una prenotazione pendente per lo stesso utente, libro e biblioteca.
-export async function findPendingReservation(userId: number, bookId: number, libraryId: number) {
-  const sql = `
-    SELECT * FROM reservations
-    WHERE user_id = ? AND book_id = ? AND library_id = ? AND status = 'pending'
-  `;
+// Cerca una prenotazione in attesa per lo stesso utente, libro e biblioteca.
+export async function findUserPendingReservation(userId: number, bookId: number, libraryId: number) {
   
   const db = await openDb(); // Apre la connessione
 
@@ -65,3 +61,29 @@ export async function findPendingReservation(userId: number, bookId: number, lib
     await db.close(); // Chiude la connessione
   }
 }
+
+
+// Cerca Prenotazioni per una specifica biblioteca e uno specifico libro (più utenti)
+export async function findReservationsByLibraryAndBook(libraryId: number, bookId: number) {
+  const db = await openDb(); // Apre la connessione
+
+  try {
+    const reservations = await db.all(
+      `SELECT 
+            reservations.*,
+            users.username
+      FROM reservations
+      JOIN users ON reservations.user_id = users.id
+      WHERE library_id = ? AND book_id = ?
+      ORDER BY reservation_date ASC`
+      , libraryId, bookId);
+
+    return reservations || [];
+  } catch (error) {
+    console.error("Errore SQL in findReservationsByLibraryAndBook:", error);
+    throw error;
+  } finally {
+    await db.close(); // Chiude la connessione
+  }
+}
+

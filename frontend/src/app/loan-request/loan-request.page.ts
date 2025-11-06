@@ -216,6 +216,7 @@ export class LoanRequestPage implements OnInit {
       book_id: this.selectedBook!.id,
       library_id: this.selectedLibrary!.id
     };
+    
 
     this.http.post(`${this.apiUrl}/loans/request`, loanRequest).subscribe({
       next: (response) => {

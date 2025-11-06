@@ -18,7 +18,7 @@ import { checkDuplicateLoan } from '../models/loans.js';
         return res.status(409).json({ error: 'Hai già un prestito attivo per questo libro.' });
       }
 
-      const existingReservation = await reservationModel.findPendingReservation(user_id, book_id, library_id);
+      const existingReservation = await reservationModel.findUserPendingReservation(user_id, book_id, library_id);
       if (existingReservation) {
         return res.status(409).json({ error: 'Hai già prenotato questo libro in questa biblioteca.' });
       }
@@ -29,6 +29,18 @@ import { checkDuplicateLoan } from '../models/loans.js';
 
     } catch (error) {
       console.error('Errore creazione prenotazione:', error);
+      res.status(500).json({ error: 'Errore interno del server' });
+    }
+  }
+
+  // Gestisce la richiesta di ottenere tutte le prenotazioni per una biblioteca specifica e un libro specifico
+  export async function getReservationsByLibraryAndBookController(req: Request, res: Response) {
+    const { libraryId, bookId } = req.params;
+    try {
+      const reservations = await reservationModel.findReservationsByLibraryAndBook(Number(libraryId), Number(bookId));
+      res.status(200).json(reservations);
+    } catch (error) {
+      console.error('Errore nel recupero delle prenotazioni:', error);
       res.status(500).json({ error: 'Errore interno del server' });
     }
   }
