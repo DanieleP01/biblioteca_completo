@@ -49,5 +49,15 @@
   }
 }
 
+.no-backdrop-popover {
+  --backdrop-opacity: 0 !important;
+  
+  ion-popover {
+    --backdrop-opacity: 0 !important;
+  }
+}
 
-
+ion-popover.no-backdrop-popover::part(backdrop) {
+  background: transparent !important;
+  opacity: 0 !important;
+}

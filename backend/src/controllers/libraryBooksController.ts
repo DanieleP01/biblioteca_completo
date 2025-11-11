@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import * as LibraryBooksModel from '../models/libraryBooks.js';
+import * as BooksModel from '../models/books.js';
+import * as LibraryModel from '../models/library.js';
+import * as NotificationsModel from '../models/notifications.js';
 
 // Ottieni libri di una biblioteca
 export async function getBooksByLibrary(req: Request, res: Response) {
@@ -64,35 +67,55 @@ export async function checkAvailability(req: Request, res: Response) {
 // Aggiungi libro a biblioteca
 export async function addBookToLibrary(req: Request, res: Response) {
     try {
-        const { library_id, book_id, copies } = req.body;
+        const { book, libraryAssociations } = req.body;
         
-        if (!library_id || !book_id || !copies) {
-            return res.status(400).json({
-                error: 'library_id, book_id e copies sono obbligatori'
+        const existingBook = await BooksModel.getBookById(book.id);
+        if (existingBook) {
+            return res.status(409).json({ 
+                error: `Libro con id ${book.id} esiste già nel sistema. Ricompilare il modulo con i dati corretti.`,
+                existingBookId: existingBook.id
             });
         }
-        
-        if (copies < 1) {
-            return res.status(400).json({
-                error: 'Il numero di copie deve essere almeno 1'
-            });
+
+        // Crea il libro
+        const bookId = await BooksModel.createBook(book);
+
+        // Aggiungi il libro alle biblioteche
+        await LibraryBooksModel.addBookToLibraries(bookId, libraryAssociations);
+
+        // NOTIFICA AI BIBLIOTECARI - Nuovo libro aggiunto
+        for (const association of libraryAssociations) {
+            const library = await LibraryModel.getLibraryById(association.libraryId);
+            const bookData = await BooksModel.getBookById(bookId);
+
+            if (library) {
+                // Notifica al bibliotecario della biblioteca
+                await NotificationsModel.createNotification({
+                recipient_id: library.manager_id,
+                recipient_role: 'librarian',
+                title: 'Nuovo Libro Aggiunto',
+                message: `Il libro "${bookData.title}" di ${bookData.author} è stato aggiunto alla tua biblioteca con ${association.copies} copie.`,
+                type: 'book_added'
+                });
         }
-        
-        await LibraryBooksModel.addBookToLibrary(library_id, book_id, copies);
-        
-        res.status(201).json({
-            message: 'Libro aggiunto alla biblioteca con successo',
-            library_id,
-            book_id,
-            copies
+        }
+        res.status(201).json({ 
+        message: 'Libro creato e associato alle biblioteche con successo',
+        bookId
         });
         
     } catch (error: any) {
+        if (error.message.includes('UNIQUE constraint failed')) {
+        return res.status(409).json({ 
+            error: 'Attenzione: il libro esiste già in una o più biblioteche. Ricompilare il modulo con i dati corretti.'
+        });
+        }
+
         res.status(500).json({ error: error.message });
     }
 }
 
-// Aggiorna copie
+/* Aggiorna copie
 export async function updateCopies(req: Request, res: Response) {
     try {
         const { library_id, book_id, copies } = req.body;
@@ -119,33 +142,9 @@ export async function updateCopies(req: Request, res: Response) {
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
-}
+}*/
 
-// Rimuovi libro da biblioteca
-export async function removeBookFromLibrary(req: Request, res: Response) {
-    try {
-        const { library_id, book_id } = req.body;
-        
-        if (!library_id || !book_id) {
-            return res.status(400).json({
-                error: 'library_id e book_id sono obbligatori'
-            });
-        }
-        
-        const changes = await LibraryBooksModel.removeBookFromLibrary(library_id, book_id);
-        
-        if (changes === 0) {
-            return res.status(404).json({
-                error: 'Associazione non trovata'
-            });
-        }
-        
-        res.json({ message: 'Libro rimosso dalla biblioteca' });
-        
-    } catch (error: any) {
-        res.status(500).json({ error: error.message });
-    }
-}
+
 
 // Ottieni tutte le associazioni
 export async function getAllLibraryBooks(req: Request, res: Response) {

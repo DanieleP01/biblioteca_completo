@@ -16,7 +16,7 @@
   </div>
 
   <!-- LISTA RICHIESTE -->
-    
+
     <!-- NESSUNA RICHIESTA -->
     <div *ngIf="!isLoading && pendingLoans.length === 0" class="empty-card ion-text-center">
         <ion-icon name="checkmark-outline" size="large" color="success"></ion-icon>
@@ -59,7 +59,7 @@
             <ion-button 
               expand="block" 
               color="success" 
-              (click)="approveLoan(loan.loan_id)"
+              (click)="approveLoan(loan.id)"
               [disabled]="isLoading">
               <ion-icon name="checkmark-circle" slot="start"></ion-icon>
               Approva
@@ -69,7 +69,7 @@
               expand="block" 
               color="danger" 
               fill="outline"
-              (click)="rejectLoan(loan.loan_id)"
+              (click)="rejectLoan(loan.id)"
               [disabled]="isLoading">
               <ion-icon name="close-circle" slot="start"></ion-icon>
               Rifiuta

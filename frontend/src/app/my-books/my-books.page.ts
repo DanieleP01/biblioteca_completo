@@ -5,6 +5,8 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { User } from '../models/user.model';
+import { Loan } from '../models/loan.model';
 
 @Component({
   selector: 'app-my-books',
@@ -15,8 +17,8 @@ import { AuthService } from '../services/auth.service';
 })
 
 export class MyBooksPage implements OnInit {
-  currentUser: any;
-  activeLoans: any[] = [];
+  currentUser: User | null = null;
+  activeLoans: Loan[] = [];
   isLoading = false;
   private apiUrl = 'http://localhost:3000/api';
 
@@ -42,31 +44,26 @@ export class MyBooksPage implements OnInit {
   // Carica i prestiti attivi dell'utente
   loadActiveLoans() {
     this.isLoading = true;
-    const userId = this.currentUser.id;
+    const userId = this.currentUser?.id;
 
-    this.http.get<any[]>(`${this.apiUrl}/users/${userId}/active-loans`).subscribe({
+    this.http.get<Loan[]>(`${this.apiUrl}/users/${userId}/active-loans`).subscribe({
       next: (loans) => {
-        console.log('Tutti i prestiti ricevuti:', loans);
-        
         // Filtra solo i prestiti con stato 'active'
         this.activeLoans = loans.filter(loan => loan.status === 'active');
-        
-        console.log('Prestiti attivi filtrati:', this.activeLoans);
+        //console.log('Prestiti attivi filtrati:', this.activeLoans);
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('❌ Errore caricamento prestiti:', error);
+        console.error('Errore caricamento prestiti:', error);
         this.isLoading = false;
         alert('Errore nel caricamento dei tuoi libri');
       }
     });
   }
 
-  /**
-   * Calcola i giorni rimasti fino alla scadenza del prestito
+  /**Calcola i giorni rimasti fino alla scadenza del prestito
    * @param dueDate Data di scadenza
-   * @returns Numero di giorni rimasti
-   */
+   * @returns Numero di giorni rimasti */
   getDaysRemaining(dueDate: string): number {
     if (!dueDate) {
       return 0;
@@ -84,8 +81,7 @@ export class MyBooksPage implements OnInit {
     return Math.max(daysRemaining, 0);
   }
 
-  /**
-   * Ritorna la classe CSS in base ai giorni rimasti
+  /** Ritorna la classe CSS in base ai giorni rimasti
    * Danger: < 3 giorni
    * Warning: 3-7 giorni
    * Success: > 7 giorni
@@ -102,15 +98,11 @@ export class MyBooksPage implements OnInit {
     }
   }
 
-  /**
-   * Naviga alla pagina di richiesta prestito
-   */
   goToRequestLoan() {
     this.router.navigate(['/loan-request']);
   }
 
-  /**
-   * Formatta una data al formato italiano
+  /** Formatta una data al formato italiano
    * @param date Data da formattare
    * @returns Data formattata (dd/MM/yyyy)
    */
@@ -127,9 +119,6 @@ export class MyBooksPage implements OnInit {
     return `${day}/${month}/${year}`;
   }
 
-  /**
-   * Torna alla home
-   */
   goBack() {
     this.router.navigate(['/home']);
   }

@@ -3,14 +3,15 @@ ion-header {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(44, 51, 63, 0.13);
-  height: 54px;
+  height: 70px;
 }
 
 ion-toolbar {
   --background: transparent;
-  min-height: 54px;
   display: flex;
   align-items: center;
+  min-height: 54px;
+  height: 100%;
 }
 
 .background-image {
@@ -120,7 +121,7 @@ ion-content {
 
 ion-input {
   --background: transparent;
-  --color: #fff; 
+  --color: black; 
   --padding-start: 20px;
   --padding-end: 20px;
   z-index: 2;
@@ -129,7 +130,7 @@ ion-input {
 
 ion-input input {
   background: transparent !important;
-  color: #fff !important;
+  color: black !important;
   box-shadow: none !important;
   z-index: 2;
   

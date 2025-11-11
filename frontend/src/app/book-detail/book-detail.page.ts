@@ -21,9 +21,18 @@ export class BookDetailPage implements OnInit {
   isLoading = true;
   isLoggedIn = false; //controller login
   isUser = false; //controllo se è utente normale
+  isLibrarian = false;
+  isAdmin = false;
   userid: number | null = null;
+  bookId: number | null = null;
   hasActiveLoan = false;
   activeLoan: any = null;
+
+  bookContent = 0;
+  content: string = '';
+  bookChapters: string[] = [];
+  currentChapter = 0;
+
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(
@@ -34,27 +43,28 @@ export class BookDetailPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    
-    const id = this.route.snapshot.paramMap.get('id');
+
+    this.bookId = Number(this.route.snapshot.paramMap.get('id'));
     this.checkLoginStatus();
-    if (this.isUser && this.userid !== null && id) {
-      this.checkActiveLoan(this.userid, Number(id));
-    }
-    if(id) {
-      this.loadBookDetails(id);
-    } else {
+
+    if (this.isUser && this.userid !== null && this.bookId) {
+      this.checkActiveLoan(this.userid, Number(this.bookId));
+    }if(this.bookId){
+      this.loadBookDetails(this.bookId);
+    }else {
       this.router.navigate(['home']);
     }
-    
   }
 
-  loadBookDetails(id: String) {
+  //carica dettagli libro
+  loadBookDetails(id: Number) {
     this.isLoading = true;
     this.http.get<Book>(`${this.apiUrl}/libri/${id}`)
           .subscribe({
             next: (libro) => {
               this.book = libro;
               this.isLoading = false;
+              this.loadBookContent();
             },
             error: () => {
               this.isLoading = false;
@@ -63,9 +73,52 @@ export class BookDetailPage implements OnInit {
           });
   }
 
+  //carica il contenuto del libro (soltanto se il prestito è attivo)
+  loadBookContent() {
+    try {
+      const content_path = this.book?.content_path;
+      if (!content_path) {
+        console.warn('Content path vuoto, esco');
+        return;
+      }
+
+      this.http.get<any>(`${this.apiUrl}/libri/${content_path}/content`)
+        .subscribe({
+          next: (res) => {
+            try {
+              //console.log('Risposta ricevuta:', res);
+              if (res && res.chapters) {
+                this.content = res.chapters;
+                this.splitContentToChapters(this.content);
+              }
+            } catch (innerErr) {
+              console.error('Errore nel processing della risposta:', innerErr);
+            }
+          },
+          error: (err) => {
+            console.error('Errore HTTP caricamento contenuto:', err);
+          }
+        });
+    } catch (err) {
+      console.error('Errore generico in loadBookContent:', err);
+    }
+  }
+
+  //separa il contenuto in Capitoli 
+  splitContentToChapters(content: string) {
+    if (!content) {
+      this.bookChapters = [];
+      return;
+    }
+    this.bookChapters = content.split(/(?=Capitolo)/g).map(chap => chap.trim());
+    this.currentChapter = 0;
+  }
+
   checkLoginStatus(){
     this.isLoggedIn = this.authService.isLoggedIn();
     this.isUser = this.authService.getUserRole() === 'user';
+    this.isLibrarian = this.authService.getUserRole() === 'librarian';
+    this.isAdmin = this.authService.getUserRole() == 'admin';
     this.userid = this.authService.getUserId();
   }
 
@@ -76,8 +129,8 @@ export class BookDetailPage implements OnInit {
   //richiesta prestito
   loanRequestDetail() {
     if (this.book) {
-      // 4. Naviga alla pagina di prestito passando l'oggetto 'book' nello state
-      this.router.navigate(['/loan-request'], { // 
+      //Naviga alla pagina di prestito passando l'oggetto 'book' nello state
+      this.router.navigate(['/loan-request'], {  
         state: {
           book: this.book 
         }
@@ -120,7 +173,7 @@ export class BookDetailPage implements OnInit {
     });
 
   }
-
+  
   redirectToLogin() {
     this.router.navigate(['login']);
   }

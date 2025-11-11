@@ -25,11 +25,11 @@
     </ion-card>
 
     <!-- Form richiesta -->
-    <ion-list>
+    <div class="form-container">
       
       <!-- Campo numero copie -->
-      <ion-item>
-        <ion-label position="stacked">Numero di copie da richiedere</ion-label>
+      <ion-item class="custom-input" lines="none">
+        <ion-label position="stacked" class="label-required">Numero di copie da richiedere</ion-label>
         <ion-input 
           type="number" 
           placeholder="Inserisci il numero"
@@ -39,8 +39,8 @@
       </ion-item>
 
       <!-- Campo motivo -->
-      <ion-item>
-        <ion-label position="stacked">Motivo della richiesta</ion-label>
+      <ion-item class="custom-input" >
+        <ion-label position="stacked" class="label-required">Motivo della richiesta</ion-label>
         <ion-textarea 
           placeholder="Es: Alta richiesta di prenotazioni"
           [(ngModel)]="reason"
@@ -48,24 +48,22 @@
         </ion-textarea>
       </ion-item>
 
-    </ion-list>
+    </div>
+
+    <div class="button-container">
+      <ion-button fill="outline" color="medium" (click)="dismiss()" expand="block">
+        Annulla
+      </ion-button>
+      <ion-button 
+        fill="solid" 
+        color="success" 
+        (click)="submitRequest()" 
+        expand="block"
+        [disabled]="isLoading">
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        {{ isLoading ? 'Invio in corso...' : 'Invia Richiesta' }}
+      </ion-button>
+    </div>
 
   </div>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-button fill="outline" color="medium" (click)="dismiss()" expand="block">
-      Annulla
-    </ion-button>
-    <ion-button 
-      fill="solid" 
-      color="success" 
-      (click)="submitRequest()" 
-      expand="block"
-      [disabled]="isLoading">
-      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-      {{ isLoading ? 'Invio in corso...' : 'Invia Richiesta' }}
-    </ion-button>
-  </ion-toolbar>
-</ion-footer>

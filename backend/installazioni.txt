@@ -16,3 +16,30 @@ sistemare la logica di loan_date e due_date di loans.
 controllare tutti i file per usare correttamente le interfacce nelle funzioni in ts delle pagine, TOGLIERE <any[]>  !!!
 
 commentare rotte in book e libraries
+
+::ng-deep (per il css della modale)
+
+ Se il prestito è scaduto, ritorna 403 Forbidden
+
+spiegazione sintassi per rimostare le notifiche non lette subito dopo averle lette
+// 1. Prendi l'array attuale di notifiche
+                    const currentNotifications = this.notificationsSubject.getValue();                    
+// 2. Cicla attraverso tutte le notifiche
+const updatedNotifications = currentNotifications.map((n) => {
+    // 3. Se l'ID corrisponde a quella che stai leggendo
+    if(n.id === notificationId){
+    // 4. Crea una COPIA della notifica e metti is_read = true
+    return { ...n, is_read: true };
+    }
+    // 5. Altrimenti ritorna la notifica invariata
+    return n;
+});
+// 6. Aggiorna l'array nel subject (aggiorna il template)
+this.notificationsSubject.next(updatedNotifications);
+// 7. Decrementa il counter di notifiche non lette
+const currentCount = this.unreadCountSubject.getValue();
+if(currentCount > 0){
+    this.unreadCountSubject.next(currentCount - 1);
+}
+
+

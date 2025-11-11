@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/user.model.js';
+import { Library } from '../models/library.model';
 
 @Component({
   selector: 'app-profile',
@@ -16,9 +17,9 @@ import { User } from '../models/user.model.js';
 })
 
 export class ProfilePage implements OnInit {
-  currentUser: any;
-  detailsUser: any;
-  libraryManager: any;
+  currentUser: User | null = null;
+  detailsUser: User | null = null;
+  libraryManager: Library | null = null;
   isLoading = false;
   
   isUser = false;
@@ -35,8 +36,8 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
 
   this.currentUser = this.authService.getUser();
-  this.isUser = this.currentUser.role == 'user';
-  this.isLibrarian = this.currentUser.role == 'librarian';
+  this.isUser = this.currentUser?.role == 'user';
+  this.isLibrarian = this.currentUser?.role == 'librarian';
   console.log('Utente corrente:', this.currentUser);
 
   if (!this.currentUser) {
@@ -50,7 +51,7 @@ export class ProfilePage implements OnInit {
   loadProfileDetail(){
     this.isLoading = true;
 
-    this.http.get<any[]>(`${this.apiUrl}/details-profile/${this.currentUser.id}`).subscribe({
+    this.http.get<User>(`${this.apiUrl}/details-profile/${this.currentUser?.id}`).subscribe({
       next: (user) => {
         this.detailsUser = user;
         console.log("dettagli: ", this.detailsUser);

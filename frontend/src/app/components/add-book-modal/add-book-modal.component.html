@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Aggiungi Libro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Sezione Dati Libro -->
+  <div class="form-container">
+    <div class="section-header">
+      <h2>Informazioni Libro</h2>
+    </div>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating" class="label-required">Titolo</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.title" 
+        type="text" 
+        placeholder="Inserisci il titolo">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating" class="label-required">Autore</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.author" 
+        type="text" 
+        placeholder="Inserisci l'autore">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating" class="label-required">ISBN</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.isbn" 
+        type="text" 
+        placeholder="Inserisci l'ISBN">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.category" 
+        type="text" 
+        placeholder="Es. Fantasy, Classici...">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating">Anno</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.year" 
+        type="number" 
+        placeholder="Inserisci l'anno">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating">Descrizione</ion-label>
+      <ion-textarea 
+        [(ngModel)]="newBook.description" 
+        rows="3" 
+        placeholder="Descrizione del libro...">
+      </ion-textarea>
+    </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating">URL Copertina</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.cover_url" 
+        type="text" 
+        placeholder="url della copertina">
+      </ion-input>
+    </ion-item>
+  </div>
+
+  <!-- Sezione Biblioteche -->
+  <div class="form-container">
+    <div class="section-header">
+      <h2>Associa Biblioteche</h2>
+    </div>
+
+    <div class="libraries-list">
+      <ion-item class="library-item" *ngFor="let lib of libraries" lines="none">
+        <ion-label class="lib-name">{{ lib.name }}</ion-label>
+        <ion-input 
+          type="number" 
+          min="0"
+          max="9999"
+          [(ngModel)]="libraryBooksCopies[lib.id]"
+          placeholder="0"
+          class="copies-input">
+        </ion-input>
+        <span class="copies-label">copie</span>
+      </ion-item>
+    </div>
+  </div>
+
+  <!-- Bottoni -->
+  <div class="button-container">
+    <ion-button 
+      expand="block" 
+      color="primary"
+      (click)="saveNewBook()"
+      [disabled]="isLoading"
+      class="save-btn">
+      <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
+      {{ isLoading ? 'Salvataggio...' : 'Salva Libro' }}
+    </ion-button>
+    <ion-button 
+      expand="block" 
+      color="medium"
+      (click)="resetForm()"
+      class="reset-btn">
+      Cancella Campi
+    </ion-button>
+  </div>
+</ion-content>

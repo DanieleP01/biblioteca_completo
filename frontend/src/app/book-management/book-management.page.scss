@@ -1,0 +1,105 @@
+ion-header {
+  position: relative;
+  height: 70px;
+}
+
+ion-toolbar {
+  --background: rgba(10, 25, 41, 0.35);
+  
+  min-height: 54px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+ion-button {
+  --border-radius: 10px;
+  font-size: 0.8em;
+  min-width: 155px;
+  margin-right: 15px;
+}
+
+ion-content{
+    --background: #fff;
+}
+
+.center-box {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 400px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.288);
+}
+
+.card-grid {
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.288);
+    background: var(--ion-color-step-50, #f8f8f8);
+    border-radius: 18px;
+    padding: 25px;
+    margin: 20px;
+    max-width: 1100px;
+    min-width: 530px;
+    min-height: 315px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    gap: 28px 30px;
+    align-items: start;
+}
+
+.checkmark {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #295eff;
+  color: #fff;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.05em;
+}
+
+//card piccole
+.small-item-card {
+    min-width: 145px;
+    width: 145px;
+    height: 230px;
+    flex-shrink: 0;
+    margin-right: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    --background: var(--ion-color-white, #fff);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+    img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+    }
+    ion-card-header {
+        padding: 8px;
+        text-align: center;
+        ion-card-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+            color: black;
+        }
+    }
+}
+
+.small-item-card.selected{
+    border: 3px solid #295eff;
+    box-shadow: 0 4px 20px #295eff55;
+}

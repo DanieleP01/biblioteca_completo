@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Gestione libri</ion-title>
+    <div slot="end">
+      <ion-button *ngIf="isRemoveMode" color="danger" (click)="confirmDelete()">
+        Conferma Rimozione ({{ selectedBooks.size }})
+      </ion-button>
+      <ion-button color="primary" (click)="addBook()">Aggiungi Libro</ion-button>
+      <ion-button color="primary" (click)="toggleRemoveMode()">{{ isRemoveMode ? 'Annulla' : 'Rimuovi Libri' }}</ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="center-box">
+    <div class="card-grid">
+      <ion-card *ngFor="let book of books" 
+                  class="small-item-card" 
+                  name="card" 
+                  [class.selectable]="isRemoveMode"
+                  [attr.tappable]="isRemoveMode ? true : null"
+                  [class.selected]="isBookSelected(book.id)"
+                  (click)="isRemoveMode && toggleBookSelection(book.id)">
+        <img [src]="book.cover_url" alt="Copertina del libro"/> 
+        <ion-card-header>
+          <ion-card-title>{{ book.title }}</ion-card-title>
+          <ion-card-subtitle> 
+            <ion-icon name="barcode-outline"></ion-icon>
+            {{ book.isbn }}
+          </ion-card-subtitle>
+        </ion-card-header>
+        <span *ngIf="isBookSelected(book.id)" class="checkmark">✓</span>
+      </ion-card>
+    </div>
+  </div>
+
+</ion-content>

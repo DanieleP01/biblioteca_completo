@@ -192,7 +192,8 @@ export async function getActiveLoanByUserAndBook(userId: number, bookId: number)
     `SELECT * FROM loans 
      WHERE user_id = ? 
      AND book_id = ? 
-     AND status = 'active'`,
+     AND status = 'active'
+     AND due_date > datetime('now')`,
     [userId, bookId]
   );
 

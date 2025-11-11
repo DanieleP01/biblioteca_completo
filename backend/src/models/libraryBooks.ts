@@ -54,32 +54,47 @@ export async function checkAvailability(libraryId: number, bookId: number) {
     return result?.available_copies || 0;
 }
 
-// Aggiungi libro a biblioteca (o incrementa copie se già presente)
-export async function addBookToLibrary(libraryId: number, bookId: number, copies: number) {
+// Aggiunge un nuovo libro con relative copie
+export async function addBookToLibraries(
+    bookId: number, 
+    libraryAssociations: Array<{ libraryId: number; copies: number}>
+): Promise<void> {
+    
     const db = await openDb();
-    
-    await db.run(`
-        INSERT INTO library_books (library_id, book_id, copies)
-        VALUES (?, ?, ?)
-        ON CONFLICT(library_id, book_id) 
-        DO UPDATE SET copies = copies + excluded.copies
-    `, libraryId, bookId, copies);
-    
+    for (const association of libraryAssociations) {
+        // Validazione copie
+        if (association.copies < 1) {
+        throw new Error(`Numero di copie non valido per biblioteca ${association.libraryId}`);
+        }
+
+        // Inserisci nuovo record
+        const result = await db.run(
+            `INSERT INTO library_books (library_id, book_id, total_copies, available_copies)
+            VALUES (?, ?, ?, ?)`,
+            [
+            association.libraryId,
+            bookId,
+            association.copies,
+            association.copies
+            ]
+        );
+    }
+
     await db.close();
 }
 
-// Aggiorna numero copie
-export async function updateCopies(libraryId: number, bookId: number, copies: number) {
-    const db = await openDb();
-    
-    const result = await db.run(`
-        UPDATE library_books 
-        SET total_copies = ?
-        WHERE library_id = ? AND book_id = ?
-    `, copies, libraryId, bookId);
-    
-    await db.close();
-    return result.changes;
+// aggiunge copie di un libro in una biblioteca (usato quando l'admin accetta la richiesta di copie)
+export async function addCopiesToLibrary(libraryId: number, bookId: number, copiesToAdd: number) {
+  const db = await openDb();
+  const result = await db.run(`
+    UPDATE library_books 
+    SET total_copies = total_copies + ?,
+        available_copies = available_copies + ?
+    WHERE library_id = ? AND book_id = ?
+  `, copiesToAdd, copiesToAdd, libraryId, bookId);
+
+  await db.close();
+  return result.changes;
 }
 
 // Decrementa copie (usato quando si approva un prestito)
@@ -110,19 +125,6 @@ export async function incrementCopies(libraryId: number, bookId: number) {
     return result.changes;
 }
 
-// Rimuovi libro da biblioteca
-export async function removeBookFromLibrary(libraryId: number, bookId: number) {
-    const db = await openDb();
-    
-    const result = await db.run(`
-        DELETE FROM library_books 
-        WHERE library_id = ? AND book_id = ?
-    `, libraryId, bookId);
-    
-    await db.close();
-    return result.changes;
-}
-
 // Ottieni tutte le associazioni libro-biblioteca
 export async function getAllLibraryBooks() {
     const db = await openDb();
@@ -142,3 +144,4 @@ export async function getAllLibraryBooks() {
     await db.close();
     return associations;
 }
+

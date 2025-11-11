@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { IonicModule, AlertController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Book } from '../models/book.model';
-import { Library } from '../models/library.model';
+import { Library, libraryBook } from '../models/library.model';
 import { AuthService } from '../services/auth.service.js';
+import { AlertService } from '../services/alert.service';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-loan-request',
@@ -19,11 +21,11 @@ import { AuthService } from '../services/auth.service.js';
 export class LoanRequestPage implements OnInit {
   selectedBook: Book | null = null;
   selectedAuthor: string = '';
-  selectedLibrary: any | null = null;
+  selectedLibrary: Library | null = null;
 
   bookSuggestions: Book[] = [];
   authorSuggestions: string[] = [];
-  librarySuggestions: any[] = [];
+  librarySuggestions: Library[] = [];
 
   showBookSuggestions = false;
   showAuthorSuggestions = false;
@@ -35,21 +37,21 @@ export class LoanRequestPage implements OnInit {
 
   private preselectedBook: Book | null = null; //per tenere traccia del libro passato da book-detail
 
-  currentUser: any;
+  currentUser: User | null = null;
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private alertCtrl: AlertController
+    private alertService: AlertService
   ) {
     const navigation = this.router.getCurrentNavigation();
     
     const state = navigation?.extras.state as { book: Book }; //utilizzo di una variabile intermedia per effettuare il cast di book
 
     if (state && state.book) { 
-    this.preselectedBook = state.book; 
+      this.preselectedBook = state.book; 
     }
   }
 
@@ -59,15 +61,12 @@ export class LoanRequestPage implements OnInit {
       this.router.navigate(['/home']);
       return;
     }
-    //this.loadAllAuthors();
   }
 
   // utilizza il libro pre-selezionato proveniente da book-detail
-  ionViewWillEnter() { //evento della pagina
+  ionViewWillEnter() { 
     if (this.preselectedBook) {
       this.selectBook(this.preselectedBook);
-      
-      // Reset per sicurezza
       this.preselectedBook = null; 
     } else {
       console.log("libro non passato alla pagina sucessiva");
@@ -136,11 +135,11 @@ export class LoanRequestPage implements OnInit {
   loadLibrariesForBook(bookId: number) {
     console.log("libro selezionato: ", bookId);
     this.http.get<Library[]>(`${this.apiUrl}/books/${bookId}/libraries`).subscribe({
-      next: (libraries: any) => {
-        this.librarySuggestions = libraries.filter((lib: any) => lib.total_copies > 0);
+      next: (response) => {
+        this.librarySuggestions = response.filter((lib: any) => lib.total_copies > 0);
 
         if (this.librarySuggestions.length === 0) {
-          this.presentAlert('Nessuna biblioteca', 'Spiacenti, questo libro non è disponibile in nessuna biblioteca');
+          this.alertService.presentAlert('Nessuna biblioteca', 'Spiacenti, questo libro non è disponibile in nessuna biblioteca');
         }
       },
       error: (error) => {
@@ -206,14 +205,14 @@ export class LoanRequestPage implements OnInit {
   //invio richiesta prestito
   submitLoanRequest() {
     if (!this.isFormValid()) {
-      this.presentAlert('Errore','Compila tutti i campi richiesti');
+      this.alertService.presentAlert('Errore','Compila tutti i campi richiesti');
       return;
     }
     this.isLoading = true;
 
     const loanRequest = {
-      user_id: this.currentUser.id,
-      book_id: this.selectedBook!.id,
+      user_id: this.currentUser?.id,
+      book_id: this.selectedBook?.id,
       library_id: this.selectedLibrary!.id
     };
     
@@ -221,7 +220,7 @@ export class LoanRequestPage implements OnInit {
     this.http.post(`${this.apiUrl}/loans/request`, loanRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.presentAlert('Successo!','Richiesta di prestito inviata con successo!');
+        this.alertService.presentAlert('Successo!','Richiesta di prestito inviata con successo!');
         this.resetForm();
         this.router.navigate(['/home']);
       },
@@ -229,17 +228,17 @@ export class LoanRequestPage implements OnInit {
         this.isLoading = false;
         const errorMsg = error.error?.error || 'Errore durante l\'invio della richiesta';
         this.resetForm();
-        this.presentAlert('Errore',errorMsg);
+        this.alertService.presentAlert('Errore',errorMsg);
       }
     });
   }
 
-  //
+  //crea prenotazione
    createReservation(library: any, event: MouseEvent) {
-    event.stopPropagation(); // Impedisce al click di propagarsi all'ion-item
+    event.stopPropagation(); 
 
     if (!this.selectedBook || !library || !this.currentUser) {
-      this.presentAlert('Errore', 'Dati mancanti per la prenotazione.');
+      this.alertService.presentAlert('Errore', 'Dati mancanti per la prenotazione.');
       return;
     }
     
@@ -254,25 +253,16 @@ export class LoanRequestPage implements OnInit {
     this.http.post(`${this.apiUrl}/create-reservation`, reservationRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.presentAlert('Successo!', 'Libro prenotato con successo! Verrai notificato quando sarà disponibile.');
+        this.alertService.presentAlert('Successo!', 'Libro prenotato con successo! Verrai notificato quando sarà disponibile.');
         this.resetForm(); // Resetta il form e chiudi la pagina
         this.router.navigate(['/home']);
       },
       error: (error) => {
         this.isLoading = false;
         const errorMsg = error.error?.error || 'Errore durante la prenotazione';
-        this.presentAlert('Errore', errorMsg);
+        this.alertService.presentAlert('Errore', errorMsg);
       }
     });
-  }
-
-  private async presentAlert(header: string, message: string) {
-    const alert = await this.alertCtrl.create({
-      header: header,
-      message: message,
-      buttons: ['OK']
-    });
-    await alert.present();
   }
 
   private resetForm() {

@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../services/auth.service.js';
 import { Router } from '@angular/router';
+import { User } from '../models/user.model.js';
+import { Library } from '../models/library.model.js';
+import { Loan } from '../models/loan.model.js';
 
 @Component({
   selector: 'app-loans-library',
@@ -15,10 +18,10 @@ import { Router } from '@angular/router';
 })
 
 export class loanslibrary implements OnInit {
-  currentUser: any;
-  activeLibrary: any;
-  activeLoans: any;
-  overdueLoans: any;
+  currentUser: User | null = null;
+  activeLibrary: Library | null = null;
+  activeLoans: Loan[] = [];
+  overdueLoans: Loan[] = [];
   isLoading = false;
 
   private apiUrl = 'http://localhost:3000/api';
@@ -41,14 +44,13 @@ export class loanslibrary implements OnInit {
     
     const managerId = this.authService.getUser()?.id;
 
-    this.http.get<any[]>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
+    this.http.get<Library>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
       next: (library) => {
         this.activeLibrary = library;
-        console.log("Biblioteca del bibliotecario:", this.activeLibrary);
+        //console.log("Biblioteca del bibliotecario:", this.activeLibrary);
         //carica i prestiti attivi
         this.loadActiveLoans();
         //carica i prestiti scaduti
-        console.log("prestiti scaduti 1:" +this.overdueLoans);
         this.loadExpiringLoans();
       },
       error: (error) => {
@@ -62,7 +64,7 @@ export class loanslibrary implements OnInit {
   //prestiti attivi della biblioteca
   loadActiveLoans(){
     this.isLoading = true;
-    this.http.get<any[]>(`${this.apiUrl}/libraries/${this.activeLibrary.id}/active-loans`).subscribe({
+    this.http.get<Loan[]>(`${this.apiUrl}/libraries/${this.activeLibrary?.id}/active-loans`).subscribe({
       next: (loans) => {
         this.activeLoans = loans;
         //this.isLoading = false;
@@ -77,7 +79,7 @@ export class loanslibrary implements OnInit {
   //prestiti scaduti della biblioteca
   loadExpiringLoans(){
     this.isLoading = true;
-    this.http.get<any[]>(`${this.apiUrl}/libraries/${this.activeLibrary.id}/expiring-loans`).subscribe({
+    this.http.get<Loan[]>(`${this.apiUrl}/libraries/${this.activeLibrary?.id}/expiring-loans`).subscribe({
       next: (loans) => {
         this.overdueLoans = loans;
         console.log("prestiti scaduti: ", this.overdueLoans);
@@ -123,5 +125,5 @@ export class loanslibrary implements OnInit {
       return 'success';
     }
   }
-
+  
 }

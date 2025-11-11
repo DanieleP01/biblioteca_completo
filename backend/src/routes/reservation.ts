@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as reservationController from '../controllers/reservationsController.js';
+import { verifyToken, checkRole } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 

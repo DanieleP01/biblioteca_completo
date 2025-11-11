@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as LoanController from '../controllers/loansController.js';
-
+import { verifyToken } from '../middlewares/authMiddleware.js';
 const router = Router();
 
 // Richiesta prestito

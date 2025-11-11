@@ -36,7 +36,7 @@ export async function getUserByUsernameOrEmail(identifier: string){
   return user;
 }
 
-//get Utente per id
+//get dati per id
 export async function getUserById(identifier: number){
   const db = await openDb();
   

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { createUser, getUserById, getUserByUsernameOrEmail, verifyPassword } from '../models/user.js';
+import * as NotificationsModel from '../models/notifications.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -7,6 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
 // LOGIN
 export const loginController = async (req: Request, res: Response): Promise<void> => {
+
   try {
     const { identifier, password } = req.body; // identifier può essere email o username
 
@@ -81,7 +83,18 @@ export const registerController = async (req: Request, res: Response) => {
   const passwordHash = await bcrypt.hash(password, 10);
 
   try {
-    await createUser(firstName, lastName, username, email, passwordHash, city, province);
+    //crea l'utente
+    const userId = await createUser(firstName, lastName, username, email, passwordHash, city, province);
+    
+    // NOTIFICA DI BENVENUTO
+    await NotificationsModel.createNotification({
+      recipient_id: userId,
+      recipient_role: 'user',
+      title: 'Benvenuto!',
+      message: `Ciao ${firstName}! Benvenuto nella nostra biblioteca digitale. Inizia a esplorare i nostri libri!`,
+      type: 'welcome'
+    });
+
     res.status(201).json({ message: 'Registrazione completata!' });
     return;
   } catch (error: any) {

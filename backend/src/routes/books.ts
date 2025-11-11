@@ -1,10 +1,19 @@
 import { Router } from 'express';
-import { getBooksController, getBookByIdController } from '../controllers/booksController.js';
+import * as booksController from '../controllers/booksController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
-router.get('/', getBooksController); //route per tutti i libri
+//route per tutti i libri
+router.get('/', booksController.getBooksController); 
 
-router.get('/:id', getBookByIdController); //route per il singolo libro
+//route per il singolo libro
+router.get('/:id', booksController.getBookByIdController); 
+
+//rimuove libri
+router.delete('/delete', booksController.deleteBooks);
+
+//recupera il contenuto del libro dal file
+router.get("/:content_path/content", booksController.getBookContentFromFile);
 
 export default router;

@@ -49,16 +49,10 @@ export class LoginPage implements OnInit {
         this.successMessage = 'Login effettuato!';
         
         // Salva il token
-        //localStorage.setItem('token', response.token);
         this.authService.saveToken(response.token);
-
-        //Salva l'username
-        //localStorage.setItem('username', response.user.username);
-
         //salva l'utente
         this.authService.saveUser(response.user);
         
-        // Attendi mezzo secondo poi reindirizza
         setTimeout(() => {
           this.router.navigate(['/home']).then(() => {
             window.location.reload();

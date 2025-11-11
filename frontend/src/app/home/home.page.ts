@@ -9,14 +9,17 @@ import { Library } from '../models/library.model.js';
 import { AuthService } from '../services/auth.service.js';
 import { UserPopoverComponent } from '../components/user-popover/user-popover.component.js';
 import { LoginPopoverComponent } from '../components/login-popover/login-popover.component.js';
-
+import { NotificationService } from '../services/notification.service.js';
+import { Subscription } from 'rxjs';
+import { User } from '../models/user.model.js';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, HttpClientModule, IonicModule, UserPopoverComponent, LoginPopoverComponent, FormsModule],
   templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss']
+  styleUrls: ['./home.page.scss'],
+  standalone: true,
+  //providers: [NotificationService],
+  imports: [CommonModule, HttpClientModule, IonicModule, UserPopoverComponent, LoginPopoverComponent, FormsModule]
 })
 
 export class HomePage implements OnInit{
@@ -26,7 +29,6 @@ export class HomePage implements OnInit{
   //variabili utilizzate solo per la ricerca (così da non andare a svuotare le card della home)
   searchBooks: Book[] = [];
   searchLibraries: Library[] = [];
-  //searchTotal: Number[] = [];
 
   isLoggedIn = false; //boolean per il controllo di login
   isLoading = false;
@@ -37,12 +39,16 @@ export class HomePage implements OnInit{
   searchQuery = ''; 
   isSearchModalOpen = false; //gestisce l'apertura della modale
 
-  currentUser: any = null;
-  isLibrarian = false;
+  currentUser: User | null = null;
 
+  //variabili per controllare il tipo di utente
+  isLibrarian = false;
   isUser = false;
   isAdmin = false;
 
+  unreadCount: number = 0; //per il badge notifiche
+
+  private subscription: Subscription = new Subscription();
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(
@@ -50,9 +56,21 @@ export class HomePage implements OnInit{
     private router: Router, 
     private authService: AuthService,
     private popoverController: PopoverController,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {
+    // Carica le notifiche all'avvio
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.notificationService.loadAllNotifications(userId);
+
+      this.subscription.add(
+        this.notificationService.unreadCount$.subscribe((count) => {
+          this.unreadCount = count;
+        })
+      );
+    }
 
     this.isLoading = true;
     this.loadData();
@@ -62,9 +80,13 @@ export class HomePage implements OnInit{
     this.currentUser = this.authService.getUser();
     this.isUser = this.currentUser?.role === 'user';
 
-    console.log(this.currentUser);
+    //console.log(this.currentUser);
     this.isLibrarian = this.currentUser?.role === 'librarian';
     this.isAdmin = this.currentUser?.role === 'admin';
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   loadData(){
@@ -150,7 +172,6 @@ export class HomePage implements OnInit{
 
   onSelectBook(book: any) {
     this.closeSearchModal();
-    //timeout impostato, per favorire il tempo di chiusura della finestra modale
     setTimeout(() => {
       this.goToBookDetail(book.id);
     }, 200); 
@@ -158,7 +179,6 @@ export class HomePage implements OnInit{
 
   onSelectLibrary(library: any) {
     this.closeSearchModal();
-    //timeout impostato, per favorire il tempo di chiusura della finestra modale
     setTimeout(() => {
       this.goToLibraryDetail(library.id);
     }, 200); 
@@ -193,9 +213,14 @@ export class HomePage implements OnInit{
     this.router.navigate(['/loan-request']);
   }
 
-  //controllo prestiti bibliotecario
+  //controllo prestiti (bibliotecario)
   goToLoanControl() {
-  this.router.navigate(['/loan-control']);
-}
+    this.router.navigate(['/loan-control']);
+  }
+
+  //controllo richiesta di copie (aministratore)
+  goToCopyControl(){
+    this.router.navigate(['/copyrequest-control']);
+  }
 
 }

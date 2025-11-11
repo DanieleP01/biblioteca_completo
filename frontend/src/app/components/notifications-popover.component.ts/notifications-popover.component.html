@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Notifiche</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closePopover()" fill="clear">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+    <!-- Se non ci sono notifiche -->
+    <div *ngIf="notifications.length === 0" class="empty-state">
+        <ion-icon name="mail-open-outline"></ion-icon>
+    <p>Nessuna notifica</p>
+    </div>
+
+    <ion-button color="primary" (click)="markAllAsRead()" size="small" class="button" *ngIf="getUnreadNotifications().length > 0">
+        Segna tutte come lette
+    </ion-button>
+
+    <!-- Se ci sono notifiche -->
+    <div class="notifications-container" *ngIf="notifications.length > 0">
+        <!-- Sezione Notifiche Non Lette -->
+        <h3 class="section-title" *ngIf="getUnreadNotifications().length > 0">
+            NON LETTE ({{ getUnreadNotifications().length }})
+        </h3>
+        
+        <div *ngFor="let notification of getUnreadNotifications()" 
+            (click)="markAsRead(notification)"
+            class="notification-item unread"
+            button>
+            <h4>{{ notification.title }}</h4>
+            <p>{{ notification.message }}</p>
+            <small>{{ notification.created_at | date: 'short' }}</small>
+        </div>
+
+        <!-- Sezione Notifiche Lette -->
+        <h3 class="section-title" *ngIf="getReadNotifications().length > 0">
+            LETTE ({{ getReadNotifications().length }})
+        </h3>
+        
+        <div *ngFor="let notification of getReadNotifications()" 
+            class="notification-item read">
+            <h4>{{ notification.title }}</h4>
+            <p>{{ notification.message }}</p>
+            <small>{{ notification.created_at | date: 'short' }}</small>
+            <ion-icon name="checkmark-circle" slot="end" color="success"></ion-icon>
+        </div>
+    </div>
+</ion-content>

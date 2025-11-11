@@ -2,6 +2,14 @@
   <ion-item-divider>
     <ion-label>{{ username }}</ion-label>
   </ion-item-divider>
+
+  <ion-item button (click)="openNotificationsPopover($event)">
+    <ion-icon name="notifications" slot="start"></ion-icon>
+    <ion-label>Notifiche</ion-label>
+    <ion-badge *ngIf="unreadCount > 0" color="danger" slot="end" class="badge">
+      {{ unreadCount }}
+    </ion-badge>
+  </ion-item>
   
   <ion-item button (click)="goToProfile()">
     <ion-icon name="person-outline" slot="start"></ion-icon>
@@ -26,6 +34,11 @@
   <ion-item button (click)="goToInventory()" *ngIf="isLibrarian">
     <ion-icon name="archive-outline" slot="start"></ion-icon>
     <ion-label>Inventario e Prenotazioni</ion-label>
+  </ion-item>
+
+  <ion-item button (click)="goToBookManagement()" *ngIf="isAdmin">
+    <ion-icon name="archive-outline" slot="start"></ion-icon>
+    <ion-label>Gestione Libri</ion-label>
   </ion-item>
 
   <ion-item-divider></ion-item-divider>

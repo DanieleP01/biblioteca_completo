@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS books (
     category TEXT,
     cover_url TEXT,
     description TEXT,
-    year INTEGER
+    year INTEGER,
+    content_path TEXT
 );
 
 CREATE TABLE IF NOT EXISTS library_books (
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXISTS library_books (
     available_copies INTEGER,
     PRIMARY KEY(library_id, book_id),
     FOREIGN KEY (library_id) REFERENCES libraries(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS loans (
@@ -87,24 +88,35 @@ CREATE TABLE IF NOT EXISTS CopyRequests (
     FOREIGN KEY (admin_id) REFERENCES users(id)
 );
 
--- POPOLAMENTO
+CREATE TABLE IF NOT EXISTS notifications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  recipient_id INTEGER NOT NULL,
+  recipient_role TEXT NOT NULL,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  type TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (recipient_id) REFERENCES users(id)
+);
 
+-- POPOLAMENTO
 INSERT OR IGNORE INTO books 
-(title, author, isbn, category, cover_url, description, year) VALUES
-('Il Signore degli Anelli', 'J.R.R. Tolkien', '978-8845292613', 'Fantasy', 'assets/books/IlSignoreDegliAnelli.png', 'dsnfkdnfidnf', '2000'),
-('Orgoglio e Pregiudizio', 'Jane Austen', '978-8804677943', 'Classici', 'assets/books/OrgoglioPregiudizio.png', 'udnfudsnfodsn', '2001'),
-('1984', 'George Orwell', '978-8804618762', 'Distopico', 'assets/books/1984.png', 'sdnsjdnf', '2002'),
-('Moby Dick', 'Herman Melville', '978-8817009419', 'Classici', 'assets/books/mobyDick.png','cnsdvnds', '2003'),
-('Harry Potter e la Pietra Filosofale', 'J.K. Rowling', '978-8869184519', 'Fantasy', 'assets/books/HarryPotter.png', 'dsfndnf', '2004'),
-('Il Codice Da Vinci', 'Dan Brown', '978-8804523620', 'Thriller', 'assets/books/CodiceDaVinci.png', 'dsnfjdnf', '2005'),
-('Guerra e Pace', 'Lev Tolstoj', '978-8806206013', 'Classici', 'assets/books/GuerraPace.png', 'dnosjdns', '2006'),
-('Cronache di Narnia: Il Leone, la Strega e Armadio', 'C.S. Lewis', '978-8804642873', 'Fantasy', 'assets/books/narnia.png', 'dsnodnfon', '2007'),
-('Cento anni di Solitudine', 'Gabriel Garcia Marquez', '978-8804494276', 'Realismo Magico', 'assets/books/cent_anni_di_solitudine.png', 'amsdpkdpowa', '2008'),
-('Fahrenheit 451', 'Ray Bradbury', '978-8804683074', 'Distopico', 'assets/books/fahrenheit_451.png', 'cmnvibns', '2009'),
-('Il Piccolo Principe', 'Antoine de Saint-Exupéry', '978-8845292279', 'Favola', 'assets/books/il_piccolo_principe.png', 'niubcfrc', '2010'),
-('Il Nome della Rosa', 'Umberto Eco', '978-8845290688', 'Giallo Storico', 'assets/books/il_nome_della_rosa.png', 'pkdojsijins', '2011'),
-('L''alchimista', 'Paulo Coelho', '978-8878187884', 'Narrativa Esoterica', 'assets/books/l_alchimista.png', 'dncsodvnos', '2012'),
-('Don Chisciotte della Mancia', 'Miguel de Cervantes', '978-8804677844', 'Classici', 'assets/books/don_chisciotte_della_mancia.png', 'mdocinwecjn', '2013');
+(title, author, isbn, category, cover_url, description, year, content_path) VALUES
+('Il Signore degli Anelli', 'J.R.R. Tolkien', '978-8845292613', 'Fantasy', 'assets/books/IlSignoreDegliAnelli.png', 'dsnfkdnfidnf', '2000', NULL),
+('Orgoglio e Pregiudizio', 'Jane Austen', '978-8804677943', 'Classici', 'assets/books/OrgoglioPregiudizio.png', 'udnfudsnfodsn', '2001', NULL),
+('1984', 'George Orwell', '978-8804618762', 'Distopico', 'assets/books/1984.png', 'sdnsjdnf', '2002', NULL),
+('Moby Dick', 'Herman Melville', '978-8817009419', 'Classici', 'assets/books/mobyDick.png','cnsdvnds', '2003', NULL),
+('Harry Potter e la Pietra Filosofale', 'J.K. Rowling', '978-8869184519', 'Fantasy', 'assets/books/HarryPotter.png', 'dsfndnf', '2004', NULL),
+('Il Codice Da Vinci', 'Dan Brown', '978-8804523620', 'Thriller', 'assets/books/CodiceDaVinci.png', 'dsnfjdnf', '2005', NULL),
+('Guerra e Pace', 'Lev Tolstoj', '978-8806206013', 'Classici', 'assets/books/GuerraPace.png', 'dnosjdns', '2006', NULL),
+('Cronache di Narnia: Il Leone, la Strega e Armadio', 'C.S. Lewis', '978-8804642873', 'Fantasy', 'assets/books/narnia.png', 'dsnodnfon', '2007', NULL),
+('Cento anni di Solitudine', 'Gabriel Garcia Marquez', '978-8804494276', 'Realismo Magico', 'assets/books/cent_anni_di_solitudine.png', 'amsdpkdpowa', '2008', NULL),
+('Fahrenheit 451', 'Ray Bradbury', '978-8804683074', 'Distopico', 'assets/books/fahrenheit_451.png', 'cmnvibns', '2009', NULL),
+('Il Piccolo Principe', 'Antoine de Saint-Exupéry', '978-8845292279', 'Favola', 'assets/books/il_piccolo_principe.png', 'niubcfrc', '2010', NULL),
+('Il Nome della Rosa', 'Umberto Eco', '978-8845290688', 'Giallo Storico', 'assets/books/il_nome_della_rosa.png', 'pkdojsijins', '2011', NULL),
+('L''alchimista', 'Paulo Coelho', '978-8878187884', 'Narrativa Esoterica', 'assets/books/l_alchimista.png', 'dncsodvnos', '2012', NULL),
+('Don Chisciotte della Mancia', 'Miguel de Cervantes', '978-8804677844', 'Classici', 'assets/books/don_chisciotte_della_mancia.png', 'mdocinwecjn', '2013', NULL);
 
 INSERT OR IGNORE INTO libraries 
 (name, address, city, province, manager_id, cover_url) VALUES

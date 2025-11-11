@@ -4,7 +4,10 @@ ion-header {
 }
 
 ion-toolbar {
-  --background: rgba(10, 25, 41, 0.35);
+  --background: rgba(10, 25, 41, 0.35)!important;
+  //effetto blur
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   
   min-height: 54px;
   height: 100%;
@@ -116,7 +119,7 @@ ion-content {
   }
 }
 
-ion-card {
+ion-card{
   margin: 1rem 0;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
@@ -170,4 +173,46 @@ ion-card {
   color: #444;
   text-align: justify;
   line-height: 1.6;
+}
+
+.book-chapter-pre {
+  background: #232323;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Consolas', monospace;
+  font-size: 1rem;
+  color: #cfcfcf;
+  margin-bottom: 2rem;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.book-nav-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  ion-icon{
+    font-size: 1.4em;
+  }
+}
+
+.book-nav-buttons button {
+  background: #47d16d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-weight: 550;
+  font-size: 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.book-nav-buttons button:disabled {
+  background: #444;
+  color: #aaa;
+  cursor: not-allowed;
 }

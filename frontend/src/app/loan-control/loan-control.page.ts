@@ -6,18 +6,22 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { library } from 'ionicons/icons';
+import { User } from '../models/user.model';
+import { Library } from '../models/library.model';
+import { Loan } from '../models/loan.model';
 
 @Component({
   selector: 'app-loan-control',
+  templateUrl: './loan-control.page.html',
+  styleUrls: ['./loan-control.page.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
-  templateUrl: './loan-control.page.html',
-  styleUrls: ['./loan-control.page.scss']
+  
 })
 export class LoanControlPage implements OnInit {
-  currentUser: any;
-  pendingLoans: any[] = [];
-  libraryManager: any;
+  currentUser: User | null = null;
+  pendingLoans: Loan[] = [];
+  libraryManager: Library | null = null;
   isLoading = false;
   private apiUrl = 'http://localhost:3000/api';
 
@@ -35,15 +39,15 @@ export class LoanControlPage implements OnInit {
 
   getLibraryManager() {
     this.isLoading = true;
-    
-    const managerId = this.currentUser.id;
+
+    const managerId = this.currentUser?.id;
     console.log("ID Bibliotecario:", managerId);
     console.log("Utente corrente:", this.currentUser); 
 
-    this.http.get<any[]>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
+    this.http.get<Library>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
       next: (library) => {
         this.libraryManager = library;
-        console.log("Biblioteca del bibliotecario:", this.libraryManager);
+        //console.log("Biblioteca del bibliotecario:", this.libraryManager);
         this.loadPendingLoans();
       },
       error: (error) => {
@@ -58,7 +62,7 @@ export class LoanControlPage implements OnInit {
   // Carica richieste in attesa per la biblioteca del bibliotecario
   loadPendingLoans() {
 
-    this.http.get<any[]>(`${this.apiUrl}/libraries/${this.libraryManager.id}/pending-loans`).subscribe({
+    this.http.get<Loan[]>(`${this.apiUrl}/libraries/${this.libraryManager?.id}/pending-loans`).subscribe({
       next: (loans) => {
         this.pendingLoans = loans;
         this.isLoading = false;
@@ -79,7 +83,7 @@ export class LoanControlPage implements OnInit {
       next: (response) => {
         this.isLoading = false;
         alert('Prestito approvato con successo!');
-        this.loadPendingLoans(); // Ricarica la lista
+        this.loadPendingLoans(); 
       },
       error: (error) => {
         this.isLoading = false;
@@ -97,7 +101,7 @@ export class LoanControlPage implements OnInit {
       next: (response) => {
         this.isLoading = false;
         alert('Prestito rifiutato');
-        this.loadPendingLoans(); // Ricarica la lista
+        this.loadPendingLoans(); 
       },
       error: (error) => {
         this.isLoading = false;

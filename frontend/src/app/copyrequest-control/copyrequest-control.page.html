@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Controllo Richieste Copie</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- SPINNER CARICAMENTO -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Caricamento richieste...</p>
+  </div>
+
+  <!-- NESSUNA RICHIESTA -->
+  <div *ngIf="!isLoading && pendingRequests.length === 0" class="empty-card ion-text-center">
+    <ion-text text-center>
+      <ion-icon name="checkmark-outline" size="large" color="success"></ion-icon>
+      <h2>Nessuna richiesta in attesa</h2>
+      <p>Tutte le richieste sono state gestite.</p>
+    </ion-text>
+  </div>
+
+  <!-- LISTA RICHIESTE -->
+  <ion-list *ngIf="!isLoading && pendingRequests.length > 0" class="request-container">
+    <ion-card *ngFor="let request of pendingRequests" class="loan-card">
+      <ion-card-header>
+        <ion-card-subtitle>
+          Richiesta del {{ request.created_at | date: 'dd/MM/yyyy HH:mm' }}
+        </ion-card-subtitle>
+        <ion-card-title>{{ request.book_title }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="loan-info">
+          <div class="info-row">
+            <ion-icon name="library-outline"></ion-icon>
+            <span><strong>Biblioteca:</strong> {{ request.library_name }}</span>
+          </div>
+
+          <div class="info-row">
+            <ion-icon name="person-outline"></ion-icon>
+            <span><strong>Bibliotecario:</strong> {{ request.librarian_name }}</span>
+          </div>
+
+          <div class="info-row">
+            <ion-icon name="book-outline"></ion-icon>
+            <span><strong>Copie Richieste:</strong> {{ request.requested_copies }}</span>
+          </div>
+
+          <div class="info-row">
+            <ion-icon name="document-text-outline"></ion-icon>
+            <span><strong>Motivo:</strong> {{ request.reason }}</span>
+          </div>
+        </div>
+
+        <!-- PULSANTI AZIONE -->
+        <div class="action-buttons">
+          <ion-button 
+            expand="block" 
+            color="success" 
+            (click)="approveCopyRequest(request.id, request.book_id, request.library_id, request.requested_copies)"
+            [disabled]="isLoading">
+            <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+            Approva
+          </ion-button>
+          <ion-button 
+            expand="block" 
+            color="danger" 
+            fill="outline"
+            (click)="rejectCopyRequest(request.id)"
+            [disabled]="isLoading">
+            <ion-icon name="close-circle" slot="start"></ion-icon>
+            Rifiuta
+          </ion-button>
+        </div>
+        
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

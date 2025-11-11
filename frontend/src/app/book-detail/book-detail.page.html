@@ -24,6 +24,7 @@
         <p class="author">di {{ book.author }}</p>
         <ion-chip color="primary">{{ book.category }}</ion-chip>
         <ion-chip color="secondary">{{ book.year }}</ion-chip>
+        <p style="color: grey;" *ngIf="hasActiveLoan">Lettura disponibile nella sezione a fine pagina</p>
       </div>
     </div>
 
@@ -48,6 +49,28 @@
       </ion-card-header>
       <ion-card-content>
         <p>{{ book.description }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="hasActiveLoan || isLibrarian || isAdmin">
+      <ion-card-header>
+        <ion-card-title>Contenuto:</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="bookChapters.length">
+          <pre class="book-chapter-pre">{{ bookChapters[currentChapter] }}</pre>
+          <div class="book-nav-buttons">
+            <button (click)="currentChapter = currentChapter - 1" [disabled]="currentChapter === 0">
+              <ion-icon name="chevron-back"></ion-icon>
+              Indietro
+            </button>
+            <button (click)="currentChapter = currentChapter + 1" [disabled]="currentChapter === bookChapters.length - 1">
+              Avanti
+              <ion-icon name="chevron-forward"></ion-icon>
+            </button>
+          </div>
+          <div style="margin-top: 0.5rem; color: #aaa;">Capitolo {{ currentChapter + 1 }} di {{ bookChapters.length }}</div>
+        </div>
       </ion-card-content>
     </ion-card>
 

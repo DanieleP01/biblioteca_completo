@@ -54,7 +54,13 @@ export const routes: Routes = [
     path: 'inventory-reservations',
     loadComponent: () => import('./inventory-reservations/inventory-reservations.page').then( m => m.InventoryReservationsPage)
   },
-
+  {
+    path: 'copyrequest-control',
+    loadComponent: () => import('./copyrequest-control/copyrequest-control.page').then( m => m.CopyRequestControlPage)
+  },  {
+    path: 'book-management',
+    loadComponent: () => import('./book-management/book-management.page').then( m => m.BookManagementPage)
+  },
 
 
 ];

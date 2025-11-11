@@ -2,7 +2,6 @@ ion-header {
   position: relative;
   height: 70px;
 }
-
 ion-toolbar {
   --background: rgba(10, 25, 41, 0.35);
   
@@ -29,7 +28,6 @@ ion-content{
 .container-list{
     width: 100%;
     max-width: 900px;
-
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.288);
@@ -39,7 +37,6 @@ ion-content{
         --background: transparent;
         border-radius: 10px;
     }
-
 }
 
 .text{
@@ -50,7 +47,7 @@ ion-content{
 .inventory-controls {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; // Allinea tutto a destra
+    align-items: flex-end;
     justify-content: center;
     text-align: right;
     height: 100%; 
@@ -60,15 +57,13 @@ ion-content{
 // Stile per il contatore (i numeri) 
 .copy-counter {
     margin-bottom: 10px; 
-
     h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 700;
         color: var(--ion-color-medium); 
         margin: 0;
         line-height: 1;
     }
-
     // Stile speciale per quando le copie sono a zero
     .copies-zero {
         color: var(--ion-color-danger); 
@@ -81,13 +76,11 @@ ion-content{
     --background-hover-opacity: 0.25;
 }
 
-// Opzionale: assicura che il thumbnail non sia troppo piccolo 
 ion-thumbnail {
     --size: 90px;
     --border-radius: 4px;
 }
 
-// Wrapper per ogni libro (include card + dettagli)
 .book-item-wrapper {
   margin-bottom: 12px;
 }
@@ -123,7 +116,6 @@ ion-thumbnail {
   margin: 0;
   font-size: 0.9rem;
   color: #333;
-  line-height: 1.4;
 }
 
 // Messaggio quando non ci sono prenotazioni
@@ -138,8 +130,7 @@ ion-thumbnail {
 .request-copies-item {
   --background: transparent;
   --padding-start: 16px;
-  --padding-end: 16px;
-  padding: 12px 0;
+  --padding-end: 10px;
 
   ion-button {
     margin: 0;

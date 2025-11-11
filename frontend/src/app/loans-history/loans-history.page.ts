@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../services/auth.service.js';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model.js';
+import { Loan } from '../models/loan.model.js';
 
 @Component({
   selector: 'app-loans-history',
@@ -15,11 +16,11 @@ import { User } from '../models/user.model.js';
   imports: [CommonModule, FormsModule, IonicModule, HttpClientModule]
 })
 export class LoansHistoryPage implements OnInit {
-  currentUser: any;
-  loans: any;
-  overdueLoans: any;
-  returnedLoans: any;
-  rejectedLoans: any;
+  currentUser: User | null = null;
+  loans: Loan[] = [];
+  overdueLoans: Loan[] = [];
+  returnedLoans: Loan[] = [];
+  rejectedLoans: Loan[] = [];
 
   isLoading = false;
 
@@ -41,7 +42,7 @@ export class LoansHistoryPage implements OnInit {
   loadLoans(){
     this.isLoading = true;
     
-    this.http.get<any[]>(`${this.apiUrl}/users/${this.currentUser.id}/loans`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/users/${this.currentUser?.id}/loans`).subscribe({
       next: (res) => {
         this.loans = res;
         this.overdueLoans = this.loans.filter((loan: any) => loan.status === 'overdue');

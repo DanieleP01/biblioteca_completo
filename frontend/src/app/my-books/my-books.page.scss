@@ -112,12 +112,11 @@ ion-content {
   }
 }
 
-// ===== COPERTINA LIBRO =====
+//COPERTINA LIBRO 
 .book-cover-wrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
-  //background: linear-gradient(135deg, #667eea 0%, #8000ff 100%);
 
   .book-cover {
     width: 100%;
@@ -161,7 +160,7 @@ ion-content {
   }
 }
 
-// ===== INFO LIBRO =====
+//INFO LIBRO 
 .book-info {
   display: flex;
   flex-direction: column;
@@ -177,7 +176,6 @@ ion-content {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    //-webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
 
@@ -192,7 +190,7 @@ ion-content {
   }
 }
 
-// ===== DETTAGLI PRESTITO =====
+//DETTAGLI PRESTITO
 .loan-details {
   margin: 12px 0;
   flex-grow: 1;
@@ -227,7 +225,7 @@ ion-content {
   }
 }
 
-// ===== PULSANTE DETTAGLI =====
+//PULSANTE DETTAGLI 
 .detail-button {
   margin-top: auto;
   font-size: 11px;
@@ -240,7 +238,7 @@ ion-content {
   }
 }
 
-// ===== MESSAGGIO AVVERTIMENTO =====
+//MESSAGGIO AVVERTIMENTO
 .warning-message {
   background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
   border-left: 4px solid var(--ion-color-warning);
@@ -269,7 +267,7 @@ ion-content {
   }
 }
 
-// ===== ANIMAZIONI =====
+//ANIMAZIONI 
 @media (prefers-reduced-motion: no-preference) {
   .book-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

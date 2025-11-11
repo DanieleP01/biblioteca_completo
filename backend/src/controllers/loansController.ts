@@ -1,6 +1,13 @@
 import { Request, Response } from 'express';
 import * as LoanModel from '../models/loans.js';
 import * as LibraryBooksModel from '../models/libraryBooks.js';
+import * as ReservationModel from '../models/reservations.js';
+import * as BooksModel from '../models/books.js';
+import * as UserModel from '../models/user.js';
+import * as NotificationsModel from '../models/notifications.js';
+import * as LibraryModel from '../models/library.js';
+
+const admin_id = 12;
 
 // Richiesta prestito da parte dell'utente
 export async function requestLoan(req: Request, res: Response) {
@@ -16,7 +23,6 @@ export async function requestLoan(req: Request, res: Response) {
         
         //Verifica disponibilità copie
         const availableCopies = await LibraryBooksModel.checkAvailability(library_id, book_id);
-        
         if (availableCopies < 1) {
             return res.status(400).json({
                 error: 'Nessuna copia disponibile in questa biblioteca'
@@ -25,7 +31,6 @@ export async function requestLoan(req: Request, res: Response) {
         
         // Verifica prestito duplicato
         const hasDuplicate = await LoanModel.checkDuplicateLoan(user_id, book_id);
-        
         if (hasDuplicate) {
             return res.status(400).json({
                 error: 'Hai già una richiesta o un prestito attivo per questo libro'
@@ -34,7 +39,20 @@ export async function requestLoan(req: Request, res: Response) {
         
         //Crea richiesta
         const loanId = await LoanModel.createLoanRequest(user_id, book_id, library_id);
+
+        // NOTIFICA AL BIBLIOTECARIO - Nuova Richiesta di Prestito
+        const book = await BooksModel.getBookById(book_id); // Recupera il titolo del libro
+        const library = await LibraryModel.getLibraryById(library_id); // Recupera la biblioteca per ottenere il manager
         
+        if (library && library.manager_id) {
+            await NotificationsModel.createNotification({
+                recipient_id: library.manager_id,
+                recipient_role: 'librarian',
+                title: 'Nuova Richiesta di Prestito',
+                message: `Un utente ha richiesto il libro "${book.title}". Accetta o rifiuta la richiesta.`,
+                type: 'loan_request_created',
+            });
+        }
         res.status(201).json({
             message: 'Richiesta di prestito inviata con successo',
             loan_id: loanId
@@ -73,7 +91,6 @@ export async function approveLoan(req: Request, res: Response) {
         
         // Ottieni dettagli prestito
         const loan = await LoanModel.getLoanById(parseInt(loanId));
-        
         if (!loan) {
             return res.status(404).json({ error: 'Prestito non trovato' });
         }
@@ -86,7 +103,6 @@ export async function approveLoan(req: Request, res: Response) {
         
         // Approva prestito
         const changes = await LoanModel.approveLoan(parseInt(loanId));
-        
         if (changes === 0) {
             return res.status(400).json({
                 error: 'Impossibile approvare il prestito'
@@ -96,6 +112,15 @@ export async function approveLoan(req: Request, res: Response) {
         // Decrementa copie disponibili
         await LibraryBooksModel.decrementCopies(loan.library_id, loan.book_id);
         
+        // NOTIFICA ALL'UTENTE - Prestito Approvato
+        const book = await BooksModel.getBookById(loan.book_id);
+        await NotificationsModel.createNotification({
+        recipient_id: loan.user_id,
+        recipient_role: 'user',
+        title: 'Prestito Approvato',
+        message: `La tua richiesta di prestito per il libro "${book.title}" è stata approvata! Hai 30 giorni per leggerlo.`,
+        type: 'loan_approved',
+        });
         res.json({
             message: 'Prestito approvato con successo',
             loan_id: loanId,
@@ -116,8 +141,8 @@ export async function rejectLoan(req: Request, res: Response) {
             return res.status(400).json({ error: 'loanId è obbligatorio' });
         }
         
+        //ottiene dettagli prestito
         const loan = await LoanModel.getLoanById(parseInt(loanId));
-        
         if (!loan) {
             return res.status(404).json({ error: 'Prestito non trovato' });
         }
@@ -128,13 +153,23 @@ export async function rejectLoan(req: Request, res: Response) {
             });
         }
         
+        //rifiuta il prestito
         const changes = await LoanModel.rejectLoan(parseInt(loanId));
-        
         if (changes === 0) {
             return res.status(400).json({
                 error: 'Impossibile rifiutare il prestito'
             });
         }
+
+        // NOTIFICA ALL'UTENTE - Prestito Rifiutato
+        const book = await BooksModel.getBookById(loan.book_id);
+        await NotificationsModel.createNotification({
+        recipient_id: loan.user_id,
+        recipient_role: 'user',
+        title: 'Prestito Rifiutato',
+        message: `Purtroppo la tua richiesta di prestito per il libro "${book.title}" è stata rifiutata.`,
+        type: 'loan_rejected',
+        });
         
         res.json({ message: 'Prestito rifiutato' });
         
@@ -152,8 +187,8 @@ export async function returnBook(req: Request, res: Response) {
             return res.status(400).json({ error: 'loanId è obbligatorio' });
         }
         
+        //ottiene dettagli prestito
         const loan = await LoanModel.getLoanById(parseInt(loanId));
-        
         if (!loan) {
             return res.status(404).json({ error: 'Prestito non trovato' });
         }
@@ -164,17 +199,53 @@ export async function returnBook(req: Request, res: Response) {
             });
         }
         
+        //cambia lo stato da 'active' a 'returned'
         const changes = await LoanModel.returnBook(parseInt(loanId));
-        
         if (changes === 0) {
-            return res.status(400).json({
-                error: 'Impossibile completare la restituzione'
-            });
+            return res.status(400).json({ error: 'Impossibile completare la restituzione'});
         }
         
         // Incrementa copie disponibili
         await LibraryBooksModel.incrementCopies(loan.library_id, loan.book_id);
         
+        // NOTIFICA ALL'UTENTE CHE HA RESTITUITO
+        const book = await BooksModel.getBookById(loan.book_id);
+        await NotificationsModel.createNotification({
+        recipient_id: loan.user_id,
+        recipient_role: 'user',
+        title: 'Restituzione Confermata',
+        message: `La restituzione del libro "${book.title}" è stata confermata con successo.`,
+        type: 'book_returned',
+        });
+
+        // prende la prima prenotazione, dato che è stato reso disponibile il libro
+        const reservation = await ReservationModel.getReservationsByBookAndLibrary(
+            loan.book_id,
+            loan.library_id,
+            1  // Prende solo 1 prenotazione (la prima in coda)
+        );
+
+        //se c'è una prenotazione, crea la richiesta di prestito e elimina la prenotazione
+        if(reservation && reservation.length > 0){
+            const firstReservation = reservation[0];
+
+            await LoanModel.createLoanRequest(
+                firstReservation.user_id,
+                loan.book_id,
+                loan.library_id
+            );
+            await ReservationModel.deleteReservation(firstReservation.id);
+
+            // NOTIFICA ALL'UTENTE IN PRENOTAZIONE - Prenotazione convertita in Prestito
+            await NotificationsModel.createNotification({
+                recipient_id: firstReservation.user_id,
+                recipient_role: 'user',
+                title: 'Prenotazione Convertita in Prestito',
+                message: `La tua prenotazione del libro "${book.title}" è stata convertita in prestito attivo! Hai 30 giorni per leggerlo.`,
+                type: 'reservation_to_loan',
+            });
+        }
+
         res.json({ message: 'Libro restituito con successo' });
         
     } catch (error: any) {
@@ -253,6 +324,7 @@ export async function getActiveLoansUsers(req: Request, res: Response) {
     }
 }
 
+//controlla se c'è un prestito attivo
 export async function checkActiveLoan(req: Request, res: Response) {
   try {
     const { userId, bookId } = req.params;

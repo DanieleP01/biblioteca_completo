@@ -24,5 +24,8 @@ export interface User {
   city?: string | null;
   province?: string | null;
   role: string;
+  library_id: number;
+  library_name: string;
+  library_address: string;
 }
 

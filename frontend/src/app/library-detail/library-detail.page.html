@@ -54,10 +54,18 @@
         <ion-card-header>
           <ion-card-title>Libri presenti in questa biblioteca</ion-card-title>
         </ion-card-header>
+        <!-- card libro -->
         <ion-card-content>
-          <ion-note color="medium">
-            (Visualizzazione libreria disponibile prossimamente)
-          </ion-note>
+          <ion-item lines="none" class="section-item">
+            <div class="horizontal-scroll-container">
+              <ion-card *ngFor="let book of libraryBooks" class="small-item-card" name="card" (click)="goToBookDetail(book.id)"tappable>
+                <img [src]="book.cover_url" alt="Copertina del libro"/> 
+                <ion-card-header>
+                  <ion-card-title>{{ book.title }}</ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </ion-item>
         </ion-card-content>
       </ion-card>
     </div>

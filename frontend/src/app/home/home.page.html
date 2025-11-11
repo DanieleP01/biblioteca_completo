@@ -1,7 +1,10 @@
 <ion-header [translucent]="true" [class.hide-header]="isHeaderHidden">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-title class="app-logo">WebSite of Biblioteche</ion-title>
+      <!--<ion-img src="assets/icon/logoVett.jpg"></ion-img>-->
+      <ion-title class="app-logo">BiblioWorld</ion-title>
+      <span class="divider-role" *ngIf="isLoggedIn">/</span>
+      <p class="role-title">{{ currentUser?.role }}</p>
     </ion-buttons>
     <!-- BARRA DI RICERCA -->
     <ion-searchbar 
@@ -21,8 +24,13 @@
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
       <!-- ICONA AUTENTICAZIONE O MENU'-->
-      <ion-button id="profile-popover" (click)="presentPopover($event)">
+      <ion-button id="profile-popover" (click)="presentPopover($event)" class="menu">
         <ion-icon  slot="icon-only" [name]="isLoggedIn ? 'menu': 'person-outline'"></ion-icon>
+        <ion-badge 
+          *ngIf="unreadCount > 0"
+          color="danger">
+          {{ unreadCount }}
+        </ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -104,6 +112,17 @@
           (click)="goToLoanControl()">
           <ion-icon name="list-outline" slot="start"></ion-icon>
           Controllo Prestiti
+        </ion-button>
+      </div>
+
+      <!-- BOTTONE CONTROLLO RICHIESTE COPIE AMMINISTRATORE -->
+      <div *ngIf="isAdmin" class="Main-button">
+        <ion-button
+          expand="block"
+          color="primary"
+          (click)="goToCopyControl()">
+          <ion-icon name="list-outline" slot="start"></ion-icon>
+          Controllo Richieste Copie
         </ion-button>
       </div>
 

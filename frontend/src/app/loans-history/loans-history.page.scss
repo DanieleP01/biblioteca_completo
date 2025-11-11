@@ -2,7 +2,6 @@ ion-header {
   position: relative;
   height: 70px;
 }
-
 ion-toolbar {
   --background: rgba(10, 25, 41, 0.35);
   
@@ -35,8 +34,7 @@ ion-content {
 
 .empty-card {
   padding-top: 20px;
-  //height: 100%;
-  
+
   ion-icon {
     font-size: 64px;
     color: #888888; 
@@ -64,7 +62,7 @@ ion-content {
     }
 }
 
-// GRIGLIA PRESTITI 
+//GRIGLIA PRESTITI 
 .loans-grid {
     padding-left: 20px;
     display: grid;
@@ -104,12 +102,11 @@ ion-content {
     }
 }
 
-//  COPERTINA LIBRO 
+//COPERTINA LIBRO 
 .loan-cover-wrapper {
     position: relative;
     width: 100%;
     overflow: hidden;
-    //background: linear-gradient(135deg, #667eea 0%, #8000ff 100%);
 
     .loan-cover {
     width: 100%;
@@ -127,7 +124,7 @@ ion-content {
     }
 }
 
-// BADGE GIORNI RIMASTI
+//BADGE GIORNI RIMASTI
 .days-remaining-badge {
     position: absolute;
     top: 8px;
@@ -153,7 +150,7 @@ ion-content {
     }
 }
 
-//  INFO LIBRO 
+//INFO LIBRO 
 .loan-info {
     display: flex;
     flex-direction: column;
@@ -169,7 +166,6 @@ ion-content {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    //-webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     }
 
@@ -179,7 +175,7 @@ ion-content {
     }
 }
 
-//  DETTAGLI PRESTITO 
+//DETTAGLI PRESTITO 
 .loan-details {
     margin: 12px 0;
     flex-grow: 1;
@@ -214,7 +210,7 @@ ion-content {
     }
 }
 
-//  ANIMAZIONI 
+//ANIMAZIONI 
 @media (prefers-reduced-motion: no-preference) {
     .book-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

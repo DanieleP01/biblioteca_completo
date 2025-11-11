@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Library } from '../models/library.model.js';
+import { Book } from '../models/book.model.js';
 import { AuthService } from '../services/auth.service.js';
+import { libraryBook } from '../models/library.model.js';
 
 @Component({
   selector: 'app-library-detail',
@@ -18,8 +18,9 @@ import { AuthService } from '../services/auth.service.js';
 
 export class LibraryDetailPage implements OnInit {
   library: Library | null = null;
+  libraryBooks: libraryBook[] = [];
   isLoading = true;
-  isLoggedIn = false; //controller login
+  isLoggedIn = false;
 
   private apiUrl = 'http://localhost:3000/api';
 
@@ -34,6 +35,7 @@ export class LibraryDetailPage implements OnInit {
     const id = this.route.snapshot.paramMap.get('id'); //prende l'id dalla route
     if(id) {
       this.loadLibraryDetails(id);
+      this.loadLibraryBooks(id);
     } else {
       this.router.navigate(['home']);
     }
@@ -46,13 +48,33 @@ export class LibraryDetailPage implements OnInit {
           .subscribe({
             next: (librerie) => {
               this.library = librerie;
-              this.isLoading = false;
             },
             error: () => {
               this.isLoading = false;
               this.router.navigate(['/home']);
             }
           });
+  }
+
+  loadLibraryBooks(id: String){
+    this.isLoading = true;
+
+    this.http.get<any>(`${this.apiUrl}/libraries/${id}/books`).subscribe({
+      next: (res) => {
+        this.libraryBooks = res;
+        //console.log("Libri della biblioteca: ", this.libraryBook);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+        alert('Errore nel caricamento delle richieste');
+      }
+    });
+  }
+
+  //Dettagli Libro
+  goToBookDetail(bookId: number) {
+    this.router.navigate(['/book-detail', bookId]);
   }
 
   checkLoginStatus(){

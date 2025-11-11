@@ -4,6 +4,8 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { provideHttpClient } from '@angular/common/http';
+import { NotificationService } from './app/services/notification.service.js';
 import { addIcons } from 'ionicons';
 import { 
   personOutline, 
@@ -33,7 +35,11 @@ import {
   archiveOutline,
   timeOutline,
   chevronUp,
-  chevronDown
+  chevronDown,
+  documentTextOutline,
+  chevronBackOutline,
+  chevronForwardOutline,
+  notificationsOutline
 } from 'ionicons/icons';
 
 addIcons({
@@ -64,7 +70,11 @@ addIcons({
   'archive-outline': archiveOutline,
   'time-outline': timeOutline,
   'chevron-up': chevronUp,
-  'chevron-down': chevronDown
+  'chevron-down': chevronDown,
+  'chevron-back': chevronBackOutline,
+  'chevron-forward': chevronForwardOutline,
+  'document-text-outline': documentTextOutline,
+  'notifications': notificationsOutline
 });
 
 bootstrapApplication(AppComponent, {
@@ -72,5 +82,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-  ],
+    provideHttpClient(),
+    NotificationService
+  ]
 });

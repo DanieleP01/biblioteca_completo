@@ -7,30 +7,27 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   
   <div *ngIf="isLoading" class="ion-text-center ion-padding-top">
     <ion-spinner name="crescent"></ion-spinner>
   </div>
 
-
   <div class="center-wrapper" *ngIf="!isLoading">
-  
     <div class="container-list">
 
-      <ion-item *ngIf="libraryBook.length === 0" lines="none">
+      <ion-item *ngIf="libraryBooks.length === 0" lines="none">
         <ion-label class="ion-text-center">
           Nessun libro trovato nell'inventario.
         </ion-label>
       </ion-item>
 
       <!-- Ciclo sui libri -->
-      <div *ngFor="let book of libraryBook" class="book-item-wrapper">
+      <div *ngFor="let book of libraryBooks" class="book-item-wrapper">
         
         <!-- Card principale del libro -->
         <ion-item lines="full">
-          
+
           <ion-thumbnail slot="start">
             <img [src]="book.cover_url || 'assets/images/placeholder.png'" />
           </ion-thumbnail>
@@ -41,7 +38,6 @@
           </ion-label>
 
           <div class="inventory-controls" slot="end">
-            
             <div class="copy-counter">
               <h3>
                 <span>Copie Totali:</span> {{ book.total_copies }} 
@@ -49,7 +45,6 @@
                 <span [class.copies-zero]="book.available_copies === 0">Copie Disponibili: {{ book.available_copies }}</span> 
               </h3>
             </div>
-            
             <!-- Bottone per espandere/collassare prenotazioni -->
             <ion-button 
               color="medium"
@@ -61,22 +56,18 @@
                 slot="icon-only"
               ></ion-icon>
             </ion-button>
-
           </div>
-
         </ion-item>
 
         <!-- Dettagli prenotazioni espandibili -->
         <ion-item *ngIf="isExpanded(book.id)" class="reservations-details" lines="none">
           <ion-grid>
-            
             <!-- Header prenotazioni -->
             <ion-row *ngIf="reservation[book.id] && reservation[book.id].length > 0">
               <ion-col size="12" class="reservations-header">
                 <strong>Prenotazioni ({{ reservation[book.id].length }})</strong>
               </ion-col>
             </ion-row>
-            
             <!-- Lista prenotazioni -->
             <ion-row *ngFor="let prenot of reservation[book.id]" class="reservation-row">
               <ion-col size="12">
@@ -86,14 +77,12 @@
                 </p>
               </ion-col>
             </ion-row>
-
             <!-- Messaggio nessuna prenotazione -->
             <ion-row *ngIf="reservation[book.id] && reservation[book.id].length === 0">
               <ion-col size="12">
                 <p class="no-reservations"><em>Nessuna prenotazione per questo libro</em></p>
               </ion-col>
             </ion-row>
-
           </ion-grid>
         </ion-item>
 
@@ -110,7 +99,6 @@
         </ion-item>
 
       </div>
-
     </div>
   </div>
 </ion-content>
