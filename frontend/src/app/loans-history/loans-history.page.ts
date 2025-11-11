@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../services/auth.service.js';
+import { AlertService } from '../services/alert.service.js';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model.js';
 import { Loan } from '../models/loan.model.js';
@@ -29,7 +30,8 @@ export class LoansHistoryPage implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) { }
   ///users/:userId/loans
 
@@ -42,7 +44,7 @@ export class LoansHistoryPage implements OnInit {
   loadLoans(){
     this.isLoading = true;
     
-    this.http.get<any[]>(`${this.apiUrl}/users/${this.currentUser?.id}/loans`).subscribe({
+    this.http.get<Loan[]>(`${this.apiUrl}/users/${this.currentUser?.id}/loans`).subscribe({
       next: (res) => {
         this.loans = res;
         this.overdueLoans = this.loans.filter((loan: any) => loan.status === 'overdue');
@@ -53,7 +55,7 @@ export class LoansHistoryPage implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        alert('Errore nel caricamento delle richieste');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento delle richieste');
       }
     });
   }

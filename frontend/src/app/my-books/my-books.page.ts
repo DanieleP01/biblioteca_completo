@@ -5,6 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { AlertService } from '../services/alert.service';
 import { User } from '../models/user.model';
 import { Loan } from '../models/loan.model';
 
@@ -25,7 +26,8 @@ export class MyBooksPage implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -56,7 +58,7 @@ export class MyBooksPage implements OnInit {
       error: (error) => {
         console.error('Errore caricamento prestiti:', error);
         this.isLoading = false;
-        alert('Errore nel caricamento dei tuoi libri');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento dei tuoi libri');
       }
     });
   }

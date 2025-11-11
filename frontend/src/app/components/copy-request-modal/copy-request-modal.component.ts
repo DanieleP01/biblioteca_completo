@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Book } from '../../models/book.model.js';
+import { AlertService } from 'src/app/services/alert.service.js';
 
 @Component({
   selector: 'app-copy-request-modal',
@@ -29,7 +30,8 @@ export class CopyRequestModalComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private http: HttpClient
+    private http: HttpClient,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {}
@@ -43,12 +45,12 @@ export class CopyRequestModalComponent implements OnInit {
   submitRequest() {
 
     if (this.requestedCopies <= 0) {
-      alert('Il numero di copie deve essere maggiore di 0');
+      this.alertService.presentAlert('Errore', 'Il numero di copie deve essere maggiore di 0');
       return;
     }
 
     if (!this.reason.trim()) {
-      alert('Inserisci un motivo per la richiesta');
+      this.alertService.presentAlert('Errore', 'Inserisci un motivo per la richiesta');
       return;
     }
 
@@ -65,11 +67,12 @@ export class CopyRequestModalComponent implements OnInit {
     this.http.post(`${this.apiUrl}/copy-requests/request`, copiesRequest).subscribe({
       next: (res) => {
         this.isLoading = false;
+        this.alertService.presentAlert('Successo', 'Richiesta di copie inviata correttamente');
         this.modalController.dismiss({ success: true });
       },
       error: (error) => {
         this.isLoading = false;
-        alert('Errore nell\'invio della richiesta');
+        this.alertService.presentAlert('Errore', 'Errore nell\'invio della richiesta');
         console.error(error);
       }
     });

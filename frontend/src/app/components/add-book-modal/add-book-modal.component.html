@@ -78,6 +78,15 @@
         placeholder="url della copertina">
       </ion-input>
     </ion-item>
+
+    <ion-item class="custom-input" lines="none">
+      <ion-label position="floating">Nome file (.txt - Inserire il file in /assets/book)</ion-label>
+      <ion-input 
+        [(ngModel)]="newBook.content_path" 
+        type="text" 
+        placeholder="nome file ">
+      </ion-input>
+    </ion-item>
   </div>
 
   <!-- Sezione Biblioteche -->

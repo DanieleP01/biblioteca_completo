@@ -1,5 +1,6 @@
 import { openDb } from './db.js';
 
+//Recupera tutte le librerie
 export async function getAllLibraries() {
   const db = await openDb();
   
@@ -8,6 +9,7 @@ export async function getAllLibraries() {
   return libraries;
 }
 
+//recupera una libreria per id
 export async function getLibraryById(id: number) {
     const db = await openDb();
 
@@ -16,6 +18,7 @@ export async function getLibraryById(id: number) {
     return library;
 }
 
+//recupera la libreria di un determinato bibliotecario
 export async function getLibraryByManagerId(managerId: number) {
   const db = await openDb();
   

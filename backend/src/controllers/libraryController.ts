@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getAllLibraries, getLibraryById, getLibraryByManagerId } from '../models/library.js';
 
-// Ottiene tutte le librerie
+//Recupera tutte le librerie
 export async function getLibrariesController(req: Request, res: Response) {
   try {
     const libraries = await getAllLibraries();
@@ -11,7 +11,7 @@ export async function getLibrariesController(req: Request, res: Response) {
   }
 }
 
-//Ottiene una libreria per id
+//Recuper una libreria per id
 export async function getLibraryByIdController(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -26,7 +26,7 @@ export async function getLibraryByIdController(req: Request, res: Response) {
   }
 }
 
-// Ottiene la libreria del bibliotecario selezionato
+//Recupera la libreria del bibliotecario selezionato
  export async function getLibraryByManagerIdController(req: Request, res: Response) {
     try {
       const managerId = req.params.managerId;

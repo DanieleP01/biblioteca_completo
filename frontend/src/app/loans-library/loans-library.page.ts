@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../services/auth.service.js';
+import { AlertService } from '../services/alert.service.js';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model.js';
 import { Library } from '../models/library.model.js';
@@ -29,7 +30,8 @@ export class loanslibrary implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class loanslibrary implements OnInit {
     
     const managerId = this.authService.getUser()?.id;
 
-    this.http.get<Library>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
+    this.http.get<Library>(`${this.apiUrl}/libraries/manager/${managerId}`).subscribe({
       next: (library) => {
         this.activeLibrary = library;
         //console.log("Biblioteca del bibliotecario:", this.activeLibrary);
@@ -56,7 +58,7 @@ export class loanslibrary implements OnInit {
       error: (error) => {
         console.error('Errore ottenimento dati bibliotecario:', error);
         this.isLoading = false;
-        alert('Errore nel caricamento delle richieste');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento delle richieste');
       }
     });
   }
@@ -71,7 +73,7 @@ export class loanslibrary implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        alert('Errore nel caricamento dei prestiti attivi della biblioteca');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento dei prestiti attivi della biblioteca');
       }
     });
   }
@@ -87,7 +89,7 @@ export class loanslibrary implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        alert('Errore nel caricamento dei prestiti scaduti della biblioteca');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento dei prestiti scaduti della biblioteca');
       }
     });
   }
@@ -125,5 +127,5 @@ export class loanslibrary implements OnInit {
       return 'success';
     }
   }
-  
+
 }

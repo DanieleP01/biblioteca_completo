@@ -6,6 +6,7 @@ import { AddBookModalComponent } from '../components/add-book-modal/add-book-mod
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { Book } from '../models/book.model';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-book-management',
@@ -27,6 +28,7 @@ export class BookManagementPage implements OnInit {
     private http: HttpClient,
     private alertController: AlertController,
     private modalController: ModalController,
+    private alertService: AlertService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -36,14 +38,14 @@ export class BookManagementPage implements OnInit {
 
   loadBooks() {
     this.isLoading = true;
-    this.http.get<Book[]>(`${this.apiUrl}/libri`).subscribe({
+    this.http.get<Book[]>(`${this.apiUrl}/books`).subscribe({
       next: (res) => {
         this.books = res;
         this.isLoading = false;
       },
       error: () => {
         this.isLoading = false;
-        alert('Errore nel caricamento dei libri');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento dei libri');
       }
     });
   }
@@ -107,14 +109,14 @@ export class BookManagementPage implements OnInit {
 
   removeSelectedBooks() {
     if (this.selectedBooks.size === 0) {
-      alert('Seleziona almeno un libro');
+      this.alertService.presentAlert('Errore', 'Seleziona almeno un libro');
       return;
     }
 
     this.isLoading = true;
     const book_ids = Array.from(this.selectedBooks);
 
-    this.http.request('delete', `${this.apiUrl}/libri/delete`, { 
+    this.http.request('delete', `${this.apiUrl}/books/delete`, { 
       body: { book_ids } 
     }).subscribe({
       next: () => {
@@ -123,11 +125,11 @@ export class BookManagementPage implements OnInit {
         this.isLoading = false;
         window.location.reload();
         //this.loadBooks();
-        alert('Libri eliminati dal sistema');
+        this.alertService.presentAlert('Successo', 'Libri eliminati dal sistema');
       },
       error: () => {
         this.isLoading = false;
-        alert('Errore nell\'eliminazione');
+        this.alertService.presentAlert('Errore', 'Errore nell\'eliminazione');
       }
     });
   }

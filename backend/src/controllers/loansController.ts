@@ -40,9 +40,9 @@ export async function requestLoan(req: Request, res: Response) {
         //Crea richiesta
         const loanId = await LoanModel.createLoanRequest(user_id, book_id, library_id);
 
-        // NOTIFICA AL BIBLIOTECARIO - Nuova Richiesta di Prestito
-        const book = await BooksModel.getBookById(book_id); // Recupera il titolo del libro
-        const library = await LibraryModel.getLibraryById(library_id); // Recupera la biblioteca per ottenere il manager
+        // NOTIFICA AL BIBLIOTECARIO
+        const book = await BooksModel.getBookById(book_id); 
+        const library = await LibraryModel.getLibraryById(library_id);
         
         if (library && library.manager_id) {
             await NotificationsModel.createNotification({
@@ -63,7 +63,7 @@ export async function requestLoan(req: Request, res: Response) {
     }
 }
 
-// Ottieni richieste in attesa (bibliotecario)
+//Recupera richieste in attesa (bibliotecario)
 export async function getPendingLoans(req: Request, res: Response) {
     try {
         const { libraryId } = req.params;
@@ -178,7 +178,7 @@ export async function rejectLoan(req: Request, res: Response) {
     }
 }
 
-// Restituisci libro (bibliotecario)
+//Restituisci libro (bibliotecario)
 export async function returnBook(req: Request, res: Response) {
     try {
         const { loanId } = req.params;
@@ -236,7 +236,7 @@ export async function returnBook(req: Request, res: Response) {
             );
             await ReservationModel.deleteReservation(firstReservation.id);
 
-            // NOTIFICA ALL'UTENTE IN PRENOTAZIONE - Prenotazione convertita in Prestito
+            // NOTIFICA ALL'UTENTE IN PRENOTAZIONE
             await NotificationsModel.createNotification({
                 recipient_id: firstReservation.user_id,
                 recipient_role: 'user',
@@ -253,7 +253,7 @@ export async function returnBook(req: Request, res: Response) {
     }
 }
 
-// Aggiorna prestiti scaduti (chiamato manualmente o via scheduler)
+//Aggiorna prestiti scaduti (chiamato manualmente o via scheduler)
 export async function updateOverdueLoans(req: Request, res: Response) {
     try {
         const changes = await LoanModel.updateOverdueLoans();
@@ -268,7 +268,7 @@ export async function updateOverdueLoans(req: Request, res: Response) {
     }
 }
 
-// Ottieni prestiti di un utente
+//Recupera prestiti di un utente
 export async function getUserLoans(req: Request, res: Response) {
     try {
         const { userId } = req.params;
@@ -290,7 +290,7 @@ export async function getUserLoans(req: Request, res: Response) {
     }
 }
 
-// Ottieni prestiti attivi biblioteca
+//Recupera prestiti attivi biblioteca
 export async function getActiveLoansLibrary(req: Request, res: Response) {
     try {
         const { libraryId } = req.params;
@@ -307,7 +307,7 @@ export async function getActiveLoansLibrary(req: Request, res: Response) {
     }
 }
 
-// Ottieni prestiti attivi utente
+//Recupera prestiti attivi utente
 export async function getActiveLoansUsers(req: Request, res: Response) {
     try {
         const { userId } = req.params;
@@ -350,7 +350,7 @@ export async function checkActiveLoan(req: Request, res: Response) {
   }
 }
 
-// Ottieni prestiti in scadenza
+//Recupera prestiti in scadenza
 export async function getExpiringLoans(req: Request, res: Response) {
     try {
         const { libraryId } = req.params;
@@ -367,7 +367,7 @@ export async function getExpiringLoans(req: Request, res: Response) {
     }
 }
 
-// Ottieni prestiti scaduti
+//Recupera prestiti scaduti
 export async function getOverdueLoans(req: Request, res: Response) {
     try {
         const { libraryId } = req.params;

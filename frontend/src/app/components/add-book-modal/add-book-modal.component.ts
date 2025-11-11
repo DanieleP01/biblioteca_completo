@@ -6,6 +6,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { NewBook } from 'src/app/models/book.model';
 import { Library } from 'src/app/models/library.model';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-add-book-modal',
@@ -25,6 +26,7 @@ export class AddBookModalComponent implements OnInit {
     category: '',
     description: '',
     cover_url: '',
+    content_path: '',
     year: new Date().getFullYear()
   };
 
@@ -36,6 +38,7 @@ export class AddBookModalComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private modalController: ModalController,
+    private alertService: AlertService,
     private router: Router
   ) {}
 
@@ -45,7 +48,7 @@ export class AddBookModalComponent implements OnInit {
 
   //carica le librerire
   loadLibraries() {
-    this.http.get<any>(`${this.apiUrl}/librerie`).subscribe({
+    this.http.get<any>(`${this.apiUrl}/libraries`).subscribe({
       next: (res) => {
         this.libraries = res;
         this.libraryBooksCopies = {};
@@ -53,14 +56,16 @@ export class AddBookModalComponent implements OnInit {
         this.libraryBooksCopies[lib.id] = 0;
         });
       },
-      error: () => this.showAlert('Errore nel caricamento delle biblioteche')
+      error: () => {
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento delle biblioteche');
+      }
     });
   }
 
   saveNewBook() {
     // Valida i campi obbligatori
     if (!this.newBook.title || !this.newBook.author || !this.newBook.isbn) {
-      this.showAlert('Titolo, autore e ISBN sono obbligatori');
+      this.alertService.presentAlert('Errore', 'Titolo, autore e ISBN sono obbligatori');
       return;
     }
 
@@ -73,7 +78,7 @@ export class AddBookModalComponent implements OnInit {
       }));
 
     if (selectedLibraries.length === 0) {
-      this.showAlert('Seleziona almeno una biblioteca');
+      this.alertService.presentAlert('Errore',' Seleziona almeno una biblioteca');
       return;
     }
 
@@ -84,12 +89,12 @@ export class AddBookModalComponent implements OnInit {
       libraryAssociations: selectedLibraries
     }).subscribe({
       next: () => {
-        this.showAlert('Libro aggiunto con successo');
+        this.alertService.presentAlert('Successo', 'Libro aggiunto con successo');
         this.bookAdded.emit();
         this.closeModal();
       },
       error: (err) => {
-        this.showAlert('Errore nell\'aggiunta del libro: ' + err.error?.error);
+        this.alertService.presentAlert('Errore', 'Errore nell\'aggiunta del libro: ' + err.error?.error);
         this.isLoading = false;
       }
     });
@@ -97,10 +102,6 @@ export class AddBookModalComponent implements OnInit {
 
   closeModal() {
     this.modalController.dismiss({ bookAdded: true });
-  }
-
-  private showAlert(message: string) {
-    alert(message);
   }
 
   resetForm() {
@@ -111,6 +112,7 @@ export class AddBookModalComponent implements OnInit {
       category: '',
       description: '',
       cover_url: '',
+      content_path: '',
       year: new Date().getFullYear()
     };
     this.libraryBooksCopies = {};

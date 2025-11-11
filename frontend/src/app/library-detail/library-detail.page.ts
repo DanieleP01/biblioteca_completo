@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Library } from '../models/library.model.js';
 import { Book } from '../models/book.model.js';
 import { AuthService } from '../services/auth.service.js';
+import { AlertService } from '../services/alert.service.js';
 import { libraryBook } from '../models/library.model.js';
 
 @Component({
@@ -28,7 +29,8 @@ export class LibraryDetailPage implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class LibraryDetailPage implements OnInit {
 
   loadLibraryDetails(id: String){
     this.isLoading = true;
-    this.http.get<Library>(`${this.apiUrl}/librerie/${id}`)
+    this.http.get<Library>(`${this.apiUrl}/libraries/${id}`)
           .subscribe({
             next: (librerie) => {
               this.library = librerie;
@@ -67,7 +69,7 @@ export class LibraryDetailPage implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        alert('Errore nel caricamento delle richieste');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento delle richieste');
       }
     });
   }

@@ -90,11 +90,11 @@ export class HomePage implements OnInit{
   }
 
   loadData(){
-    this.http.get<Book[]>(`${this.apiUrl}/libri`)
-      .subscribe(libri => this.books = libri);
+    this.http.get<Book[]>(`${this.apiUrl}/books`)
+      .subscribe(books => this.books = books);
 
-    this.http.get<Library[]>(`${this.apiUrl}/librerie`)
-      .subscribe(librerie => this.libraries = librerie);
+    this.http.get<Library[]>(`${this.apiUrl}/libraries`)
+      .subscribe(libraries => this.libraries = libraries);
   }
 
   //apre il popover corretto in base allo stato di login

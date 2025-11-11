@@ -4,7 +4,7 @@ import * as BooksModel from '../models/books.js';
 import * as LibraryModel from '../models/library.js';
 import * as NotificationsModel from '../models/notifications.js';
 
-// Ottieni libri di una biblioteca
+//Recupera libri di una biblioteca
 export async function getBooksByLibrary(req: Request, res: Response) {
     try {
         const { libraryId } = req.params;
@@ -21,7 +21,7 @@ export async function getBooksByLibrary(req: Request, res: Response) {
     }
 }
 
-// Ottieni biblioteche che hanno un libro
+//Recupera biblioteche che hanno un libro
 export async function getLibrariesByBook(req: Request, res: Response) {
     try {
         const { bookId } = req.params;
@@ -38,7 +38,7 @@ export async function getLibrariesByBook(req: Request, res: Response) {
     }
 }
 
-// Verifica disponibilità
+//Verifica disponibilità
 export async function checkAvailability(req: Request, res: Response) {
     try {
         const { libraryId, bookId } = req.params;
@@ -64,7 +64,7 @@ export async function checkAvailability(req: Request, res: Response) {
     }
 }
 
-// Aggiungi libro a biblioteca
+//Aggiungi libro a biblioteca
 export async function addBookToLibrary(req: Request, res: Response) {
     try {
         const { book, libraryAssociations } = req.body;
@@ -83,13 +83,12 @@ export async function addBookToLibrary(req: Request, res: Response) {
         // Aggiungi il libro alle biblioteche
         await LibraryBooksModel.addBookToLibraries(bookId, libraryAssociations);
 
-        // NOTIFICA AI BIBLIOTECARI - Nuovo libro aggiunto
+        // NOTIFICA AI BIBLIOTECARI
         for (const association of libraryAssociations) {
             const library = await LibraryModel.getLibraryById(association.libraryId);
             const bookData = await BooksModel.getBookById(bookId);
 
             if (library) {
-                // Notifica al bibliotecario della biblioteca
                 await NotificationsModel.createNotification({
                 recipient_id: library.manager_id,
                 recipient_role: 'librarian',
@@ -114,37 +113,6 @@ export async function addBookToLibrary(req: Request, res: Response) {
         res.status(500).json({ error: error.message });
     }
 }
-
-/* Aggiorna copie
-export async function updateCopies(req: Request, res: Response) {
-    try {
-        const { library_id, book_id, copies } = req.body;
-        
-        if (!library_id || !book_id || copies === undefined) {
-            return res.status(400).json({
-                error: 'library_id, book_id e copies sono obbligatori'
-            });
-        }
-        
-        const changes = await LibraryBooksModel.updateCopies(library_id, book_id, copies);
-        
-        if (changes === 0) {
-            return res.status(404).json({
-                error: 'Associazione libro-biblioteca non trovata'
-            });
-        }
-        
-        res.json({
-            message: 'Numero copie aggiornato',
-            copies
-        });
-        
-    } catch (error: any) {
-        res.status(500).json({ error: error.message });
-    }
-}*/
-
-
 
 // Ottieni tutte le associazioni
 export async function getAllLibraryBooks(req: Request, res: Response) {

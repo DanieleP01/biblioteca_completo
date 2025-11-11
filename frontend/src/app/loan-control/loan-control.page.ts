@@ -5,6 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { AlertService } from '../services/alert.service';
 import { library } from 'ionicons/icons';
 import { User } from '../models/user.model';
 import { Library } from '../models/library.model';
@@ -28,7 +29,8 @@ export class LoanControlPage implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class LoanControlPage implements OnInit {
     console.log("ID Bibliotecario:", managerId);
     console.log("Utente corrente:", this.currentUser); 
 
-    this.http.get<Library>(`${this.apiUrl}/librerie/manager/${managerId}`).subscribe({
+    this.http.get<Library>(`${this.apiUrl}/libraries/manager/${managerId}`).subscribe({
       next: (library) => {
         this.libraryManager = library;
         //console.log("Biblioteca del bibliotecario:", this.libraryManager);
@@ -53,7 +55,7 @@ export class LoanControlPage implements OnInit {
       error: (error) => {
         console.error('Errore ottenimento dati bibliotecario:', error);
         this.isLoading = false;
-        alert('Errore nel caricamento delle richieste');
+        this.alertService.presentAlert('Errore','Errore nel caricamento delle richieste');
       }
     });
     
@@ -70,7 +72,7 @@ export class LoanControlPage implements OnInit {
       error: (error) => {
         console.error('Errore caricamento prestiti:', error);
         this.isLoading = false;
-        alert('Errore nel caricamento delle richieste');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento delle richieste');
       }
     });
   }
@@ -82,13 +84,13 @@ export class LoanControlPage implements OnInit {
     this.http.patch(`${this.apiUrl}/loans/${loanId}/approve`, {}).subscribe({
       next: (response) => {
         this.isLoading = false;
-        alert('Prestito approvato con successo!');
+        this.alertService.presentAlert('Successo', 'Prestito approvato con successo!');
         this.loadPendingLoans(); 
       },
       error: (error) => {
         this.isLoading = false;
         console.error('Errore approvazione:', error);
-        alert('Errore nell\'approvazione del prestito');
+        this.alertService.presentAlert('Errore', 'Errore nell\'approvazione del prestito');
       }
     });
   }
@@ -100,13 +102,13 @@ export class LoanControlPage implements OnInit {
     this.http.patch(`${this.apiUrl}/loans/${loanId}/reject`, {}).subscribe({
       next: (response) => {
         this.isLoading = false;
-        alert('Prestito rifiutato');
+        this.alertService.presentAlert('Successo', 'Prestito rifiutato');
         this.loadPendingLoans(); 
       },
       error: (error) => {
         this.isLoading = false;
         console.error('Errore rifiuto:', error);
-        alert('Errore nel rifiuto del prestito');
+        this.alertService.presentAlert('Errore', 'Errore nel rifiuto del prestito');
       }
     });
   }

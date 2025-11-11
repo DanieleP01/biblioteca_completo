@@ -98,10 +98,9 @@ export async function deleteBooks(req: Request, res: Response) {
 export async function getBookContentFromFile(req: Request, res: Response) {
   try {
     const content_path = req.params.content_path;
-    //console.log(content_path);
     if (!content_path) return res.status(400).json({ error: "Parametro mancante" });
-
     //console.log("path: ", content_path);
+
     // Costruisci percorso file assoluto
     const filePath = path.resolve(__dirname, "../../storage/books", content_path);
 

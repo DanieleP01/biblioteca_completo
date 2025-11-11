@@ -1,6 +1,6 @@
 import { openDb } from './db.js';
 
-// Funzione per creare una nuova richiesta di copie
+//crea una nuova richiesta di copie
 export async function requestCopy(bookId: number, libraryId: number, librarianId: number, requestedCopies: number, reason: string) {
   const db = await openDb();
 
@@ -15,7 +15,7 @@ export async function requestCopy(bookId: number, libraryId: number, librarianId
   return result.lastID;
 }
 
-//funzione per recuperare le richieste
+//Recupera le richieste
 export async function getRequestCopies(){
   const db = await openDb();
 
@@ -44,7 +44,7 @@ export async function getRequestCopies(){
   return requestCopies;
 }
 
-// Ottieni richiesta per ID
+// Ottiene richiesta per ID
 export async function getRequestById(requestId: number) {
   const db = await openDb();
 

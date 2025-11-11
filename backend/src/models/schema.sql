@@ -103,24 +103,24 @@ CREATE TABLE IF NOT EXISTS notifications (
 -- POPOLAMENTO
 INSERT OR IGNORE INTO books 
 (title, author, isbn, category, cover_url, description, year, content_path) VALUES
-('Il Signore degli Anelli', 'J.R.R. Tolkien', '978-8845292613', 'Fantasy', 'assets/books/IlSignoreDegliAnelli.png', 'dsnfkdnfidnf', '2000', NULL),
-('Orgoglio e Pregiudizio', 'Jane Austen', '978-8804677943', 'Classici', 'assets/books/OrgoglioPregiudizio.png', 'udnfudsnfodsn', '2001', NULL),
-('1984', 'George Orwell', '978-8804618762', 'Distopico', 'assets/books/1984.png', 'sdnsjdnf', '2002', NULL),
-('Moby Dick', 'Herman Melville', '978-8817009419', 'Classici', 'assets/books/mobyDick.png','cnsdvnds', '2003', NULL),
-('Harry Potter e la Pietra Filosofale', 'J.K. Rowling', '978-8869184519', 'Fantasy', 'assets/books/HarryPotter.png', 'dsfndnf', '2004', NULL),
-('Il Codice Da Vinci', 'Dan Brown', '978-8804523620', 'Thriller', 'assets/books/CodiceDaVinci.png', 'dsnfjdnf', '2005', NULL),
-('Guerra e Pace', 'Lev Tolstoj', '978-8806206013', 'Classici', 'assets/books/GuerraPace.png', 'dnosjdns', '2006', NULL),
-('Cronache di Narnia: Il Leone, la Strega e Armadio', 'C.S. Lewis', '978-8804642873', 'Fantasy', 'assets/books/narnia.png', 'dsnodnfon', '2007', NULL),
-('Cento anni di Solitudine', 'Gabriel Garcia Marquez', '978-8804494276', 'Realismo Magico', 'assets/books/cent_anni_di_solitudine.png', 'amsdpkdpowa', '2008', NULL),
-('Fahrenheit 451', 'Ray Bradbury', '978-8804683074', 'Distopico', 'assets/books/fahrenheit_451.png', 'cmnvibns', '2009', NULL),
-('Il Piccolo Principe', 'Antoine de Saint-Exupéry', '978-8845292279', 'Favola', 'assets/books/il_piccolo_principe.png', 'niubcfrc', '2010', NULL),
-('Il Nome della Rosa', 'Umberto Eco', '978-8845290688', 'Giallo Storico', 'assets/books/il_nome_della_rosa.png', 'pkdojsijins', '2011', NULL),
-('L''alchimista', 'Paulo Coelho', '978-8878187884', 'Narrativa Esoterica', 'assets/books/l_alchimista.png', 'dncsodvnos', '2012', NULL),
-('Don Chisciotte della Mancia', 'Miguel de Cervantes', '978-8804677844', 'Classici', 'assets/books/don_chisciotte_della_mancia.png', 'mdocinwecjn', '2013', NULL);
+('Il Signore degli Anelli', 'J.R.R. Tolkien', '978-8845292613', 'Fantasy', 'https://www.ibs.it/images/9788830119000_0_0_536_0_75.jpg', 'dsnfkdnfidnf', '2000', 'Il_signore_degli_anelli.txt'),
+('Orgoglio e Pregiudizio', 'Jane Austen', '978-8804677943', 'Classici', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE4RH5mtS5Z7QvnhEkax5ot1ijt4nuB39UBg&s', 'udnfudsnfodsn', '2001', 'Orgoglio_pregiudizio.txt'),
+('1984', 'George Orwell', '978-8804618762', 'Distopico', 'https://copertine.hoepli.it/archivio/978/8499/9788499890944.jpg', 'sdnsjdnf', '2002', '1984.txt'),
+('Moby Dick', 'Herman Melville', '978-8817009419', 'Classici', 'https://www.ibs.it/images/9788868676018_0_0_536_0_75.jpg','cnsdvnds', '2003', 'moby_dick.txt'),
+('Harry Potter e la Pietra Filosofale', 'J.K. Rowling', '978-8869184519', 'Fantasy', 'https://m.media-amazon.com/images/I/71QIZXG2J2L._AC_UF1000,1000_QL80_.jpg', 'dsfndnf', '2004', 'Harry_Potter_e_la_Pietra_Filosofale.txt'),
+('Il Codice Da Vinci', 'Dan Brown', '978-8804523620', 'Thriller', 'https://m.media-amazon.com/images/I/719CeDchSsL._AC_UF1000,1000_QL80_.jpg', 'dsnfjdnf', '2005', 'Il_Codice_Da_Vinci.txt'),
+('Guerra e Pace', 'Lev Tolstoj', '978-8806206013', 'Classici', 'https://www.ibs.it/images/9788807901461_0_0_536_0_75.jpg', 'dnosjdns', '2006', 'Guerra_E_Pace.txt'),
+('Cronache di Narnia: Il Leone, la Strega e Armadio', 'C.S. Lewis', '978-8804642873', 'Fantasy', 'https://m.media-amazon.com/images/I/71+eLNG0bXL.jpg', 'dsnodnfon', '2007', 'cronache_di_narnia.txt'),
+('Cento anni di Solitudine', 'Gabriel Garcia Marquez', '978-8804494276', 'Realismo Magico', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8hqUcc_q2miAOPg-yVv2GivfAKLVmYxHjA&s', 'amsdpkdpowa', '2008', 'Cento_Anni_di_Solitudine.txt'),
+('Fahrenheit 451', 'Ray Bradbury', '978-8804683074', 'Distopico', 'https://m.media-amazon.com/images/I/61uRn2XO9QL._AC_UF1000,1000_QL80_.jpg', 'cmnvibns', '2009', 'Fahrenheit_451.txt'),
+('Il Piccolo Principe', 'Antoine de Saint-Exupéry', '978-8845292279', 'Favola', 'https://m.media-amazon.com/images/I/61XaPkL2EKL.jpg', 'niubcfrc', '2010', 'Il_Piccolo_Principe.txt'),
+('Il Nome della Rosa', 'Umberto Eco', '978-8845290688', 'Giallo Storico', 'https://m.media-amazon.com/images/I/61Aa9Yic8AL._AC_UF1000,1000_QL80_.jpg', 'pkdojsijins', '2011', 'Il_Nome_della_Rosa.txt'),
+('L''alchimista', 'Paulo Coelho', '978-8878187884', 'Narrativa Esoterica', 'https://m.media-amazon.com/images/I/91rF1lW1oRL._UF1000,1000_QL80_.jpg', 'dncsodvnos', '2012', 'L_alchimista.txt'),
+('Don Chisciotte della Mancia', 'Miguel de Cervantes', '978-8804677844', 'Classici', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs9drnYCFoeSdimqkpCV45OQbXYWf5332qng&s', 'mdocinwecjn', '2013', 'Don_Chisciotte_della_Mancha.txt');
 
 INSERT OR IGNORE INTO libraries 
 (name, address, city, province, manager_id, cover_url) VALUES
-('Biblioteca Centrale della Regione Siciliana “A. Bombace”', 'Via Vittorio Emanuele, 429', 'Palermo', 'PA', NULL, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzCslfEf-6IHYB4xEDF8jpeaPJXFroma2tXg&s'),
+('Biblioteca Centrale della Regione Siciliana “A. Bombace”', 'Via Vittorio Emanuele, 429', 'Palermo', 'PA', 11, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzCslfEf-6IHYB4xEDF8jpeaPJXFroma2tXg&s'),
 ('Biblioteca Comunale di Palermo Leonardo Sciascia (Casa Professa)', 'Piazzetta Brunaccini, 2', 'Palermo', 'PA', NULL, 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/99/94/1c/caption.jpg?w=1200&h=-1&s=1'),
 ('Biblioteca Comunale Borgo Nuovo', 'Via Largo Pozzillo, 7', 'Palermo', 'PA', NULL, 'https://www.esperienzeconilsud.it/openlibrary/wp-content/uploads/sites/376/2025/03/WhatsApp-Image-2025-03-19-at-13.00.06-3-.jpeg'),
 ('Biblioteca Centrale della Facoltà di Agraria', 'Piazza Delle Cliniche, 2', 'Palermo', 'PA', NULL, 'https://biblio.unipd.it/biblioteche/agripolis/@@images/image-1200-735bb42cad85a09d99ce9e4315f5ae4d.jpeg'),
@@ -129,10 +129,7 @@ INSERT OR IGNORE INTO libraries
 ('Biblioteca Civica dei Ragazzi', 'Cortile Scalilla', 'Palermo', 'PA', NULL, 'https://bibliotecagambalunga.it/sites/default/files/inline-images/foto_estivo.jpg'),
 ('Biblioteca Civica Multimediale Villa Trabia', 'Via Salinas, 3', 'Palermo', 'PA', NULL, 'https://turismo.comune.palermo.it/js/server/uploads/luoghi/213x104/_12042019122006.jpg'),
 ('Biblioteca Privata Itinerante “Pietro Tramonte”', 'Monte Santa Rosalia 18/19', 'Palermo', 'PA', NULL, 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEie09TME83LScB6vDwm84bryRzC3TdVuxhi61sS0Ww9Xnw8rIWBRSkk68Gae2ZW_3cDoOvf9a8FYFC8Ilgs0pNG8LOACOpY79c1GyWov0tsv_bSEOOdLTgfuK_XhL91tqFgP6XCYo3h7t_V/s1600/20181205_153523.jpg'),
-('Biblioteca Francescana', 'Via del Parlamento, 32', 'Palermo', 'PA', NULL, 'https://www.balarm.it/cache/9/a/d/3/3/9ad3352c03426e6c141409c7f8ef8a9da8291b02-biblioteca-francescana-jpg-614-1487160989.jpeg'),
-('Biblioteca Officina Studi Medievali', 'Via del Parlamento, 32', 'Palermo', 'PA', NULL, 'https://www.balarm.it/cache/7/5/0/3/9/75039b73bf188384a0c640180e8a656ea3e123f0-officina-studi-medievali-palermo-jpg-477-1481115794.jpeg'),
-('Biblioteca della Fondazione Sicilia', 'Via Bara all’Olivella, 2', 'Palermo', 'PA', NULL, 'https://www.fondazionesicilia.it/wp-content/uploads/2022/04/biblioteca02-1000x661-1.jpg'),
-('Biblioteca del Conservatorio Alessandro Scarlatti', 'Via Squarcialupo, 45', 'Palermo', 'PA', NULL, 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/26/7b/2e/interno-della-biblioteca.jpg?w=1200&h=1200&s=1');
+('Biblioteca Francescana', 'Via del Parlamento, 32', 'Palermo', 'PA', NULL, 'https://www.balarm.it/cache/9/a/d/3/3/9ad3352c03426e6c141409c7f8ef8a9da8291b02-biblioteca-francescana-jpg-614-1487160989.jpeg');
 
 
 INSERT OR IGNORE INTO library_books

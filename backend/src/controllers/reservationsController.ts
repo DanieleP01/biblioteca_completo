@@ -29,7 +29,7 @@ export async function createReservationController(req: Request, res: Response) {
     //crea nuova prenotazione
     const newReservation = await reservationModel.createReservation(user_id, book_id, library_id);
     
-    // NOTIFICA AL BIBLIOTECARIO - Nuova prenotazione ricevuta
+    // NOTIFICA AL BIBLIOTECARIO
     const library = await LibraryModel.getLibraryById(library_id);
     const book = await BooksModel.getBookById(book_id);
     

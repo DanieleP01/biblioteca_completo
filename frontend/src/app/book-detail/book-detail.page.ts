@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from '../models/book.model.js';
 import { AuthService } from '../services/auth.service.js';
+import { AlertService } from '../services/alert.service.js';
 
 @Component({
   selector: 'app-book-detail',
@@ -39,7 +38,8 @@ export class BookDetailPage implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -59,7 +59,7 @@ export class BookDetailPage implements OnInit {
   //carica dettagli libro
   loadBookDetails(id: Number) {
     this.isLoading = true;
-    this.http.get<Book>(`${this.apiUrl}/libri/${id}`)
+    this.http.get<Book>(`${this.apiUrl}/books/${id}`)
           .subscribe({
             next: (libro) => {
               this.book = libro;
@@ -82,7 +82,7 @@ export class BookDetailPage implements OnInit {
         return;
       }
 
-      this.http.get<any>(`${this.apiUrl}/libri/${content_path}/content`)
+      this.http.get<any>(`${this.apiUrl}/books/${content_path}/content`)
         .subscribe({
           next: (res) => {
             try {
@@ -162,12 +162,12 @@ export class BookDetailPage implements OnInit {
     this.http.patch<any>(`${this.apiUrl}/loans/${this.activeLoan.id}/return`, {}).subscribe({
       next: (response) => {
         console.log('Libro restituito con successo!', response);
-        alert('Libro restituito con successo!');
+        this.alertService.presentAlert('Successo', 'Libro restituito con successo!');
         this.hasActiveLoan = false;
         this.router.navigate(['/home']);
       },
       error: (error) => {
-        console.error('Errore Restituzione!', error);
+        this.alertService.presentAlert('Errore', error);
         this.hasActiveLoan = false;
       }
     });

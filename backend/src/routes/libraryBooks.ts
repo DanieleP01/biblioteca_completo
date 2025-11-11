@@ -16,9 +16,6 @@ router.get('/availability/:libraryId/:bookId', LibraryBooksController.checkAvail
 // Aggiungi libro a biblioteca
 router.post('/library-books/add', LibraryBooksController.addBookToLibrary);
 
-// Aggiorna numero copie
-//router.patch('/library-books', LibraryBooksController.updateCopies);
-
 // Ottieni tutte le associazioni
 router.get('/library-books', LibraryBooksController.getAllLibraryBooks);
 

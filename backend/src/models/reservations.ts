@@ -74,6 +74,7 @@ export async function findReservationsByLibraryAndBook(libraryId: number, bookId
   return reservations || [];
 }
 
+//Recupera prenotazioni da un libro e bibioteca specifico
 export async function getReservationsByBookAndLibrary(bookId: number, libraryId: number, limit: number){
   const db = await openDb();
 

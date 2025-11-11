@@ -18,4 +18,5 @@ export interface NewBook {
   description: string;
   cover_url: string;
   year: number;
+  content_path: string;
 }

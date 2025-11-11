@@ -12,12 +12,10 @@ const admin_id = 12; //essendo unico l'admin, lo dichiaro esplicitamente
 //crea una richiesta di copie (da parte del bibliotecario all'amministratore)
 export async function createCopyRequest(req: Request, res: Response) {
     const { book_id, library_id, librarian_id, requested_copies, reason } = req.body;
-    //console.log('Ricevuta richiesta di copie:', { book_id, library_id, librarian_id, requested_copies, reason });
 
     try {
-      //recupera il titolo del libro per la notifica
       const book = await BooksModel.getBookById(book_id);
-      //effettua la richiesta delle copie
+
       const copyRequestId = await copiesModel.requestCopy(book_id, library_id, librarian_id, requested_copies, reason);
       
       // NOTIFICA ALL'ADMIN (unico)
@@ -28,6 +26,7 @@ export async function createCopyRequest(req: Request, res: Response) {
         message: `Il bibliotecario ha richiesto ${requested_copies} copie del libro "${book.title}". Motivo: ${reason}`,
         type: 'copy_request_created',
       });
+
       res.status(201).json({ id: copyRequestId });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
@@ -38,7 +37,6 @@ export async function createCopyRequest(req: Request, res: Response) {
 export async function getPendingRequestCopies(req: Request, res: Response){
 
     try{
-
       const requestCopies = await copiesModel.getRequestCopies();
       res.json(requestCopies);
     }catch (error: any){
@@ -89,7 +87,7 @@ export async function approveCopyRequest(req: Request, res: Response) {
 
     let processedReservations = 0;
     let copiesToProcess = availableCopies;
-    // Array per raccogliere le notifiche agli utenti
+  
     const userNotifications = [];
 
     for (const reservation of reservations) {
@@ -108,7 +106,6 @@ export async function approveCopyRequest(req: Request, res: Response) {
       // Elimina la prenotazione
       await reservationModel.deleteReservation(reservation.id);
 
-      // Prepara notifica per l'utente
       userNotifications.push({
         recipient_id: reservation.user_id,
         recipient_role: 'user',

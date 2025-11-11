@@ -11,8 +11,8 @@ import notificationsRoutes from './routes/notifications.js';
 
 const router = Router();
 
-router.use('/libri', booksRouter);
-router.use('/librerie', libraryRouter);
+router.use('/books', booksRouter);
+router.use('/libraries', libraryRouter);
 router.use('/', userRouter);
 router.use('/search', searchRouter);
 router.use('/', libraryBooksRoutes);

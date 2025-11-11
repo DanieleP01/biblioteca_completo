@@ -87,7 +87,7 @@ export class LoanRequestPage implements OnInit {
   }
 
   searchBooks(query: string) {
-    this.http.get<Book[]>(`${this.apiUrl}/libri`).subscribe({
+    this.http.get<Book[]>(`${this.apiUrl}/books`).subscribe({
       next: (books: any) => {
         this.bookSuggestions = books.filter((book: any) =>
           book.title.toLowerCase().includes(query.toLowerCase())
@@ -102,7 +102,7 @@ export class LoanRequestPage implements OnInit {
 
   //seleziona automaticamente l'autore del libro "selezionato"
   loadAllAuthors() {
-    this.http.get<Book[]>(`${this.apiUrl}/libri`).subscribe({
+    this.http.get<Book[]>(`${this.apiUrl}/books`).subscribe({
       next: (books: any) => {
         const authorsSet = new Set(books.map((book: any) => book.author));
         this.authorSuggestions = Array.from(authorsSet).sort() as string[];
@@ -133,7 +133,7 @@ export class LoanRequestPage implements OnInit {
 
   //lista biblioteche per libro selezionato
   loadLibrariesForBook(bookId: number) {
-    console.log("libro selezionato: ", bookId);
+    //console.log("libro selezionato: ", bookId);
     this.http.get<Library[]>(`${this.apiUrl}/books/${bookId}/libraries`).subscribe({
       next: (response) => {
         this.librarySuggestions = response.filter((lib: any) => lib.total_copies > 0);

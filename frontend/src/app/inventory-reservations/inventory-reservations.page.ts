@@ -5,6 +5,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service.js';
+import { AlertService } from '../services/alert.service.js';
 import { Reservation } from '../models/reservation.model.js';
 import { libraryBook } from '../models/library.model.js';
 import { Book } from '../models/book.model.js';
@@ -31,7 +32,8 @@ export class InventoryReservationsPage implements OnInit {
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class InventoryReservationsPage implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        alert('Errore nel caricamento delle richieste');
+        this.alertService.presentAlert('Errore', 'Errore nel caricamento delle richieste');
       }
     });
   }
@@ -71,7 +73,7 @@ export class InventoryReservationsPage implements OnInit {
             console.log(`Prenotazioni per libro ${bookId}:`, res);
           },
           error: (error) => {
-            alert('Errore nel caricamento delle prenotazioni');
+            this.alertService.presentAlert('Erroe', 'Errore nel caricamento delle prenotazioni');
           }
         });
       }
@@ -100,7 +102,7 @@ export class InventoryReservationsPage implements OnInit {
 
     const { data } = await modal.onDidDismiss();
     if (data && data.success) {
-      alert('Richiesta di copie inviata con successo');
+      this.alertService.presentAlert('Successo', 'Richiesta di copie inviata con successo');
     }
   }
 
