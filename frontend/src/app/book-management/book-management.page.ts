@@ -115,7 +115,7 @@ export class BookManagementPage implements OnInit {
 
     this.isLoading = true;
     const book_ids = Array.from(this.selectedBooks);
-
+    
     this.http.request('delete', `${this.apiUrl}/books/delete`, { 
       body: { book_ids } 
     }).subscribe({

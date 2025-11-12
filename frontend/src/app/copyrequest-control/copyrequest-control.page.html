@@ -63,7 +63,7 @@
             color="success" 
             (click)="approveCopyRequest(request.id, request.book_id, request.library_id, request.requested_copies)"
             [disabled]="isLoading">
-            <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
             Approva
           </ion-button>
           <ion-button 
@@ -76,7 +76,7 @@
             Rifiuta
           </ion-button>
         </div>
-        
+
       </ion-card-content>
     </ion-card>
   </ion-list>

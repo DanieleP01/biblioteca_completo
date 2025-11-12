@@ -133,11 +133,10 @@ export class LoanRequestPage implements OnInit {
 
   //lista biblioteche per libro selezionato
   loadLibrariesForBook(bookId: number) {
-    //console.log("libro selezionato: ", bookId);
+    console.log("libro selezionato: ", bookId);
     this.http.get<Library[]>(`${this.apiUrl}/books/${bookId}/libraries`).subscribe({
       next: (response) => {
         this.librarySuggestions = response.filter((lib: any) => lib.total_copies > 0);
-
         if (this.librarySuggestions.length === 0) {
           this.alertService.presentAlert('Nessuna biblioteca', 'Spiacenti, questo libro non è disponibile in nessuna biblioteca');
         }

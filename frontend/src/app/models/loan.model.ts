@@ -1,5 +1,5 @@
 export interface Loan{
-    id: number,
+    loan_id: number,
     user_id: number,
     library_id: number,
     book_id: number,

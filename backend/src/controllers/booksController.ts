@@ -45,50 +45,49 @@ export async function deleteBooks(req: Request, res: Response) {
       return res.status(400).json({ error: 'Nessun libro selezionato' });
     }
 
-    //recupera tutti i dati prima di eliminare e crea le notifiche
-    const notificationsToSend = [];
-
-    for (const bookId of book_ids) {
-      const book = await BooksModel.getBookById(bookId);
-      const librarians = await BooksModel.getLibrariansByBookId(bookId);
-      const users = await BooksModel.getUsersByBookId(bookId);
-
-      // Aggiungi notifiche ai bibliotecari
-      for (const librarian of librarians) {
-        notificationsToSend.push({
-          recipient_id: librarian.id,
-          recipient_role: 'librarian',
-          title: 'Libro Rimosso',
-          message: `Il libro "${book.title}" è stato rimosso dal sistema da un amministratore.`,
-          type: 'book_deleted',
-        });
-      }
-
-      // Aggiungi notifiche agli utenti
-      for (const user of users) {
-        notificationsToSend.push({
-          recipient_id: user.id,
-          recipient_role: 'user',
-          title: 'Prestito Annullato',
-          message: `Il libro "${book.title}" che avevi in prestito è stato rimosso dal sistema. Il tuo prestito è stato annullato.`,
-          type: 'loan_cancelled',
-        });
-      }
-    }
-
     // Elimina i libri (CASCADE elimina le associazioni)
     const changes = await BooksModel.deleteBooks(book_ids);
 
-    //invia le notifiche
-    for(const notification of notificationsToSend){
-      await NotificationsModel.createNotification(notification);
-    }
-    
     if (changes === 0) {
       return res.status(404).json({ error: 'Libri non trovati' });
     }
+    
+    //NOTIFICHE
+    try {
+      // Recupera i dati per le notifiche (async in background)
+      (async () => {
+        for (const bookId of book_ids) {
+          const book = await BooksModel.getBookById(bookId);
+          const librarians = await BooksModel.getLibrariansByBookId(bookId);
+          const users = await BooksModel.getUsersByBookId(bookId);
 
-    res.json({ message: 'Libri eliminati da tutte le biblioteche' });
+          for (const librarian of librarians) {
+            await NotificationsModel.createNotification({
+              recipient_id: librarian.id,
+              recipient_role: 'librarian',
+              title: 'Libro Rimosso',
+              message: `Il libro "${book.title}" è stato rimosso dal sistema.`,
+              type: 'book_deleted',
+            });
+          }
+
+          for (const user of users) {
+            await NotificationsModel.createNotification({
+              recipient_id: user.id,
+              recipient_role: 'user',
+              title: 'Prestito Annullato',
+              message: `Il libro "${book.title}" che avevi in prestito è stato rimosso dal sistema.`,
+              type: 'loan_cancelled',
+            });
+          }
+        }
+      })().catch(err => console.error('Errore notifiche in background:', err));
+    } catch (err) {
+      console.error('Errore setup notifiche:', err);
+    }
+    
+    return res.json({ message: 'Libri eliminati da tutte le biblioteche' });
+
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -106,6 +105,7 @@ export async function getBookContentFromFile(req: Request, res: Response) {
 
     // Leggi contenuto file
     const content = await fs.readFile(filePath, { encoding: "utf-8" });
+    //console.log('Contenuto:',content);
 
     // Invia il contenuto
     res.json({ content: content });

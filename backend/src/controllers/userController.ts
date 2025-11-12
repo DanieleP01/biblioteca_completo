@@ -86,7 +86,7 @@ export const registerController = async (req: Request, res: Response) => {
     //crea l'utente
     const userId = await createUser(firstName, lastName, username, email, passwordHash, city, province);
     
-    // NOTIFICA DI BENVENUTO
+    //NOTIFICA DI BENVENUTO
     await NotificationsModel.createNotification({
       recipient_id: userId,
       recipient_role: 'user',
@@ -96,11 +96,14 @@ export const registerController = async (req: Request, res: Response) => {
     });
 
     res.status(201).json({ message: 'Registrazione completata!' });
-    return;
+    console.log('Registrazione completata');
+    //return;
+
   } catch (error: any) {
     if (error.message.includes('UNIQUE constraint')) {
       res.status(400).json({ error: 'Username o email già esistenti.' });
       return;
+
     } else {
       res.status(500).json({ error: 'Errore interno del server.' });
       return;

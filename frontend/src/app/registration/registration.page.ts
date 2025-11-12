@@ -59,7 +59,7 @@ export class RegistrationPage {
       next: (response: AuthResponse) => {
         this.successMessage = response.message;
         this.isLoading = false;
-
+        console.log("Registrazione avvenuta");
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (err) => {

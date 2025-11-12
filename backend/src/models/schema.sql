@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    city TEXT NOT NULL,
-    province TEXT NOT NULL,
+    city TEXT,
+    province TEXT,
     role TEXT DEFAULT 'user'  -- 'user', 'librarian', 'admin'
 );
 

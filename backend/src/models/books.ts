@@ -28,13 +28,13 @@ export async function createBook(bookData: {
   year?: number;
   description?: string;
   cover_url?: string;
-  content: string;
+  content_path: string;
   }){
 
   const db = await openDb();
 
   const result = await db.run(
-    `INSERT INTO books (title, author, isbn, category, year, description, cover_url, content)
+    `INSERT INTO books (title, author, isbn, category, year, description, cover_url, content_path)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         bookData.title,
@@ -44,7 +44,7 @@ export async function createBook(bookData: {
         bookData.year || new Date().getFullYear(),
         bookData.description || null,
         bookData.cover_url || null,
-        bookData.content || null
+        bookData.content_path || null
       ]);
 
   await db.close();
@@ -72,7 +72,7 @@ export async function getLibrariansByBookId(bookId: number) {
   const librarians = await db.all(
     `SELECT DISTINCT u.id FROM users u
      WHERE u.role = 'librarian' AND u.library_id IN (
-       SELECT library_id FROM book_library WHERE book_id = ?
+       SELECT library_id FROM library_books WHERE book_id = ?
      )`,
     bookId
   );

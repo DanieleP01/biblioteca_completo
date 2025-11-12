@@ -8,7 +8,7 @@ COMPILAZIONE/ESECUZIONE: npm run build
 
 ::ng-deep (per il css della modale)
 
- Se il prestito è scaduto, ritorna 403 Forbidden
+Se il prestito è scaduto, ritorna 403 Forbidden
 
 spiegazione sintassi per rimostare le notifiche non lette subito dopo averle lette
 // 1. Prendi l'array attuale di notifiche

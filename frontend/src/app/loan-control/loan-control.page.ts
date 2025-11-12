@@ -80,7 +80,6 @@ export class LoanControlPage implements OnInit {
   // Approva un prestito
   approveLoan(loanId: number) {
     this.isLoading = true;
-
     this.http.patch(`${this.apiUrl}/loans/${loanId}/approve`, {}).subscribe({
       next: (response) => {
         this.isLoading = false;

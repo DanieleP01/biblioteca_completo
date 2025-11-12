@@ -86,9 +86,9 @@ export class BookDetailPage implements OnInit {
         .subscribe({
           next: (res) => {
             try {
-              //console.log('Risposta ricevuta:', res);
-              if (res && res.chapters) {
-                this.content = res.chapters;
+              if (res && res.content) {
+                this.content = res.content;
+                console.log('contenuto', this.content);
                 this.splitContentToChapters(this.content);
               }
             } catch (innerErr) {

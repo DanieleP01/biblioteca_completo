@@ -112,6 +112,12 @@ export async function approveLoan(req: Request, res: Response) {
         // Decrementa copie disponibili
         await LibraryBooksModel.decrementCopies(loan.library_id, loan.book_id);
         
+        res.json({
+            message: 'Prestito approvato con successo',
+            loan_id: loanId,
+            due_date: loan.due_date
+        });
+        
         // NOTIFICA ALL'UTENTE - Prestito Approvato
         const book = await BooksModel.getBookById(loan.book_id);
         await NotificationsModel.createNotification({
@@ -121,11 +127,8 @@ export async function approveLoan(req: Request, res: Response) {
         message: `La tua richiesta di prestito per il libro "${book.title}" è stata approvata! Hai 30 giorni per leggerlo.`,
         type: 'loan_approved',
         });
-        res.json({
-            message: 'Prestito approvato con successo',
-            loan_id: loanId,
-            due_date: loan.due_date
-        });
+
+        
         
     } catch (error: any) {
         res.status(500).json({ error: error.message });
