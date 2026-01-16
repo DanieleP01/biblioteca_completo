@@ -44,7 +44,7 @@
     </ion-item>
 
     <ion-item class="custom-input" lines="none">
-      <ion-label position="floating">Categoria</ion-label>
+      <ion-label position="floating" class="label-required">Categoria</ion-label>
       <ion-input 
         [(ngModel)]="newBook.category" 
         type="text" 
@@ -53,7 +53,7 @@
     </ion-item>
 
     <ion-item class="custom-input" lines="none">
-      <ion-label position="floating">Anno</ion-label>
+      <ion-label position="floating" class="label-required">Anno</ion-label>
       <ion-input 
         [(ngModel)]="newBook.year" 
         type="number" 
@@ -62,7 +62,7 @@
     </ion-item>
 
     <ion-item class="custom-input" lines="none">
-      <ion-label position="floating">Descrizione</ion-label>
+      <ion-label position="floating" class="label-required">Descrizione</ion-label>
       <ion-textarea 
         [(ngModel)]="newBook.description" 
         rows="3" 
@@ -71,7 +71,7 @@
     </ion-item>
 
     <ion-item class="custom-input" lines="none">
-      <ion-label position="floating">URL Copertina</ion-label>
+      <ion-label position="floating" class="label-required">URL Copertina</ion-label>
       <ion-input 
         [(ngModel)]="newBook.cover_url" 
         type="text" 
@@ -80,12 +80,16 @@
     </ion-item>
 
     <ion-item class="custom-input" lines="none">
-      <ion-label position="floating">Nome file (.txt - Inserire il file in /assets/book)</ion-label>
-      <ion-input 
-        [(ngModel)]="newBook.content_path" 
-        type="text" 
-        placeholder="nome file ">
-      </ion-input>
+        <ion-label position="stacked" class="label-required">File Libro (.txt)</ion-label>
+        <input 
+            #fileInput
+            type="file" 
+            accept=".txt" 
+            (change)="onFileSelected($event)"
+            required/>
+        <small *ngIf="selectedFile" class="selectedFile">
+            &check; {{ selectedFile.name }} 
+        </small>
     </ion-item>
   </div>
 

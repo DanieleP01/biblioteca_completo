@@ -27,11 +27,11 @@ CREATE TABLE IF NOT EXISTS books (
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     isbn TEXT UNIQUE NOT NULL,
-    category TEXT,
-    cover_url TEXT,
-    description TEXT,
-    year INTEGER,
-    content_path TEXT
+    category TEXT NOT NULL,
+    cover_url TEXT NOT NULL,
+    description TEXT NOT NULL,
+    year INTEGER NOT NULL,
+    content_path TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS library_books (
@@ -134,7 +134,7 @@ INSERT OR IGNORE INTO libraries
 
 INSERT OR IGNORE INTO library_books
 (library_id, book_id, total_copies, available_copies) VALUES
-(1, 1, 5, 5),
+(1, 1, 1, 1),
 (1, 2, 3, 3),
 (1, 3, 4, 4),
 (2, 4, 2, 2),
@@ -154,10 +154,4 @@ INSERT OR IGNORE INTO library_books
 (9, 4, 5, 5),
 (9, 5, 2, 2),
 (10, 6, 3, 3),
-(10, 7, 4, 4),
-(11, 8, 1, 1),
-(11, 9, 2, 2),
-(12, 10, 3, 3),
-(12, 11, 4, 4),
-(13, 12, 5, 5),
-(13, 13, 2, 6);
+(10, 7, 4, 4);

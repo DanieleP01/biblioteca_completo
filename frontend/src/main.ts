@@ -39,7 +39,8 @@ import {
   documentTextOutline,
   chevronBackOutline,
   chevronForwardOutline,
-  notificationsOutline
+  notificationsOutline,
+  closeCircle
 } from 'ionicons/icons';
 
 addIcons({
@@ -74,7 +75,8 @@ addIcons({
   'chevron-back': chevronBackOutline,
   'chevron-forward': chevronForwardOutline,
   'document-text-outline': documentTextOutline,
-  'notifications': notificationsOutline
+  'notifications': notificationsOutline,
+  'close-circle': closeCircle
 });
 
 bootstrapApplication(AppComponent, {

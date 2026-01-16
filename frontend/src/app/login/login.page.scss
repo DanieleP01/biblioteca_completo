@@ -57,7 +57,7 @@ ion-content {
   padding: 40px;
   
   background: rgba(255, 255, 255, 0.232);
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 18px;
   box-shadow: -18px 0px 32px rgba(110, 118, 136, 0.358);
@@ -147,5 +147,6 @@ ion-button {
 }
 
 .message{
+  font-weight: bold;
   text-align: center;
 }

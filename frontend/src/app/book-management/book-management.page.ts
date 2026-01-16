@@ -89,7 +89,7 @@ export class BookManagementPage implements OnInit {
   async confirmDelete() {
     const alert = await this.alertController.create({
       header: 'Eliminazione',
-      message: 'Sei sicuro di voler rimuovere i libri selezionati?',
+      message: 'Sei sicuro di voler rimuovere dal sistema i libri selezionati?',
       buttons: [
         {
           text: 'Annulla',
@@ -115,7 +115,7 @@ export class BookManagementPage implements OnInit {
 
     this.isLoading = true;
     const book_ids = Array.from(this.selectedBooks);
-    
+
     this.http.request('delete', `${this.apiUrl}/books/delete`, { 
       body: { book_ids } 
     }).subscribe({
@@ -123,8 +123,7 @@ export class BookManagementPage implements OnInit {
         this.selectedBooks.clear();
         this.isRemoveMode = false;
         this.isLoading = false;
-        window.location.reload();
-        //this.loadBooks();
+        this.loadBooks();
         this.alertService.presentAlert('Successo', 'Libri eliminati dal sistema');
       },
       error: () => {

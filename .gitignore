@@ -6,3 +6,6 @@
  
 # Variabili ambiente
 **/.env
+
+#Non include il file database
+**/database

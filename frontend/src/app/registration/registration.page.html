@@ -11,18 +11,17 @@
 
   <div class="background-image"></div>
 
-  <!-- COLONNA DESTRA -->
   <div class="registration-container">
     <h2>Crea il tuo account</h2>
     <form (ngSubmit)="submitRegistration()" #regForm="ngForm">
       
       <!-- RIGA 1: Nome e Cognome -->
       <div class="form-row">
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Nome</ion-label>
           <ion-input [(ngModel)]="user.firstName" name="firstName" required></ion-input>
         </ion-item>
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Cognome</ion-label>
           <ion-input [(ngModel)]="user.lastName" name="lastName" required></ion-input>
         </ion-item>
@@ -30,11 +29,11 @@
 
       <!-- RIGA 2: Città e Provincia -->
       <div class="form-row">
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Città (opzionale)</ion-label>
           <ion-input [(ngModel)]="user.city" name="city"></ion-input>
         </ion-item>
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Provincia (opzionale)</ion-label>
           <ion-input [(ngModel)]="user.province" name="province"></ion-input>
         </ion-item>
@@ -42,27 +41,27 @@
       
       <!-- RIGA 3: Username e Email -->
       <div class="form-row">
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Username</ion-label>
           <ion-input [(ngModel)]="user.username" name="username" required></ion-input>
         </ion-item>
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Email</ion-label>
-          <ion-input [(ngModel)]="user.email" name="email" required type="email"></ion-input>
+          <ion-input [(ngModel)]="user.email" name="email" type="email" required></ion-input>
         </ion-item>
       </div>
 
       <!-- RIGA 4: Password e Conferma Password -->
       <div class="form-row">
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Password</ion-label>
-          <ion-input [(ngModel)]="user.password" name="password" required type="password">
+          <ion-input [(ngModel)]="user.password" name="password" type="password" required>
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
-        <ion-item class="form-half">
+        <ion-item class="form-half" lines="none">
           <ion-label position="floating">Conferma Password</ion-label>
-          <ion-input [(ngModel)]="user.confirmPassword" name="confirmPassword" required type="password">
+          <ion-input [(ngModel)]="user.confirmPassword" name="confirmPassword" type="password" required>
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>

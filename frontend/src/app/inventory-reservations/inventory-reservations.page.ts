@@ -101,9 +101,6 @@ export class InventoryReservationsPage implements OnInit {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    if (data && data.success) {
-      this.alertService.presentAlert('Successo', 'Richiesta di copie inviata con successo');
-    }
   }
 
 }

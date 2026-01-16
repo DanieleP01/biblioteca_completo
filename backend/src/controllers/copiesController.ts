@@ -110,7 +110,7 @@ export async function approveCopyRequest(req: Request, res: Response) {
         recipient_id: reservation.user_id,
         recipient_role: 'user',
         title: 'Prenotazione Convertita in Prestito',
-        message: `La tua prenotazione del libro "${book.title}" è stata convertita in prestito attivo. Hai 30 giorni per leggerlo.`,
+        message: `La tua prenotazione del libro "${book.title}" è stata convertita in una richiesta prestito. Verrai notificato non appena il bibliotecario accetterà o rifiuterà la richiesta.`,
         type: 'reservation_to_loan',
       });
 
@@ -124,14 +124,15 @@ export async function approveCopyRequest(req: Request, res: Response) {
       return res.status(400).json({ error: 'Impossibile rifiutare la richiesta' });
     }
 
-    // NOTIFICA AL BIBLIOTECARIO
+    // NOTIFICA AL BIBLIOTECARIO DI AVVENUTA AGGIUNTA COPIE
     await NotificationsModel.createNotification({
       recipient_id: librarian.id,
       recipient_role: 'librarian',
       title: 'Richiesta di Copie Approvata',
-      message: `La tua richiesta di ${requested_copies} copie del libro "${book.title}" è stata approvata e le copie sono state aggiunte.`,
+      message: `La tua richiesta di "${requested_copies}" copie del libro "${book.title}" è stata approvata e le copie sono state aggiunte. Verificare eventuali nuove richieste di prestito`,
       type: 'copy_request_approved',
     });
+
     // NOTIFICHE AGLI UTENTI (in batch)
     for (const notification of userNotifications) {
       await NotificationsModel.createNotification(notification);

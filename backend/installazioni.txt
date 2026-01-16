@@ -31,4 +31,6 @@ if(currentCount > 0){
     this.unreadCountSubject.next(currentCount - 1);
 }
 
-
+CARICAMENTO FILE: Installazione di Multer, per l'upload del file; 
+                  per inviare file da backend a frontend utilizzo FormData, che a differenza di Json classico ritorna tutto in stringa, quindi nel backend bisogna parsarlo. 
+                  Utilizzando Json classico ritorna direttamente oggetti (non stringhe) ma non si possono inviare file.

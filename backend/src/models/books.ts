@@ -1,4 +1,10 @@
 import { openDb } from './db.js';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //tutti i libri
 export async function getAllBooks() {
@@ -11,7 +17,6 @@ export async function getAllBooks() {
 
 //libro per id specifico
 export async function getBookById(id: number) {
-
     const db = await openDb();
   
     const book = await db.get('SELECT * FROM books WHERE id = ?', id);
@@ -56,6 +61,26 @@ export async function deleteBooks(bookIds: number[]) {
   const db = await openDb();
   const placeholders = bookIds.map(() => '?').join(',');
 
+  // recupera i content_path dei libri da eliminare
+  const pathToDelete = await db.all(
+    `SELECT id, content_path FROM books WHERE id IN (${placeholders})`,
+      bookIds
+  );
+
+  //elimina i file associati
+  for (const book of pathToDelete) {
+      if (book && book.content_path) {
+        const filePath = path.resolve(__dirname, '../../storage/books', book.content_path);
+        try {
+          await fs.unlink(filePath);
+          console.log(`File eliminato: ${book.content_path}`);
+        } catch (err) {
+          console.error(`Errore nell'eliminazione del file ${book.content_path}:`, err);
+        }
+      }
+    }
+
+  //elimina i libri dal db
   const result = await db.run(
     `DELETE FROM books WHERE id IN (${placeholders})`
     , bookIds );
@@ -70,10 +95,10 @@ export async function getLibrariansByBookId(bookId: number) {
   const db = await openDb();
   
   const librarians = await db.all(
-    `SELECT DISTINCT u.id FROM users u
-     WHERE u.role = 'librarian' AND u.library_id IN (
-       SELECT library_id FROM library_books WHERE book_id = ?
-     )`,
+    `SELECT DISTINCT l.manager_id as id 
+     FROM libraries l
+     INNER JOIN library_books lb ON l.id = lb.library_id
+     WHERE lb.book_id = ?`,
     bookId
   );
   
@@ -95,5 +120,13 @@ export async function getUsersByBookId(bookId: number) {
 
   await db.close();
   return users;
+}
+
+//recupera i libri dal content_path (per l'upload del file)
+export async function getBookByContentPath(contentPath: string) {
+  const db = await openDb();
+  const book = await db.get('SELECT * FROM books WHERE content_path = ?', contentPath);
+  await db.close();
+  return book;
 }
 

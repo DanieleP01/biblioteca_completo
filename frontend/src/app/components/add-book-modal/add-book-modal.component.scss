@@ -87,6 +87,20 @@ ion-header {
   color: #ef4444;
 }
 
+input[type="file"]{
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    color: gray;
+}
+
+.selectedFile{
+    color: green; 
+    padding: 8px;
+    display: block
+}
+
 .libraries-list {
   display: flex;
   flex-direction: column;

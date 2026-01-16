@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import * as BooksModel  from '../models/books.js';
+import * as LibraryBooksModel from '../models/libraryBooks.js';
+import * as LibraryModel from '../models/library.js';
 import * as LoansModel from '../models/loans.js';
 import * as NotificationsModel from '../models/notifications.js';
 import path from 'path';
@@ -40,26 +42,30 @@ export async function deleteBooks(req: Request, res: Response) {
   try {
 
     const { book_ids } = req.body;
-
     if (!book_ids || !book_ids.length) {
       return res.status(400).json({ error: 'Nessun libro selezionato' });
     }
 
+    // recupera i dati dei libri
+    const booksData = await Promise.all(
+      book_ids.map((id: number) => BooksModel.getBookById(id))
+    )
+
     // Elimina i libri (CASCADE elimina le associazioni)
     const changes = await BooksModel.deleteBooks(book_ids);
-
     if (changes === 0) {
       return res.status(404).json({ error: 'Libri non trovati' });
     }
     
     //NOTIFICHE
     try {
-      // Recupera i dati per le notifiche (async in background)
       (async () => {
-        for (const bookId of book_ids) {
-          const book = await BooksModel.getBookById(bookId);
-          const librarians = await BooksModel.getLibrariansByBookId(bookId);
-          const users = await BooksModel.getUsersByBookId(bookId);
+        for (let i = 0; i < book_ids.length; i++) {
+          const book = booksData[i];
+          if (!book) continue; // Skip se il libro non esiste
+
+          const librarians = await BooksModel.getLibrariansByBookId(book_ids[i]);
+          const users = await BooksModel.getUsersByBookId(book_ids[i]);
 
           for (const librarian of librarians) {
             await NotificationsModel.createNotification({
@@ -71,7 +77,8 @@ export async function deleteBooks(req: Request, res: Response) {
             });
           }
 
-          for (const user of users) {
+          if(users){
+            for (const user of users) {
             await NotificationsModel.createNotification({
               recipient_id: user.id,
               recipient_role: 'user',
@@ -80,6 +87,7 @@ export async function deleteBooks(req: Request, res: Response) {
               type: 'loan_cancelled',
             });
           }
+          }
         }
       })().catch(err => console.error('Errore notifiche in background:', err));
     } catch (err) {
@@ -87,7 +95,6 @@ export async function deleteBooks(req: Request, res: Response) {
     }
     
     return res.json({ message: 'Libri eliminati da tutte le biblioteche' });
-
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -113,3 +120,5 @@ export async function getBookContentFromFile(req: Request, res: Response) {
     res.status(500).json({ error: error.message });
   }
 } 
+
+

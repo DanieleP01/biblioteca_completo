@@ -33,6 +33,8 @@ export class AddBookModalComponent implements OnInit {
   libraries: Library[] = [];
   libraryBooksCopies: { [key: number]: number } = {};
   isLoading = false;
+  selectedFile: File | null = null; 
+
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(
@@ -53,7 +55,7 @@ export class AddBookModalComponent implements OnInit {
         this.libraries = res;
         this.libraryBooksCopies = {};
         this.libraries.forEach(lib => {
-        this.libraryBooksCopies[lib.id] = 0;
+            this.libraryBooksCopies[lib.id] = 0;
         });
       },
       error: () => {
@@ -62,10 +64,34 @@ export class AddBookModalComponent implements OnInit {
     });
   }
 
+  //gestione selezione file
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type !== 'text/plain') {
+        this.alertService.presentAlert('Errore', 'Seleziona un file .txt');
+        return;
+      }
+      this.selectedFile = file;
+    }
+  }
+
+  private isFieldEmpty(value: any): boolean {
+    return !value || (typeof value === 'string' && !value.trim());
+  }
+
+  //salva un nuovo libro
   saveNewBook() {
     // Valida i campi obbligatori
-    if (!this.newBook.title || !this.newBook.author || !this.newBook.isbn) {
-      this.alertService.presentAlert('Errore', 'Titolo, autore e ISBN sono obbligatori');
+    const emptyFields = Object.values(this.newBook).filter(field => this.isFieldEmpty(field));
+    if (emptyFields.length < 0) {
+        this.alertService.presentAlert('Errore', 'Compila tutti i campi obbligatori');
+        return;
+    }
+
+    // Valida file
+    if (!this.selectedFile) {
+      this.alertService.presentAlert('Errore', 'Carica il file del libro');
       return;
     }
 
@@ -84,10 +110,15 @@ export class AddBookModalComponent implements OnInit {
 
     this.isLoading = true;
 
-    this.http.post(`${this.apiUrl}/library-books/add`, {
-      book: this.newBook,
-      libraryAssociations: selectedLibraries
-    }).subscribe({
+    // CREA FormData CON FILE 
+    const formData = new FormData();
+    
+    formData.append('file', this.selectedFile);
+    formData.append('book', JSON.stringify(this.newBook));
+    formData.append('libraryAssociations', JSON.stringify(selectedLibraries));
+
+    this.http.post(`${this.apiUrl}/library-books/add`, formData)
+    .subscribe({
       next: () => {
         this.alertService.presentAlert('Successo', 'Libro aggiunto con successo');
         this.bookAdded.emit();

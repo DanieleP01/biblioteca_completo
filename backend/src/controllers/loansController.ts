@@ -121,11 +121,11 @@ export async function approveLoan(req: Request, res: Response) {
         // NOTIFICA ALL'UTENTE - Prestito Approvato
         const book = await BooksModel.getBookById(loan.book_id);
         await NotificationsModel.createNotification({
-        recipient_id: loan.user_id,
-        recipient_role: 'user',
-        title: 'Prestito Approvato',
-        message: `La tua richiesta di prestito per il libro "${book.title}" è stata approvata! Hai 30 giorni per leggerlo.`,
-        type: 'loan_approved',
+            recipient_id: loan.user_id,
+            recipient_role: 'user',
+            title: 'Prestito Approvato',
+            message: `La tua richiesta di prestito per il libro "${book.title}" è stata approvata! Hai 30 giorni per leggerlo.`,
+            type: 'loan_approved',
         });
 
         

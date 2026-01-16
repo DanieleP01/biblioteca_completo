@@ -15,11 +15,11 @@
   <div class="login-container">
     <h2>Inserisci le credenziali</h2>
     <form (ngSubmit)="submitLogin()" #regForm="ngForm">
-      <ion-item>
+      <ion-item lines="none">
         <ion-label position="floating">Username/E-mail</ion-label>
         <ion-input [(ngModel)]="loginData.identifier" name="identifier" required></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-label position="floating">Password</ion-label>
         <ion-input [(ngModel)]="loginData.password" name="password" required type="password">
           <ion-input-password-toggle slot="end"></ion-input-password-toggle>

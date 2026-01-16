@@ -3,6 +3,8 @@ import * as LibraryBooksModel from '../models/libraryBooks.js';
 import * as BooksModel from '../models/books.js';
 import * as LibraryModel from '../models/library.js';
 import * as NotificationsModel from '../models/notifications.js';
+import path from 'path';
+import fs from 'fs/promises';
 
 //Recupera libri di una biblioteca
 export async function getBooksByLibrary(req: Request, res: Response) {
@@ -67,8 +69,37 @@ export async function checkAvailability(req: Request, res: Response) {
 //Aggiungi libro a biblioteca
 export async function addBookToLibrary(req: Request, res: Response) {
     try {
-        const { book, libraryAssociations } = req.body;
-        
+        if(!req.file){
+            return res.status(400).json({error: 'File mancante'});
+        }
+
+        const { book: bookStr, libraryAssociations: libAssocStr } = req.body;
+        const book = JSON.parse(bookStr);
+        const libraryAssociations = JSON.parse(libAssocStr);
+
+        // correzzione titolo del file (per evitare di salvare file con nomi differenti dal titolo del libro)
+        const correctTitle = book.title
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s]/g, '')
+        .replace(/\s+/g, '_');
+        const newFileName = `${correctTitle}.txt`;
+
+        //rinomina il file
+        const oldPath = req.file.path;
+        const newPath = path.join(path.dirname(oldPath), newFileName);
+        try {
+            await fs.access(newPath);
+            // Se non lancia errore, il file esiste già
+            await fs.unlink(oldPath).catch(() => {});
+            return res.status(400).json({ error: `Un file con il nome "${newFileName}" esiste già` });
+        } catch {
+        // Il file non esiste, è ok, rinomina
+        }
+        await fs.rename(oldPath, newPath);
+
+        book.content_path = newFileName; //aggiunge il nome del file ai dati del libro
+        //controlla se il libro esiste
         const existingBook = await BooksModel.getBookById(book.id);
         if (existingBook) {
             return res.status(409).json({ 
@@ -104,10 +135,14 @@ export async function addBookToLibrary(req: Request, res: Response) {
         });
         
     } catch (error: any) {
+        if(req.file){
+            await fs.unlink(req.file.path).catch(()=> {});
+        }
+
         if (error.message.includes('UNIQUE constraint failed')) {
-        return res.status(409).json({ 
-            error: 'Attenzione: il libro esiste già in una o più biblioteche. Ricompilare il modulo con i dati corretti.'
-        });
+            return res.status(409).json({ 
+                error: 'Attenzione: il libro esiste già in una o più biblioteche. Ricompilare il modulo con i dati corretti.'
+            });
         }
 
         res.status(500).json({ error: error.message });

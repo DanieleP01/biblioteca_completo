@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as LibraryBooksController from '../controllers/libraryBooksController.js';
+import { uploadMiddleware } from '../middlewares/multerMiddleware.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
@@ -14,7 +15,7 @@ router.get('/books/:bookId/libraries', LibraryBooksController.getLibrariesByBook
 router.get('/availability/:libraryId/:bookId', LibraryBooksController.checkAvailability);
 
 // Aggiungi libro a biblioteca
-router.post('/library-books/add', LibraryBooksController.addBookToLibrary);
+router.post('/library-books/add', uploadMiddleware, LibraryBooksController.addBookToLibrary);
 
 // Ottieni tutte le associazioni
 router.get('/library-books', LibraryBooksController.getAllLibraryBooks);

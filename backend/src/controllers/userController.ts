@@ -85,15 +85,6 @@ export const registerController = async (req: Request, res: Response) => {
   try {
     //crea l'utente
     const userId = await createUser(firstName, lastName, username, email, passwordHash, city, province);
-    
-    //NOTIFICA DI BENVENUTO
-    await NotificationsModel.createNotification({
-      recipient_id: userId,
-      recipient_role: 'user',
-      title: 'Benvenuto!',
-      message: `Ciao ${firstName}! Benvenuto nella nostra biblioteca digitale. Inizia a esplorare i nostri libri!`,
-      type: 'welcome'
-    });
 
     res.status(201).json({ message: 'Registrazione completata!' });
     console.log('Registrazione completata');

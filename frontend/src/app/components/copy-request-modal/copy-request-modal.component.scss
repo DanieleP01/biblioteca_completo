@@ -46,11 +46,11 @@ ion-toolbar {
 }
 
 .form-container {
-  background: white;
+  background: rgb(255, 255, 255);
   margin: 16px;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 2px 4px 8px 4px rgba(0, 0, 0, 0.1);
 }
 
 :host ::ng-deep ion-content {
@@ -107,7 +107,7 @@ ion-toolbar {
   background: white;
   margin: 0 16px 16px 16px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 2px 2px 8px 8px rgba(0, 0, 0, 0.08);
 
   ion-button {
     margin: 0;
