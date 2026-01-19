@@ -44,9 +44,9 @@ export async function requestLoan(req: Request, res: Response) {
         const book = await BooksModel.getBookById(book_id); 
         const library = await LibraryModel.getLibraryById(library_id);
         
-        if (library && library.manager_id) {
+        if (library && library.librarian_id) {
             await NotificationsModel.createNotification({
-                recipient_id: library.manager_id,
+                recipient_id: library.librarian_id,
                 recipient_role: 'librarian',
                 title: 'Nuova Richiesta di Prestito',
                 message: `Un utente ha richiesto il libro "${book.title}". Accetta o rifiuta la richiesta.`,

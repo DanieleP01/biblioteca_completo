@@ -4,7 +4,7 @@ export interface Library {
     address: string,
     city: string,
     province: string,
-    manager_id: number,
+    librarian_id: number,
     cover_url: string,
     total_copies: number,
     available_copies: number,

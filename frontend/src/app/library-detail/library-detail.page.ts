@@ -64,7 +64,6 @@ export class LibraryDetailPage implements OnInit {
     this.http.get<any>(`${this.apiUrl}/libraries/${id}/books`).subscribe({
       next: (res) => {
         this.libraryBooks = res;
-        //console.log("Libri della biblioteca: ", this.libraryBook);
         this.isLoading = false;
       },
       error: () => {

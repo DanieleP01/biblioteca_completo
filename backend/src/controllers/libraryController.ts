@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAllLibraries, getLibraryById, getLibraryByManagerId } from '../models/library.js';
+import { getAllLibraries, getLibraryById, getLibraryByLibrarianId } from '../models/library.js';
 
 //Recupera tutte le librerie
 export async function getLibrariesController(req: Request, res: Response) {
@@ -27,15 +27,15 @@ export async function getLibraryByIdController(req: Request, res: Response) {
 }
 
 //Recupera la libreria del bibliotecario selezionato
- export async function getLibraryByManagerIdController(req: Request, res: Response) {
+ export async function getLibraryByLibrarianIdController(req: Request, res: Response) {
     try {
-      const managerId = req.params.managerId;
+      const librarianId = req.params.librarianId;
 
-      if (!managerId) {
-        return res.status(400).json({ error: 'Manager ID è obbligatorio' });
+      if (!librarianId) {
+        return res.status(400).json({ error: 'Librarian ID è obbligatorio' });
       }
 
-      const library = await getLibraryByManagerId(parseInt(managerId));
+      const library = await getLibraryByLibrarianId(parseInt(librarianId));
       
       if (!library) {
         return res.status(404).json({ 

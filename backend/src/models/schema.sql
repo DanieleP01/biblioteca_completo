@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS libraries (
     address TEXT NOT NULL,
     city TEXT NOT NULL,
     province TEXT NOT NULL,
-    manager_id INTEGER,
+    librarian_id INTEGER,
     cover_url TEXT,
-    FOREIGN KEY (manager_id) REFERENCES users(id)
+    FOREIGN KEY (librarian_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS books (
@@ -119,7 +119,7 @@ INSERT OR IGNORE INTO books
 ('Don Chisciotte della Mancia', 'Miguel de Cervantes', '978-8804677844', 'Classici', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs9drnYCFoeSdimqkpCV45OQbXYWf5332qng&s', 'mdocinwecjn', '2013', 'Don_Chisciotte_della_Mancha.txt');
 
 INSERT OR IGNORE INTO libraries 
-(name, address, city, province, manager_id, cover_url) VALUES
+(name, address, city, province, librarian_id, cover_url) VALUES
 ('Biblioteca Centrale della Regione Siciliana “A. Bombace”', 'Via Vittorio Emanuele, 429', 'Palermo', 'PA', 11, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzCslfEf-6IHYB4xEDF8jpeaPJXFroma2tXg&s'),
 ('Biblioteca Comunale di Palermo Leonardo Sciascia (Casa Professa)', 'Piazzetta Brunaccini, 2', 'Palermo', 'PA', NULL, 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/99/94/1c/caption.jpg?w=1200&h=-1&s=1'),
 ('Biblioteca Comunale Borgo Nuovo', 'Via Largo Pozzillo, 7', 'Palermo', 'PA', NULL, 'https://www.esperienzeconilsud.it/openlibrary/wp-content/uploads/sites/376/2025/03/WhatsApp-Image-2025-03-19-at-13.00.06-3-.jpeg'),

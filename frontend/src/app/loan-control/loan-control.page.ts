@@ -42,11 +42,11 @@ export class LoanControlPage implements OnInit {
   getLibraryManager() {
     this.isLoading = true;
 
-    const managerId = this.currentUser?.id;
-    console.log("ID Bibliotecario:", managerId);
+    const librarianId = this.currentUser?.id;
+    console.log("ID Bibliotecario:", librarianId);
     console.log("Utente corrente:", this.currentUser); 
 
-    this.http.get<Library>(`${this.apiUrl}/libraries/manager/${managerId}`).subscribe({
+    this.http.get<Library>(`${this.apiUrl}/libraries/librarian/${librarianId}`).subscribe({
       next: (library) => {
         this.libraryManager = library;
         //console.log("Biblioteca del bibliotecario:", this.libraryManager);

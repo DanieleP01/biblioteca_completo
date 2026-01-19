@@ -35,7 +35,7 @@ export async function createReservationController(req: Request, res: Response) {
     
     if (library) {
       await NotificationsModel.createNotification({
-        recipient_id: library.manager_id,
+        recipient_id: library.librarian_id,
         recipient_role: 'librarian',
         title: 'Nuova Prenotazione',
         message: `l'utente "${user_id}" ha prenotato "${book.title}". La prenotazione è in attesa di processamento.`,

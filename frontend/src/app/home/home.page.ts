@@ -133,7 +133,7 @@ export class HomePage implements OnInit{
     this.openSearchModal();
   }
 
-  //CERCA al click
+  //CERCA alla digitazione del titolo o di una parte di esso
   onSearchInput(event: any) {
     const query = this.searchQuery.trim();
     this.performSearch(query);
@@ -149,7 +149,6 @@ export class HomePage implements OnInit{
       next: (response) => {
         this.searchBooks = response.books;
         this.searchLibraries = response.libraries;
-        //this.searchTotal = response.totals;
         this.isLoading = false;
         this.openSearchModal();
       },
@@ -208,7 +207,7 @@ export class HomePage implements OnInit{
     this.router.navigate(['/library-detail', libraryId]);
   }
 
-  //richiesta prestito
+  //richiesta prestito (utente)
   goToLoanRequest(){
     this.router.navigate(['/loan-request']);
   }
@@ -218,7 +217,7 @@ export class HomePage implements OnInit{
     this.router.navigate(['/loan-control']);
   }
 
-  //controllo richiesta di copie (aministratore)
+  //controllo richiesta di copie (amministratore)
   goToCopyControl(){
     this.router.navigate(['/copyrequest-control']);
   }

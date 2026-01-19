@@ -95,7 +95,7 @@ export async function getLibrariansByBookId(bookId: number) {
   const db = await openDb();
   
   const librarians = await db.all(
-    `SELECT DISTINCT l.manager_id as id 
+    `SELECT DISTINCT l.librarian_id as id 
      FROM libraries l
      INNER JOIN library_books lb ON l.id = lb.library_id
      WHERE lb.book_id = ?`,

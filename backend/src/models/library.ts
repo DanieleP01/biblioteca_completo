@@ -19,12 +19,12 @@ export async function getLibraryById(id: number) {
 }
 
 //recupera la libreria di un determinato bibliotecario
-export async function getLibraryByManagerId(managerId: number) {
+export async function getLibraryByLibrarianId(librarianId: number) {
   const db = await openDb();
   
   const library = await db.get(
-    'SELECT * FROM libraries WHERE manager_id = ?',
-    managerId
+    'SELECT * FROM libraries WHERE librarian_id = ?',
+    librarianId
   );
   
   await db.close();

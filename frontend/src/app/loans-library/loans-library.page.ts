@@ -44,12 +44,11 @@ export class loanslibrary implements OnInit {
   loadLoan(){
     this.isLoading = true;
     
-    const managerId = this.authService.getUser()?.id;
-
-    this.http.get<Library>(`${this.apiUrl}/libraries/manager/${managerId}`).subscribe({
+    const librarianId = this.authService.getUser()?.id;
+    //ottieni la biblioteca del bibliotecario
+    this.http.get<Library>(`${this.apiUrl}/libraries/librarian/${librarianId}`).subscribe({
       next: (library) => {
         this.activeLibrary = library;
-        //console.log("Biblioteca del bibliotecario:", this.activeLibrary);
         //carica i prestiti attivi
         this.loadActiveLoans();
         //carica i prestiti scaduti
@@ -69,7 +68,7 @@ export class loanslibrary implements OnInit {
     this.http.get<Loan[]>(`${this.apiUrl}/libraries/${this.activeLibrary?.id}/active-loans`).subscribe({
       next: (loans) => {
         this.activeLoans = loans;
-        //this.isLoading = false;
+        
       },
       error: (error) => {
         this.isLoading = false;

@@ -121,7 +121,7 @@ export async function addBookToLibrary(req: Request, res: Response) {
 
             if (library) {
                 await NotificationsModel.createNotification({
-                recipient_id: library.manager_id,
+                recipient_id: library.librarian_id,
                 recipient_role: 'librarian',
                 title: 'Nuovo Libro Aggiunto',
                 message: `Il libro "${bookData.title}" di ${bookData.author} è stato aggiunto alla tua biblioteca con ${association.copies} copie.`,

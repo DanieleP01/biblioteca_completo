@@ -53,12 +53,12 @@ async function populateInitialUsers(db: any) {
     }
     console.log(`${librarians.length} bibliotecari creati (password: biblio1234)`);
 
-    //ASSEGNA i bibliotecari come manager alle prime 3 biblioteche
+    //ASSEGNA i bibliotecari alle prime 3 biblioteche
     const librarianIds = await db.all(`SELECT id FROM users WHERE role = 'librarian' ORDER BY id`);
     
     for (let i = 0; i < Math.min(3, librarianIds.length); i++) {
       await db.run(
-        `UPDATE libraries SET manager_id = ? WHERE id = ?`,
+        `UPDATE libraries SET librarian_id = ? WHERE id = ?`,
         [librarianIds[i].id, i + 1]
       );
     }

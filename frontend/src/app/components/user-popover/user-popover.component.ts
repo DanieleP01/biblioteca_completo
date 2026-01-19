@@ -36,7 +36,7 @@ export class UserPopoverComponent implements OnInit, OnDestroy{
   ) {
 
     this.username = this.authService.getUser()?.username || '';
-    //console.log(this.username);
+    
   }
 
   ngOnInit() {

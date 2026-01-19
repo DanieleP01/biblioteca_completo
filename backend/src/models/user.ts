@@ -26,7 +26,7 @@ export async function getUserByUsernameOrEmail(identifier: string){
       FROM 
           users u 
       LEFT JOIN 
-          libraries l ON u.id = l.manager_id 
+          libraries l ON u.id = l.librarian_id 
       WHERE 
           u.username = ? OR u.email = ?`,
     [identifier, identifier]
@@ -53,7 +53,7 @@ export async function getUserById(identifier: number){
     FROM 
         users u 
     LEFT JOIN 
-        libraries l ON u.id = l.manager_id 
+        libraries l ON u.id = l.librarian_id 
     WHERE 
         u.id = ?`,
     [identifier]
