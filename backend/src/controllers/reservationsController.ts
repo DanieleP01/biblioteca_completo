@@ -4,6 +4,7 @@ import { checkDuplicateLoan } from '../models/loans.js';
 import * as BooksModel from '../models/books.js';
 import * as LibraryModel from '../models/library.js';
 import * as NotificationsModel from '../models/notifications.js';
+import * as UserModel from '../models/user.js';
 
 //Richiesta di creazione di una nuova prenotazione
 export async function createReservationController(req: Request, res: Response) {
@@ -32,13 +33,14 @@ export async function createReservationController(req: Request, res: Response) {
     // NOTIFICA AL BIBLIOTECARIO
     const library = await LibraryModel.getLibraryById(library_id);
     const book = await BooksModel.getBookById(book_id);
+    const user = await UserModel.getUserById(user_id);
     
     if (library) {
       await NotificationsModel.createNotification({
         recipient_id: library.librarian_id,
         recipient_role: 'librarian',
         title: 'Nuova Prenotazione',
-        message: `l'utente "${user_id}" ha prenotato "${book.title}". La prenotazione è in attesa di processamento.`,
+        message: `l'utente "${user.username}" ha prenotato "${book.title}". La prenotazione è in attesa di processamento.`,
         type: 'reservation_received'
       });
     }

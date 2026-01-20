@@ -218,7 +218,7 @@ export async function returnBook(req: Request, res: Response) {
                 recipient_id: library.librarian_id,
                 recipient_role: 'librarian',
                 title: 'Restituzione libro',
-                message: `L'utente '${user.username}' ha restituito il libro "${book.title}".`,
+                message: `L'utente '${user.username}' ha restituito il libro "${book.title}". Verificare eventuali nuove richieste di prestito `,
                 type: 'loan_request_created',
             });
         }
