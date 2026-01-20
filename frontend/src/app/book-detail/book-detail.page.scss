@@ -14,7 +14,7 @@ ion-toolbar {
 }
 
 ion-content {
-  --background: black;
+  --background: #f4f5f7;
 }
 
 .loading-container {
@@ -34,6 +34,10 @@ ion-content {
   padding: 1rem;
   max-width: 1000px;
   margin: 0 auto;
+
+  p{
+    color: #0a1929;
+  }
 
   @media (max-width: 768px) {
     padding: 0.25rem;
@@ -63,7 +67,7 @@ ion-content {
   height: auto;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.09);
+  box-shadow: 2px 8px 24px rgba(0, 0, 0, 0.09);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,12 +94,19 @@ ion-content {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
-  color: white;
+  /*padding: 30px;
+  background: #f2f2f2;
+  border: 1px solid #e0e0e0;
+  box-shadow: none;
+  border-radius: 10px;*/
+  color: #0a1929;
 
   h1 {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: bold;
     margin: 0.2rem 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid grey;
   }
 
   .author {
@@ -117,9 +128,22 @@ ion-content {
 }
 
 ion-card{
-  margin: 1rem 0;
+  //margin: 1rem 0;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  background: rgb(255, 255, 255);
+
+  ion-card-title{
+    color: #0a1929;
+  }
+
+  ion-list{
+    background: transparent;
+  }
+
+  ion-item {
+    --background: transparent; 
+  }
 }
 
 .action-buttons {
@@ -173,12 +197,12 @@ ion-card{
 }
 
 .book-chapter-pre {
-  background: #232323;
+  background: transparent;
   padding: 1rem;
   border-radius: 8px;
   font-family: 'Consolas', monospace;
   font-size: 1rem;
-  color: #cfcfcf;
+  color: black;
   margin-bottom: 2rem;
   white-space: pre-wrap;
   overflow-x: auto;

@@ -7,8 +7,6 @@ import * as UserModel from '../models/user.js';
 import * as NotificationsModel from '../models/notifications.js';
 import * as LibraryModel from '../models/library.js';
 
-const admin_id = 12;
-
 // Richiesta prestito da parte dell'utente
 export async function requestLoan(req: Request, res: Response) {
     try {
@@ -210,16 +208,19 @@ export async function returnBook(req: Request, res: Response) {
         
         // Incrementa copie disponibili
         await LibraryBooksModel.incrementCopies(loan.library_id, loan.book_id);
-        
-        // NOTIFICA ALL'UTENTE CHE HA RESTITUITO
-        const book = await BooksModel.getBookById(loan.book_id);
-        await NotificationsModel.createNotification({
-        recipient_id: loan.user_id,
-        recipient_role: 'user',
-        title: 'Restituzione Confermata',
-        message: `La restituzione del libro "${book.title}" è stata confermata con successo.`,
-        type: 'book_returned',
-        });
+
+         // NOTIFICA AL BIBLIOTECARIO
+        const book = await BooksModel.getBookById(loan.book_id); 
+        const library = await LibraryModel.getLibraryById(loan.library_id);
+        if (library && library.librarian_id) {
+            await NotificationsModel.createNotification({
+                recipient_id: library.librarian_id,
+                recipient_role: 'librarian',
+                title: 'Restituzione libro',
+                message: `L'utente: ${loan.user_id} ha restituito il libro "${book.title}".`,
+                type: 'loan_request_created',
+            });
+        }
 
         // prende la prima prenotazione, dato che è stato reso disponibile il libro
         const reservation = await ReservationModel.getReservationsByBookAndLibrary(

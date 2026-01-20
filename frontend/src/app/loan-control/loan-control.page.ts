@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
-import { library } from 'ionicons/icons';
 import { User } from '../models/user.model';
 import { Library } from '../models/library.model';
 import { Loan } from '../models/loan.model';

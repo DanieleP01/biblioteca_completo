@@ -7,7 +7,7 @@ import * as BooksModel from '../models/books.js';
 import * as NotificationsModel from '../models/notifications.js';
 import * as UserModel from '../models/user.js';
 
-const admin_id = 12; //essendo unico l'admin, lo dichiaro esplicitamente
+const admin_id = 1; //essendo unico l'admin, lo dichiaro esplicitamente
 
 //crea una richiesta di copie (da parte del bibliotecario all'amministratore)
 export async function createCopyRequest(req: Request, res: Response) {
@@ -124,7 +124,7 @@ export async function approveCopyRequest(req: Request, res: Response) {
       return res.status(400).json({ error: 'Impossibile rifiutare la richiesta' });
     }
 
-    // NOTIFICA AL BIBLIOTECARIO DI AVVENUTA AGGIUNTA COPIE
+    // NOTIFICA AL BIBLIOTECARIO - AGGIUNTA COPIE
     await NotificationsModel.createNotification({
       recipient_id: librarian.id,
       recipient_role: 'librarian',

@@ -24,7 +24,7 @@
         <p class="author">di {{ book.author }}</p>
         <ion-chip color="primary">{{ book.category }}</ion-chip>
         <ion-chip color="secondary">{{ book.year }}</ion-chip>
-        <p style="color: grey;" *ngIf="hasActiveLoan">Lettura disponibile nella sezione a fine pagina</p>
+        <p *ngIf="hasActiveLoan">Lettura disponibile nella sezione a fine pagina</p>
       </div>
     </div>
 
@@ -48,7 +48,11 @@
         <ion-card-title>Descrizione</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>{{ book.description }}</p>
+        <ion-item>
+          <ion-label>
+            <p>{{ book.description }}</p>
+          </ion-label>
+        </ion-item>
       </ion-card-content>
     </ion-card>
 
