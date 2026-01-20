@@ -9,3 +9,6 @@
 
 #Non include il file database
 **/database/biblioteca.db
+
+#non ignora il file gitkeep
+!**/database/.gitkeep
