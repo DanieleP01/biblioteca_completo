@@ -7,7 +7,7 @@ import * as BooksModel from '../models/books.js';
 import * as NotificationsModel from '../models/notifications.js';
 import * as UserModel from '../models/user.js';
 
-//crea una richiesta di copie (da parte del bibliotecario all'amministratore)
+//crea una richiesta di copie (dal bibliotecario all'amministratore)
 export async function createCopyRequest(req: Request, res: Response) {
     const { book_id, library_id, librarian_id, requested_copies, reason } = req.body;
 

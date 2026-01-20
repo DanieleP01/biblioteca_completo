@@ -26,7 +26,7 @@ export class HomePage implements OnInit{
   books: Book[] = [];
   libraries: Library[] = [];
 
-  //variabili utilizzate solo per la ricerca (così da non andare a svuotare le card della home)
+  //variabili utilizzate solo per la ricerca
   searchBooks: Book[] = [];
   searchLibraries: Library[] = [];
 
