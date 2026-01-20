@@ -17,7 +17,12 @@
     <p>Nessuna notifica</p>
     </div>
 
-    <ion-button color="primary" (click)="markAllAsRead()" size="small" class="button" *ngIf="getUnreadNotifications().length > 0">
+    <ion-button 
+        expand="block" 
+        fill="outline"
+        (click)="markAllAsRead()" 
+        class="button-mark-all" 
+        *ngIf="getUnreadNotifications().length > 0">
         Segna tutte come lette
     </ion-button>
 

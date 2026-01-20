@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationsPopoverComponent } from '../notifications-popover.component.ts/notifications-popover.component';
 import { NotificationService } from 'src/app/services/notification.service.js';
+import { AlertService } from '../../services/alert.service.js';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -31,7 +32,7 @@ export class UserPopoverComponent implements OnInit, OnDestroy{
     private router: Router,
     private popoverController: PopoverController,
     private authService: AuthService,
-    private alertController: AlertController,
+    private alertService: AlertService,
     public notificationService: NotificationService
   ) {
 
@@ -64,9 +65,9 @@ export class UserPopoverComponent implements OnInit, OnDestroy{
     const popover = await this.popoverController.create({
       component: NotificationsPopoverComponent,
       event: event,
-      side: 'end',
-      showBackdrop: false,
-      cssClass: 'transparent-popover',
+      side: 'bottom',
+      showBackdrop: true,
+      cssClass: 'force-white-popover',
       componentProps: {
         notificationService: this.notificationService 
       }
@@ -104,34 +105,19 @@ export class UserPopoverComponent implements OnInit, OnDestroy{
     this.popoverController.dismiss();
   }
 
-  // Alert di conferma prima del logout
-  async confirmLogout() {
+  // logout
+  async Logout() {
     this.popoverController.dismiss();
-    const alert = await this.alertController.create({
-      header: 'Logout',
-      message: 'Sei sicuro di voler effettuare il logout?',
-      buttons: [
-        {
-          text: 'Annulla',
-          role: 'cancel',
-          cssClass: 'secondary'
-        },
-        {
-          text: 'Conferma',
-          handler: () => {
-            this.logout();
-          }
-        }
-      ]
-    });
+    const isConfirmed = await this.alertService.presentConfirm(
+      'Logout', 
+      'Sei sicuro di voler effettuare il logout?'
+    );
 
-    await alert.present();
-  }
-
-  logout() {
-    this.authService.logout();
-    this.onLogout();
-    this.popoverController.dismiss();
-    window.location.reload();
+    if (isConfirmed) {
+      this.authService.logout();
+      this.onLogout();
+      this.popoverController.dismiss();
+      window.location.reload();
+    }
   }
 }

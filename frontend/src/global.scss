@@ -35,7 +35,7 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
 
 @supports (backdrop-filter: blur(10px)) {
   .registration-container {
@@ -49,15 +49,83 @@
   }
 }
 
-.no-backdrop-popover {
-  --backdrop-opacity: 0 !important;
-  
-  ion-popover {
-    --backdrop-opacity: 0 !important;
-  }
+* {
+  scrollbar-width: none !important; // Firefox 
+  -ms-overflow-style: none !important; // IE/Edge 
 }
 
-ion-popover.no-backdrop-popover::part(backdrop) {
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
   background: transparent !important;
-  opacity: 0 !important;
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+ion-popover.force-white-popover {
+  --background: #ffffff !important;
+  --ion-background-color: #ffffff !important;
+  --min-width: 300px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+ion-popover.force-white-popover::part(content) {
+  background: #ffffff !important;
+  border-radius: 8px; 
+  border: none !important; 
+}
+
+.force-white-popover ion-list {
+  background: #ffffff !important;
+  --background: #ffffff !important;
+  
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+}
+
+.force-white-popover ion-item,
+.force-white-popover ion-content {
+  --background: #ffffff !important;
+  --ion-background-color: #ffffff !important;
+  --color: #000000 !important;
+  --border-color: #f0f0f0 !important;
+  --ion-item-border-color: #f0f0f0 !important;
+}
+
+/* 5. Icone scure */
+.force-white-popover ion-icon {
+  color: #555555 !important;
+}
+
+.force-white-popover ion-item-divider {
+  --background: #f9f9f9 !important;
+  --color: #000000 !important;
+  --border-color: #f0f0f0 !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  margin-top: 0 !important; 
+}
+
+ion-toolbar ion-icon,
+ion-header ion-icon {
+  color: #ffffff !important;
+}
+
+// Forza bianco SOLO dentro i bottoni solidi 
+ion-button[fill="solid"] ion-icon {
+  color: #ffffff !important;
+}
+
+ion-card ion-card-header ion-icon{
+   color: #ffffff !important;
 }

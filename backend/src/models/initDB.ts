@@ -32,7 +32,7 @@ async function populateInitialUsers(db: any) {
     await db.run(
       `INSERT OR IGNORE INTO users (firstName, lastName, username, email, password, city, province, role)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      ['Admin', 'Admin', 'admin', 'admin@biblioteca.it', adminPasswordHash, 'Palermo', 'PA', 'admin']
+      ['Pippo', 'Rossi', 'admin', 'admin@biblioteca.it', adminPasswordHash, 'Palermo', 'PA', 'admin']
     );
     console.log('1 Admin creato (password: admin1234)');
 
@@ -45,8 +45,10 @@ async function populateInitialUsers(db: any) {
       { firstName: 'Roberto', lastName: 'Mollica', username: 'biblio4', email: 'roberto@biblioteca.it' },
       { firstName: 'Daniele', lastName: 'Patti', username: 'biblio5', email: 'daniele@biblioteca.it' },
       { firstName: 'Francesca', lastName: 'Filippone', username: 'biblio6', email: 'francesca@biblioteca.it' },
-      { firstName: 'Giulia', lastName: 'Rossi', username: 'biblio7', email: 'giulia@biblioteca.it' },
-      { firstName: 'Michelle', lastName: 'Bianchi', username: 'biblio8', email: 'michelle@biblioteca.it' }
+      { firstName: 'Giorgia', lastName: 'Rossi', username: 'biblio7', email: 'giorgia@biblioteca.it' },
+      { firstName: 'Michelle', lastName: 'Bianchi', username: 'biblio8', email: 'michelle@biblioteca.it' },
+      { firstName: 'Piergiorgio', lastName: 'Rossi', username: 'biblio9', email: 'piergiorgio@biblioteca.it' },
+      { firstName: 'Gianpaolo', lastName: 'Bianchi', username: 'biblio10', email: 'gianpaolo@biblioteca.it' }
     ];
 
     for (const librarian of librarians) {
@@ -58,7 +60,7 @@ async function populateInitialUsers(db: any) {
     }
     console.log(`${librarians.length} bibliotecari creati (password: biblio1234)`);
 
-    //ASSEGNA i bibliotecari alle prime 3 biblioteche
+    //ASSEGNA i bibliotecari alle biblioteche
     const librarianIds = await db.all(`SELECT id FROM users WHERE role = 'librarian' ORDER BY id`);
     const libraries = await db.all(`SELECT id FROM libraries ORDER BY id`)
     const limit = Math.min(libraries.length, librarians.length);
@@ -70,7 +72,7 @@ async function populateInitialUsers(db: any) {
     }
 
     //POPOLAMENTO TABELLA library_books (assegnazione libri a biblioteche)
-    const books = await db.all(`SELECT id FROM users ORDER BY id`);
+    const books = await db.all(`SELECT id FROM books ORDER BY id`);
     const libraryBooksData = [
       // Biblioteca 1 (indice 0)
       { libIndex: 0, bookIndex: 0, copies: 1 }, 
@@ -118,8 +120,8 @@ async function populateInitialUsers(db: any) {
       //controllo di sicurezza
       const library = libraries[item.libIndex];
       const book = books[item.bookIndex];
-      
-      if(library && books){
+
+      if(library && book){
         await db.run(
           `INSERT OR IGNORE INTO library_books
           (library_id, book_id, total_copies, available_copies)

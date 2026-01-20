@@ -4,7 +4,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicModule, AlertController, ModalController } from '@ionic/angular';
 import { AddBookModalComponent } from '../components/add-book-modal/add-book-modal.component';
 import { FormsModule } from '@angular/forms';
-import { ChangeDetectorRef } from '@angular/core';
 import { Book } from '../models/book.model';
 import { AlertService } from '../services/alert.service';
 
@@ -28,8 +27,7 @@ export class BookManagementPage implements OnInit {
     private http: HttpClient,
     private alertController: AlertController,
     private modalController: ModalController,
-    private alertService: AlertService,
-    private cdr: ChangeDetectorRef
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -87,24 +85,19 @@ export class BookManagementPage implements OnInit {
 
   // Alert di conferma prima di rimuovere il/i libri
   async confirmDelete() {
-    const alert = await this.alertController.create({
-      header: 'Eliminazione',
-      message: 'Sei sicuro di voler rimuovere dal sistema i libri selezionati?',
-      buttons: [
-        {
-          text: 'Annulla',
-          role: 'cancel',
-          cssClass: 'secondary'
-        },
-        {
-          text: 'Conferma',
-          handler: () => {
-            this.removeSelectedBooks();
-          }
-        }
-      ]
-    });
-    await alert.present();
+
+    const isConfirmed = await this.alertService.presentConfirm(
+      'Elimina Libri',
+      'Sei sicuro di voler eliminare i libri selezionati?',
+      'Elimina', 
+      'Annulla'      
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    this.removeSelectedBooks();
   }
 
   removeSelectedBooks() {

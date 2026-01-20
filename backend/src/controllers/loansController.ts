@@ -127,7 +127,6 @@ export async function approveLoan(req: Request, res: Response) {
         });
 
         
-        
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
@@ -212,12 +211,14 @@ export async function returnBook(req: Request, res: Response) {
          // NOTIFICA AL BIBLIOTECARIO
         const book = await BooksModel.getBookById(loan.book_id); 
         const library = await LibraryModel.getLibraryById(loan.library_id);
+        const user = await UserModel.getUserById(loan.user_id);
+
         if (library && library.librarian_id) {
             await NotificationsModel.createNotification({
                 recipient_id: library.librarian_id,
                 recipient_role: 'librarian',
                 title: 'Restituzione libro',
-                message: `L'utente: ${loan.user_id} ha restituito il libro "${book.title}".`,
+                message: `L'utente '${user.username}' ha restituito il libro "${book.title}".`,
                 type: 'loan_request_created',
             });
         }
@@ -239,7 +240,7 @@ export async function returnBook(req: Request, res: Response) {
                 loan.library_id
             );
             await ReservationModel.deleteReservation(firstReservation.id);
-
+            
             // NOTIFICA ALL'UTENTE IN PRENOTAZIONE
             await NotificationsModel.createNotification({
                 recipient_id: firstReservation.user_id,

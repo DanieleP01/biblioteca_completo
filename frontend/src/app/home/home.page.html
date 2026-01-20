@@ -59,14 +59,14 @@
         </ion-toolbar>
       </ion-header>
       
-      <ion-content>
+      <ion-content class="modal-content-search">
         <!-- Nessun risultato -->
         <div *ngIf="!isLoading && searchBooks.length === 0 && searchLibraries.length === 0" class="no-results">
           <ion-icon name="search-outline"></ion-icon>
           <p>Nessun risultato trovato</p>
         </div>
         <!-- Lista libri -->
-        <ion-list *ngIf="searchBooks.length > 0" class="search-list-first">
+        <ion-list *ngIf="searchBooks.length > 0">
           <ion-list-header class="title-search">Libri trovati</ion-list-header>
           <ion-item *ngFor="let book of searchBooks" button (click)="onSelectBook(book)">
             <ion-avatar slot="start"><img [src]="book.cover_url"></ion-avatar>
@@ -90,8 +90,8 @@
   <div class="hero-content">
     <div class="hero-gradient"></div>
     <div class="hero-text">
-      <h1 class="hero-title">Benvenuto nel Mondo delle Biblioteche</h1>
-      <p class="hero-subtitle">Scopri nuove biblioteche e esplora la nostra collezione</p>
+      <h1 class="hero-title">Benvenuto su BiblioWorld</h1>
+      <p class="hero-subtitle">nel mondo delle biblioteche digitali</p>
       
       <!-- BOTTONE RICHIESTA PRESTITO -->
       <div *ngIf="isLoggedIn && isUser" class="Main-button">

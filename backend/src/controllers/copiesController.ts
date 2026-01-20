@@ -7,8 +7,6 @@ import * as BooksModel from '../models/books.js';
 import * as NotificationsModel from '../models/notifications.js';
 import * as UserModel from '../models/user.js';
 
-const admin_id = 1; //essendo unico l'admin, lo dichiaro esplicitamente
-
 //crea una richiesta di copie (da parte del bibliotecario all'amministratore)
 export async function createCopyRequest(req: Request, res: Response) {
     const { book_id, library_id, librarian_id, requested_copies, reason } = req.body;
@@ -18,9 +16,14 @@ export async function createCopyRequest(req: Request, res: Response) {
 
       const copyRequestId = await copiesModel.requestCopy(book_id, library_id, librarian_id, requested_copies, reason);
       
+      const adminId = await UserModel.getAdminId();
+      if (!adminId) {
+        console.error("Admin non trovato!");
+        return;
+      }
       // NOTIFICA ALL'ADMIN (unico)
       await NotificationsModel.createNotification({
-        recipient_id: admin_id,
+        recipient_id: adminId,
         recipient_role: 'admin',
         title: 'Nuova Richiesta di Copie',
         message: `Il bibliotecario ha richiesto ${requested_copies} copie del libro "${book.title}". Motivo: ${reason}`,

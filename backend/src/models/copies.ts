@@ -9,7 +9,7 @@ export async function requestCopy(bookId: number, libraryId: number, librarianId
     VALUES (?, ?, ?, ?, ?, 'Pending', CURRENT_TIMESTAMP)`
     , bookId, libraryId, librarianId, requestedCopies, reason);
     
-  console.log('Nuova richiesta di copie creata con ID:', result.lastID);
+  //console.log('Nuova richiesta di copie creata con ID:', result.lastID);
 
   await db.close();
   return result.lastID;

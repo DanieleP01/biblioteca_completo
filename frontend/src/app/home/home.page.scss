@@ -73,6 +73,7 @@ ion-toolbar {
   opacity: 0.6;
   margin: 0 6px;
   font-size: 1.5em;
+  color: #ffff;
   
   @media (max-width: 480px) {
     margin: 0 3px;
@@ -103,16 +104,27 @@ ion-button {
 }
 
 .custom-searchbar {
-  --background: rgb(255, 255, 255) !important;
+  --background: #ffffff !important;
   --border-radius: 24px !important;
   --box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
   --padding-start: 12px !important;
   --padding-end: 12px !important;
-  --icon-color: #666 !important;
-  --placeholder-color: #4c4c4c !important;
-  --color: #333 !important;
+  --placeholder-color: #666666;
+  --color: #000000;
+  --icon-color: #000000 !important;
+  --clear-button-color: #000000 !important;
+
   margin: 8px 8px !important;
   text-align: left !important;
+
+  & ::ng-deep .searchbar-search-icon {
+    color: #000000 !important;
+    opacity: 1 !important; 
+  }
+
+  & ::ng-deep ion-icon {
+    color: #000000 !important;
+  }
 
   @media (max-width: 768px) {
     max-width: 90%;
@@ -131,6 +143,7 @@ ion-button {
 // Icona ricerca mobile
 .mobile-search-icon {
   display: none !important;
+  color: #ffffff !important;
 
   @media (max-width: 768px) {
     display: block !important;
@@ -174,14 +187,46 @@ ion-button {
   }
 }
 
-.search-list-first {
-  padding-top: 14%;
+.modal-content-search {
+  --padding-top: 80px; 
+  --background: #ffffff !important;
+
+  ion-list{
+    background: #ffffff !important;
+    padding-top: 0;
+  }
+
+  ion-item{
+    --background: #ffffff !important; 
+    --color: #000000 !important;      
+    --border-color: #f0f0f0 !important; 
+    --ion-item-border-color: #f0f0f0 !important;
+    --background-hover: #000000 !important; 
+    --background-activated: #e0e0e0 !important;
+    cursor: pointer;
+  }
+
+  ion-label{
+    color: #000000 !important;
+    font-weight: 500;
+  }
 }
 
 .title-search {
   font-size: 15px;
   font-weight: bold;
   color: var(--ion-color-primary);
+  --background: #ffffff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.08); 
+  border-bottom: 1px solid #eeeeee;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 ion-modal{
@@ -226,6 +271,7 @@ ion-modal{
   position: absolute;
   left: 0; top: 0; 
   width: 100%; 
+  
   background: rgba(10, 25, 41, 0.35);
   pointer-events: none;
   z-index: 2;
@@ -263,7 +309,7 @@ ion-modal{
   z-index: 5;
   color: #fff;
   font-weight: bold;
-  text-shadow: 0px 1px 12px rgba(0,0,0,0.5);
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
   text-align: center;
 
   @media (max-width: 768px) {
@@ -273,18 +319,22 @@ ion-modal{
 }
 
 .hero-title{
-  font-size: 3.50em;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.5em;
   font-weight: bold;
   color: #fff;
   margin: 0 0 12px 0;
 }
 
 .hero-subtitle{
+  font-family: 'Montserrat', serif;
   font-size: 2em;
-  font-weight: 400;
-  color: #fff;
+  color: #f0f0f0;
   margin-top: 0;
   margin-bottom: 0;
+  font-style: normal !important;
+  font-weight: 400;
+  letter-spacing: 1px; 
 }
 
 .Main-button{

@@ -110,7 +110,8 @@ export class HomePage implements OnInit{
     const popover = await this.popoverController.create({
       component: component,
       event: event,
-      translucent: true
+      translucent: false,
+      cssClass: 'force-white-popover'
     });
 
     await popover.present();
@@ -187,14 +188,6 @@ export class HomePage implements OnInit{
   onClearSearch(){
     this.searchQuery = '';
     this.loadData();
-  }
-
-  // Logout
-  handleLogout() {
-    this.authService.logout(); //rimuove il token
-    this.isLoggedIn = false;   
-    this.router.navigate(['/home']);
-    this.popoverController.dismiss();
   }
 
   //Dettagli Libro

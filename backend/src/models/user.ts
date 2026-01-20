@@ -71,3 +71,13 @@ export async function hashPassword(password: string): Promise<string>{
 export async function verifyPassword(plainPassword: string, hashedPassword: string){
   return bcrypt.compare(plainPassword, hashedPassword);
 }
+
+//ritorna l'id dell'amministratore (è unico)
+export async function getAdminId(){
+  const db = await openDb();
+
+  const result = await db.get(`SELECT id FROM users WHERE role = 'admin'`);
+
+  await db.close();
+  return result ? result.id : null;
+}

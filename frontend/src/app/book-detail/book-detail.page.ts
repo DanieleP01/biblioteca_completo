@@ -157,7 +157,21 @@ export class BookDetailPage implements OnInit {
   }
 
   // Restituisci Libro
-  returnBook() {
+  async returnBook() {
+
+    //alert di conferma
+    const isConfirmed = await this.alertService.presentConfirm(
+      'Restituzione Libro',
+      'Sei sicuro di voler restituire questo libro?',
+      'Restituisci', 
+      'Annulla'      
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    //logout, se viene confermato
     console.log('Restituzione libro per prestito ID:', this.activeLoan.id);
     this.http.patch<any>(`${this.apiUrl}/loans/${this.activeLoan.id}/return`, {}).subscribe({
       next: (response) => {
