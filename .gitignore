@@ -8,4 +8,4 @@
 **/.env
 
 #Non include il file database
-database/.biblioteca
+**/database/biblioteca.db

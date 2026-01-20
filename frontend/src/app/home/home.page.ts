@@ -30,14 +30,14 @@ export class HomePage implements OnInit{
   searchBooks: Book[] = [];
   searchLibraries: Library[] = [];
 
-  isLoggedIn = false; //boolean per il controllo di login
+  isLoggedIn = false;
   isLoading = false;
 
   isHeaderHidden = false;
   lastScrollTop = 0;
 
   searchQuery = ''; 
-  isSearchModalOpen = false; //gestisce l'apertura della modale
+  isSearchModalOpen = false;
 
   currentUser: User | null = null;
 
